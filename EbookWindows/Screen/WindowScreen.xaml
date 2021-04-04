@@ -1,0 +1,127 @@
+﻿<Window x:Class="EbookWindows.Screen.WindowScreen"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:system="clr-namespace:System;assembly=mscorlib"
+        xmlns:materialDesignConverters="clr-namespace:MaterialDesignThemes.Wpf.Converters;assembly=MaterialDesignThemes.Wpf"
+        xmlns:local="clr-namespace:EbookWindows.Screen"
+        mc:Ignorable="d"
+        Style="{StaticResource MaterialDesignWindow1}"
+        Title="Window1" Height="450" Width="800" ResizeMode="CanResizeWithGrip"
+        WindowStyle="SingleBorderWindow"
+        >
+    <WindowChrome.WindowChrome>
+        <WindowChrome     
+            CaptionHeight="1"  
+            CornerRadius ="0"
+            ResizeBorderThickness="4"         
+            GlassFrameThickness="0">
+        </WindowChrome>
+    </WindowChrome.WindowChrome>
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Button.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.CheckBox.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.ListBox.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.PopupBox.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.RadioButton.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.TextBlock.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.ToggleButton.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+            <materialDesignConverters:BooleanToVisibilityConverter x:Key="InvertedBooleanToVisibilityConverter" TrueValue="Collapsed" FalseValue="Visible" />
+        </ResourceDictionary>
+    </Window.Resources>
+    <Grid>
+        <Border BorderThickness="1">
+            <Border.Style>
+                <Style TargetType="{x:Type Border}">
+                    <Style.Triggers>
+                        <!-- Add to avoid border disappearing when window is maximised -->
+                        <DataTrigger Binding="{Binding WindowState, RelativeSource={RelativeSource AncestorType=Window}}" 
+                                 Value="Maximized">
+                            <Setter Property="Margin" Value="10"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding WindowState, RelativeSource={RelativeSource AncestorType=Window}}" 
+                                 Value="Normal">
+                            <Setter Property="Margin" Value="0"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Border.Style>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="30"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0" MouseMove="DragStart">
+                    <Label>EbookWindows</Label>
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Right" Grid.RowSpan="2" Grid.Row="0">
+                        <StackPanel.Resources>
+                            <Style TargetType="{x:Type Button}" BasedOn="{StaticResource MaterialDesignFlatButton}">
+                                <Setter Property="Margin" Value="0,0,0,0"/>
+                                <Setter Property="Padding" Value="0"/>
+                                <Setter Property="VerticalContentAlignment" Value="Center"/>
+                                <Setter Property="BorderThickness" Value="0"></Setter>
+                                <Setter Property="Width" Value="40"/>
+                                <Setter Property="Height" Value="30"/>
+                            </Style>
+                        </StackPanel.Resources>
+                        <Button Width="100">
+                            Login
+                        </Button>
+                        <Button Click="Minimize">
+                            <materialDesign:PackIcon Kind="WindowMinimize"  />
+                        </Button >
+                        <Button Click="Maximize">
+                            <materialDesign:PackIcon Kind="WindowMaximize" />
+                        </Button>
+                        <Button Click="Close" >
+                            <materialDesign:PackIcon Kind="WindowClose" />
+                        </Button>
+                    </StackPanel>
+                </Grid>
+                <Grid Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="250"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid Background="#0FFFFFFF">
+                        <StackPanel>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="34"/>
+                                </Grid.ColumnDefinitions>
+                                <Button Grid.Column="0" Style="{StaticResource MaterialDesignFlatButton}" HorizontalContentAlignment="Left" Margin="2,2,2,2" Background="#21ffffff">HOME </Button>
+                                <Button Grid.Column="1" Padding="0" Margin="0,2,2,2" Style="{StaticResource MaterialDesignFlatButton}" Width="32" Height="32">
+                                    <materialDesign:PackIcon Kind="ViewGrid" Width="32" Height="32" ></materialDesign:PackIcon>
+                                </Button>
+                            </Grid>
+                            <ListBox Name="lbTodoList" HorizontalContentAlignment="Stretch">
+                                <ListBox.ContextMenu>
+                                    <ContextMenu>
+                                        <MenuItem Header="Delete"/>
+                                    </ContextMenu>
+                                </ListBox.ContextMenu>
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <Grid Margin="0,2">
+                                            <TextBlock Text="{Binding Title}" Height="20" />
+                                        </Grid>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                        </StackPanel>
+                    </Grid>
+                    <Grid Grid.Column="1">
+                        <local:RecentBook></local:RecentBook>
+                    </Grid>
+                </Grid>
+            </Grid>
+        </Border>
+    </Grid>
+</Window>

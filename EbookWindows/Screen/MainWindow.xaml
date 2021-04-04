@@ -1,0 +1,160 @@
+﻿<Window x:Class="EbookWindows.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:system="clr-namespace:System;assembly=mscorlib"
+        xmlns:materialDesignConverters="clr-namespace:MaterialDesignThemes.Wpf.Converters;assembly=MaterialDesignThemes.Wpf"
+        xmlns:local="clr-namespace:EbookWindows"
+        mc:Ignorable="d"
+        Style="{StaticResource MaterialDesignWindow1}"
+        AutomationProperties.Name="{Binding Title, RelativeSource={RelativeSource Self}}"
+        Title="MainWindow" Height="450" Width="800"
+        MouseMove="StackPanel_MouseMove">
+    <!--<Window.CommandBindings>
+        <CommandBinding Command="Copy" Executed="OnCopy"/>
+    </Window.CommandBindings>-->
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Button.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.CheckBox.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.ListBox.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.PopupBox.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.RadioButton.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.TextBlock.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.ToggleButton.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+            <materialDesignConverters:BooleanToVisibilityConverter x:Key="InvertedBooleanToVisibilityConverter" TrueValue="Collapsed" FalseValue="Visible" />
+        </ResourceDictionary>
+    </Window.Resources>
+    <Grid Name="MainGrid">
+        <Grid Margin="0">
+            <Border Margin="0,5,0,0" HorizontalAlignment="Center" VerticalAlignment="Top" BorderThickness="1" BorderBrush="{DynamicResource PrimaryHueMidBrush}" CornerRadius="5" Name="TopPanelTool">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" >
+                    <StackPanel.Resources>
+                        <Style TargetType="{x:Type Button}" BasedOn="{StaticResource MaterialDesignFlatButton}">
+                            <Setter Property="Margin" Value="0,0,0,0"/>
+                            <Setter Property="Padding" Value="0"/>
+                            <Setter Property="VerticalContentAlignment" Value="Center"/>
+                            <Setter Property="BorderThickness" Value="0"></Setter>
+                            <Setter Property="Width" Value="{StaticResource ButtonIconSizeDefault}"/>
+                            <Setter Property="Height" Value="{StaticResource ButtonIconSizeDefault}"/>
+                        </Style>
+                    </StackPanel.Resources>
+                    <Button>
+                        <materialDesign:PackIcon Kind="ArrowBack"></materialDesign:PackIcon>
+                    </Button>
+                    <Button>
+                        <materialDesign:PackIcon Kind="Home"></materialDesign:PackIcon>
+                    </Button>
+                    <materialDesign:PopupBox  StaysOpen="True" IsEnabled="{Binding IsChecked, ElementName=PopupEnabled}" Foreground="{DynamicResource PrimaryHueMidBrush}">
+                        <Grid Width="300" Margin="8,8,8,8">
+                            <Grid.Resources>
+                                <Style TargetType="CheckBox" BasedOn="{StaticResource MaterialDesignCheckBox}">
+                                    <Setter Property="Margin" Value="8,8,10,8" />
+                                </Style>
+                                <Style TargetType="TextBox" BasedOn="{StaticResource MaterialDesignTextBox}">
+                                    <Setter Property="materialDesign:HintAssist.IsFloating" Value="True" />
+                                    <Setter Property="Margin" Value="8,8,8,8" />
+                                </Style>
+                            </Grid.Resources>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+                            <TextBlock Grid.Column="0" Grid.Row="0" Style="{StaticResource MaterialDesignHeadline6TextBlock}" Margin="8,8,8,16" Text="OPTIONS" />
+                            <TextBox Grid.Column="0" Grid.Row="1" materialDesign:HintAssist.Hint="Setting 1" Text="200" />
+                            <TextBox Grid.Column="0" Grid.Row="2" materialDesign:HintAssist.Hint="Setting 2" Text="400" />
+                            <TextBox Grid.Column="0" Grid.Row="3" materialDesign:HintAssist.Hint="Setting 3" Text="600" />
+                            <CheckBox Grid.Column="1" Grid.Row="1" VerticalAlignment="Bottom" />
+                            <CheckBox Grid.Column="1" Grid.Row="2" IsChecked="True" VerticalAlignment="Bottom" />
+                            <CheckBox Grid.Column="1" Grid.Row="3" VerticalAlignment="Bottom" />
+                            <ComboBox Grid.Column="0" Grid.Row="4" materialDesign:HintAssist.Hint="Setting 4" materialDesign:HintAssist.IsFloating="True" MaxDropDownHeight="200" Margin="8">
+                                <ComboBoxItem Content="25%" />
+                                <ComboBoxItem Content="50%" />
+                                <ComboBoxItem Content="75%" />
+                                <ComboBoxItem Content="100%" />
+                                <ComboBoxItem Content="150%" />
+                                <ComboBoxItem Content="200%" />
+                                <ComboBoxItem Content="250%" />
+                                <ComboBoxItem Content="500%" />
+                            </ComboBox>
+                            <StackPanel Grid.Row="5" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Right">
+                                <Button Content="_Save" Command="{x:Static materialDesign:PopupBox.ClosePopupCommand}" />
+                                <Button Content="_Cancel" Command="{x:Static materialDesign:PopupBox.ClosePopupCommand}" >
+                                </Button>
+                            </StackPanel>
+                        </Grid>
+                    </materialDesign:PopupBox>
+                    <Button>
+                        <materialDesign:PackIcon Kind="ZoomOutOutline"></materialDesign:PackIcon>
+                    </Button>
+                    <TextBox Width="40" Height="20" BorderBrush="{DynamicResource PrimaryHueMidBrush}" BorderThickness="0" Padding="0" VerticalContentAlignment="Center" HorizontalContentAlignment="Center">
+                        100%</TextBox>
+
+                    <Button>
+                        <materialDesign:PackIcon Kind="ZoomInOutline"></materialDesign:PackIcon>
+                    </Button>
+                    <Button>
+                        <materialDesign:PackIcon Kind="Forward"></materialDesign:PackIcon>
+                    </Button>
+                    <Button Margin="0" >
+                        <materialDesign:PackIcon Kind="FullscreenExit" ></materialDesign:PackIcon>
+                    </Button>
+                </StackPanel>
+            </Border>
+            <!-- Nút ẩn thanh công cụ để đọc cho dễ hơn.-->
+            <Button HorizontalAlignment="Right" VerticalAlignment="Top" Margin="5"  Style="{StaticResource MaterialDesignFlatButton}" Click="ShowHideToolButton_Click">
+                <materialDesign:PackIcon Kind="Eye" ></materialDesign:PackIcon>
+            </Button>
+            <Border Name="BottomPanelTool" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" BorderThickness="0,2,0,0" BorderBrush="{DynamicResource PrimaryHueMidBrush}" >
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                    <StackPanel.Resources>
+                        <Style TargetType="{x:Type Button}" BasedOn="{StaticResource MaterialDesignFlatButton}">
+                            <Setter Property="Margin" Value="0,0,0,0"/>
+                            <Setter Property="Padding" Value="0"/>
+                            <Setter Property="VerticalContentAlignment" Value="Center"/>
+                            <Setter Property="BorderThickness" Value="0"></Setter>
+                            <Setter Property="Width" Value="{StaticResource ButtonIconSizeDefault}"></Setter>
+                            <Setter Property="Height" Value="{StaticResource ButtonIconSizeDefault}"></Setter>
+                        </Style>
+                    </StackPanel.Resources>
+                    <Button>
+                        <materialDesign:PackIcon Kind="ChevronLeftFirst"></materialDesign:PackIcon>
+                    </Button>
+                    <Button>
+                        <materialDesign:PackIcon Kind="ChevronLeft"></materialDesign:PackIcon>
+                    </Button>
+
+                    <ComboBox materialDesign:ComboBoxAssist.ClassicMode="True" BorderThickness="0" Width="100" Padding="5" BorderBrush="{DynamicResource PrimaryHueMidBrush}">
+                        <ComboBoxItem IsSelected="True" Content="Chương 0" />
+                        <ComboBoxItem Content="Chương 1" />
+                        <ComboBoxItem Content="Chương 2" />
+                        <ComboBoxItem Content="Chương 3 Khởi đầu của sự sống" />
+                        <ComboBoxItem Content="Chương 4" />
+                        <ComboBoxItem Content="Chương 5" />
+                    </ComboBox>
+
+                    <Button>
+                        <materialDesign:PackIcon Kind="ChevronRight"></materialDesign:PackIcon>
+                    </Button>
+                    <Button>
+                        <materialDesign:PackIcon Kind="ChevronRightLast"></materialDesign:PackIcon>
+                    </Button>
+                </StackPanel>
+            </Border>
+        </Grid>
+    </Grid>
+        
+</Window>
