@@ -11,27 +11,23 @@
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
         <StackPanel>
-            <Grid Background="Azure" Height="200">
-                <ListBox Name="lbTodoList" HorizontalContentAlignment="Stretch"  >
-                    <ListBox.ItemsPanel>
+            <Grid Background="Green" Height="200">
+                <ItemsControl Name="lbTodoList" ItemsSource="{Binding}">
+                    <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
-                            <WrapPanel IsItemsHost="True" />
+                            <WrapPanel ></WrapPanel>
                         </ItemsPanelTemplate>
-                    </ListBox.ItemsPanel>
-                    <ListBox.ItemContainerStyle>
-                        <Style TargetType="ListBoxItem">
-                            <Setter Property="Height" Value="Auto" />
-                            <Setter Property="Width" Value="Auto" />
-                        </Style>
-                    </ListBox.ItemContainerStyle>
-                    <ListBox.ItemTemplate>
-                        <DataTemplate >
-                            <Grid Margin="0,2">
-                                <TextBlock Text="{Binding Title}" Foreground="Black" VerticalAlignment="Bottom" TextWrapping="Wrap"/>
-                            </Grid>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <DockPanel>
+                                <Border Background="Black"></Border>
+                                <TextBlock DockPanel.Dock="Bottom" Text="{Binding Title}"></TextBlock>
+                            </DockPanel>
+                            
                         </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
             </Grid>
         </StackPanel>
     </Grid>
