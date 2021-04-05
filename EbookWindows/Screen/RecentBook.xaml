@@ -11,24 +11,44 @@
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
         <StackPanel>
-            <Grid Background="Green" Height="200">
-                <ItemsControl Name="lbTodoList" ItemsSource="{Binding}">
+            <DockPanel  >
+                <Border DockPanel.Dock="Left" Margin="5,0,0,0" Width="30" Height="2" Background="red"></Border>
+                <TextBlock Margin="5,-1,5,3">RECENT BOOKS</TextBlock>
+                <Button DockPanel.Dock="Right" Click="Button_Click" Width="20" Height="20" Margin="0" Padding="0" Style="{StaticResource MaterialDesignFlatButton}">
+                    <materialDesign:PackIcon Kind="ChevronRight" Foreground="Red"  />
+                </Button>
+                <Button Click="Button1_Click" DockPanel.Dock="Right" Width="20" Height="20"  Margin="0" Padding="0"  Style="{StaticResource MaterialDesignFlatButton}" >
+                    <materialDesign:PackIcon Kind="ChevronLeft" />
+                </Button>
+                
+
+                <Border DockPanel.Dock="Right" Width="Auto" Margin="0,0,5,0" Height="2" Background="red"></Border>
+
+
+            </DockPanel>
+            <Grid Background="Green">
+                <ScrollViewer Name="ScrollList"  VerticalScrollBarVisibility="Disabled"  HorizontalScrollBarVisibility="Hidden" HorizontalAlignment="Left">
+                    <ItemsControl Name="lbTodoList" ItemsSource="{Binding}" Margin="0,5,0,5">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
-                            <WrapPanel ></WrapPanel>
-                        </ItemsPanelTemplate>
+                                <StackPanel Orientation="Horizontal"  VerticalAlignment="Top"></StackPanel>
+                            </ItemsPanelTemplate>
                     </ItemsControl.ItemsPanel>
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <DockPanel>
-                                <Border Background="Black"></Border>
-                                <TextBlock DockPanel.Dock="Bottom" Text="{Binding Title}"></TextBlock>
+                            <DockPanel Margin="10,5,10,5" Width="150" Height="220">
+                                <Button DockPanel.Dock="Top" BorderThickness="1" Width="150" Height="200">
+                                    <Image Source="{Binding}" ></Image>
+                                </Button>
+                                <TextBlock DockPanel.Dock="Bottom" Text="No comment in thebackgroundoth mkèal"  Margin="0,3,0,0" TextTrimming="CharacterEllipsis"></TextBlock>
                             </DockPanel>
-                            
+
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
+                </ScrollViewer>
             </Grid>
+            <Button>VIEWMORE</Button>
         </StackPanel>
     </Grid>
 </UserControl>
