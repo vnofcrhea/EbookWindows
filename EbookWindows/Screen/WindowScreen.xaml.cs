@@ -36,7 +36,7 @@ namespace EbookWindows.Screen
             items.Add(new TodoItem() { Title = "Learn C#", Completion = 80 });
             items.Add(new TodoItem() { Title = "Wash the car", Completion = 0 });
 
-            lbTodoList.ItemsSource = items;
+            //lbTodoList.ItemsSource = items;
         }
         [DllImport("user32.dll")]
         [return: MarshalAs(UnmanagedType.Bool)]

@@ -12,26 +12,29 @@
     <Grid>
         <StackPanel>
             <DockPanel  >
-                <Border DockPanel.Dock="Left" Margin="5,0,0,0" Width="30" Height="2" Background="red"></Border>
-                <TextBlock Margin="5,-1,5,3">RECENT BOOKS</TextBlock>
+                <Border DockPanel.Dock="Left" Margin="5,0,0,0" Width="30" Height="2" Background="{StaticResource PrimaryHueMidBrush}" ></Border>
+                <TextBlock DockPanel.Dock="Left" Margin="5,0" Foreground="{StaticResource PrimaryHueMidBrush}" FontWeight="Bold">RECENT BOOKS</TextBlock>
+                <Button DockPanel.Dock="Left" Click="Button_Click" Width="20" Height="20" Margin="0" Padding="0" Style="{StaticResource MaterialDesignFlatButton}" >
+                    <materialDesign:PackIcon Kind="ChevronRight" Width="20" Height="20"  />
+                </Button>
                 <Button DockPanel.Dock="Right" Click="Button_Click" Width="20" Height="20" Margin="0" Padding="0" Style="{StaticResource MaterialDesignFlatButton}">
-                    <materialDesign:PackIcon Kind="ChevronRight" Foreground="Red"  />
+                    <materialDesign:PackIcon Kind="ChevronRight"   />
                 </Button>
                 <Button Click="Button1_Click" DockPanel.Dock="Right" Width="20" Height="20"  Margin="0" Padding="0"  Style="{StaticResource MaterialDesignFlatButton}" >
                     <materialDesign:PackIcon Kind="ChevronLeft" />
                 </Button>
-                
 
-                <Border DockPanel.Dock="Right" Width="Auto" Margin="0,0,5,0" Height="2" Background="red"></Border>
+
+                <Border DockPanel.Dock="Right" Width="Auto" Margin="0,0,5,0" Height="2" Background="{StaticResource PrimaryHueMidBrush}"></Border>
 
 
             </DockPanel>
-            <Grid Background="Green">
-                <ScrollViewer Name="ScrollList"  VerticalScrollBarVisibility="Disabled"  HorizontalScrollBarVisibility="Hidden" HorizontalAlignment="Left">
+            <Grid >
+                <ScrollViewer Name="ScrollList"  VerticalScrollBarVisibility="Disabled"  HorizontalScrollBarVisibility="Hidden" CanContentScroll="False" HorizontalAlignment="Left" VirtualizingPanel.ScrollUnit="Pixel">
                     <ItemsControl Name="lbTodoList" ItemsSource="{Binding}" Margin="0,5,0,5">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
-                                <StackPanel Orientation="Horizontal"  VerticalAlignment="Top"></StackPanel>
+                                <WrapPanel Orientation="Horizontal"  VerticalAlignment="Top"></WrapPanel>
                             </ItemsPanelTemplate>
                     </ItemsControl.ItemsPanel>
                     <ItemsControl.ItemTemplate>
