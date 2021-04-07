@@ -72,8 +72,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Screen\RecentBook.xaml.cs">
-      <DependentUpon>RecentBook.xaml</DependentUpon>
+    <Compile Include="Screen\Shelf.xaml.cs">
+      <DependentUpon>Shelf.xaml</DependentUpon>
     </Compile>
     <Compile Include="Screen\WindowScreen.xaml.cs">
       <DependentUpon>WindowScreen.xaml</DependentUpon>
@@ -90,7 +90,7 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Screen\RecentBook.xaml">
+    <Page Include="Screen\Shelf.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

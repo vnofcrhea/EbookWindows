@@ -19,9 +19,10 @@ namespace EbookWindows.Screen
     /// <summary>
     /// Interaction logic for RecentBook.xaml
     /// </summary>
-    public partial class RecentBook : UserControl
+    public partial class Shelf : UserControl
     {
-        public RecentBook()
+        public string ShelfTitle = "RECENT BOOKS";
+        public Shelf()
         {
             InitializeComponent(); List<TodoItem> items = new List<TodoItem>();
             items.Add(new TodoItem() { Title = "Complete this WPF tutorial", Completion = 45 });
@@ -35,6 +36,7 @@ namespace EbookWindows.Screen
             items.Add(new TodoItem() { Title = "Wash the car", Completion = 0 });
             items.Add(new TodoItem() { Title = "Wash the car", Completion = 0 });
             lbTodoList.ItemsSource = items;
+            ShelftitleBox.Text = ShelfTitle;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)

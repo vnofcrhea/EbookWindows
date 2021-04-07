@@ -59,6 +59,7 @@
                     </Style.Triggers>
                 </Style>
             </Border.Style>
+            
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="30"/>
@@ -128,6 +129,7 @@
                         </StackPanel>
                     </Grid>
                     <Grid Grid.Column="1">
+                        <ScrollViewer>
                         <StackPanel Orientation="Vertical">
                             <Grid>
                                 <Button Style="{StaticResource MaterialDesignFlatButton}" HorizontalAlignment="Left" Padding="5,0,7,0" VerticalContentAlignment="Center" Margin="10,0,0,0">
@@ -140,10 +142,13 @@
                         Text="{Binding SearchKeyword, UpdateSourceTrigger=PropertyChanged}" DockPanel.Dock="Top" Margin="5,10,50,10" Width="300" Height="30" Padding="4" materialDesign:HintAssist.Hint="Search" materialDesign:HintAssist.IsFloating="True" materialDesign:TextFieldAssist.HasClearButton="True" materialDesign:TextFieldAssist.HasOutlinedTextField="True" materialDesign:TextFieldAssist.DecorationVisibility="Collapsed" materialDesign:TextFieldAssist.TextFieldCornerRadius="4"
                                          HorizontalAlignment="Right"/>
                             </Grid>
-                            <local:RecentBook></local:RecentBook>
-                        </StackPanel>
+                            <local:Shelf></local:Shelf>
+                                <local:Shelf></local:Shelf>
+
+                            </StackPanel>
+                        </ScrollViewer>
                     </Grid>
-                    <Grid Grid.Column="1" HorizontalAlignment="Right" Width="40" > <!--Mờ viền trái, chưa fix được-->
+                    <Grid Grid.Column="1" HorizontalAlignment="Right" Width="40" Visibility="Hidden"> <!--Mờ viền trái, chưa fix được-->
                         <Grid.Background>
                             <LinearGradientBrush StartPoint="0,0" EndPoint="1,0" GradientStops="{StaticResource BlueBackgroundStops}" Opacity="0.5"/>
                         </Grid.Background>
