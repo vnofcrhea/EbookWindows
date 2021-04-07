@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:EbookWindows"
              xmlns:wpf="clr-namespace:MaterialDesignThemes.Wpf;assembly=MaterialDesignThemes.Wpf"
              xmlns:system="clr-namespace:System;assembly=mscorlib"
-             StartupUri="Screen/WindowScreen.xaml">
+             StartupUri="Screen/PdfReadingScreen.xaml">
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
