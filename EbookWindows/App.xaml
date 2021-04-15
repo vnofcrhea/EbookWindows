@@ -6,16 +6,18 @@
              xmlns:local="clr-namespace:EbookWindows"
              xmlns:wpf="clr-namespace:MaterialDesignThemes.Wpf;assembly=MaterialDesignThemes.Wpf"
              xmlns:system="clr-namespace:System;assembly=mscorlib"
-             StartupUri="Screen/PdfReadingScreen.xaml">
+             StartupUri="Screen/testUserControl.xaml">
+    <!--MainWindow.xaml--><!-- pdf_ReadingScreen.xaml-->
     <Application.Resources>
         <ResourceDictionary>
+            
             <ResourceDictionary.MergedDictionaries>
-                <!-- This is the current way to setup your app's initial theme -->
+                <!-- This is the current way to setup your app's initial theme PdfReadingScreen-->
                 <materialDesign:BundledTheme BaseTheme="Dark" PrimaryColor="Blue" SecondaryColor="Lime"
                                              ColorAdjustment="{materialDesign:ColorAdjustment}" />
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Window.xaml" />
-
+                
             </ResourceDictionary.MergedDictionaries>
             
             <Style x:Key="MaterialDesignWindow1" TargetType="{x:Type Window}">

@@ -1,5 +1,11 @@
-﻿using System;
+﻿using Apitron.PDF.Rasterizer;
+using Apitron.PDF.Rasterizer.Configuration;
+using Apitron.PDF.Rasterizer.Navigation;
+using EbookWindows.ViewModels;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,35 +16,19 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Page = Apitron.PDF.Rasterizer.Page;
+using Rectangle = Apitron.PDF.Rasterizer.Rectangle;
 
 namespace EbookWindows.Screen
 {
-    using Apitron.PDF.Rasterizer;
-    using Apitron.PDF.Rasterizer.Configuration;
-    using Apitron.PDF.Rasterizer.Navigation;
-    using EbookWindows.ViewModels;
-    //using EbookWindows.ViewModels;
-    using System;
-    using System.ComponentModel;
-    using System.IO;
-    //using System.Collections;
-    //using System.Collections.Generic;
-    //using System.Windows.Input;
-    //using System.Windows.Shapes;
-
-    using Rectangle = Apitron.PDF.Rasterizer.Rectangle;
-
     /// <summary>
-    /// Interaction logic for Pdf_Reader.xaml
+    /// Interaction logic for pdfDemo.xaml
     /// </summary>
-    /// 
-
-
-    public partial class PdfReadingScreen : UserControl
+    public partial class Pdf_ReadingScreen : UserControl
     {
-        #region Fields
+
+        private double zoomValue { get; set; }
 
         private delegate void SetImageSourceDelegate(byte[] source, IList<Link> links, int width, int height);
 
@@ -50,17 +40,27 @@ namespace EbookWindows.Screen
 
         private Rectangle destinationRectangle;
 
-        #endregion
+        System.Windows.Threading.DispatcherTimer dispatcherTimer = new System.Windows.Threading.DispatcherTimer();
 
-        #region Ctors
-        public PdfReadingScreen()
-        {
-            InitializeComponent(); 
-        }
-        public PdfReadingScreen(string fileName)
+        private TimeSpan SpanTime;
+
+        public Pdf_ReadingScreen()
         {
             InitializeComponent();
-            //ToolBar.Visibility = Visibility.Collapsed;
+            //zoomValue = 1;
+            //this.document = new DocumentViewModel();
+            //this.DataContext = this.document;
+            //this.document.PropertyChanged += DocumentOnPropertyChanged;
+
+            ////Khởi tạo document với file pdf đã chọn
+            //Document document = new Document(new FileStream("C:\\Users\\Bi\\Downloads\\Documents\\EBook\\NapBien.pdf", FileMode.Open, FileAccess.Read));
+            //(this.document).Document = document;
+        }
+
+        public Pdf_ReadingScreen(string fileName)
+        {
+            zoomValue = 1;
+            InitializeComponent();
             this.document = new DocumentViewModel();
             this.DataContext = this.document;
             this.document.PropertyChanged += DocumentOnPropertyChanged;
@@ -69,7 +69,7 @@ namespace EbookWindows.Screen
             Document document = new Document(new FileStream(fileName, FileMode.Open, FileAccess.Read));
             (this.document).Document = document;
         }
-        #endregion
+
         private void DocumentOnPropertyChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
         {
             if (propertyChangedEventArgs.PropertyName == "Page")
@@ -78,7 +78,6 @@ namespace EbookWindows.Screen
                 task.Start();
             }
         }
-
         private void UpdatePageView()
         {
             Page currentPage = this.document.Page;
@@ -127,12 +126,11 @@ namespace EbookWindows.Screen
             this.UpdateImageZoom();
             this.UpdateViewLocation(this.destinationRectangle);
 
-            ////Ý tưởng bookmark
+            ////Ý tưởng bookmark 1
             //Document doc = document.Document;
             //DocumentNavigator navigator = doc == null ? null : doc.Navigator;
             //navigator.Move(2, Origin.Begin);
         }
-
         //private void OnBookmarkSelectionChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         //{
         //    Bookmark newValue = (Bookmark)e.NewValue;
@@ -155,7 +153,7 @@ namespace EbookWindows.Screen
                 this.PageScroller.ScrollToTop();
                 return;
             }
-            double value = this.ZoomSlider.Value;
+            double value = zoomValue;
             double scale = value;
 
             double horizontalScale = this.PageScroller.ViewportWidth / this.PageImage.ActualWidth;
@@ -169,7 +167,7 @@ namespace EbookWindows.Screen
                 verticalScale = expectidVScale;
 
                 scale = Math.Min(verticalScale, horizontalScale);
-                this.ZoomSlider.Value = scale;
+ 
             }
 
             this.PageScroller.ScrollToHorizontalOffset(destinationInfo.Left * scale);
@@ -185,20 +183,100 @@ namespace EbookWindows.Screen
             this.destinationRectangle = link.GetDestinationRectangle((int)(this.document.Page.Width * this.GlobalScale), (int)(this.document.Page.Height * this.GlobalScale), null);
         }
 
-
         private void OnZoomChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
+
             this.UpdateImageZoom(); //Khởi động chạy 2 lần: Thay đổi ở Minium và Value
         }
 
         private void UpdateImageZoom()
         {
-            Slider slider = this.ZoomSlider;
+
             Canvas imageContainer = this.PageCanvas;
-            if (imageContainer != null && slider != null && this.document != null)
+            if (imageContainer != null && zoomTextbox.Text != null && this.document != null)
             {
-                double scale = slider.Value; //lấy giá trị trên ZoomSlider
+                double scale = zoomValue; //lấy giá trị xoom
                 imageContainer.LayoutTransform = new ScaleTransform(scale, scale);
+            }
+        }
+
+
+
+
+        //Nhat develop for reading screen
+        private void StackPanel_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (!dispatcherTimer.IsEnabled)
+            {
+                dispatcherTimer.IsEnabled = true;
+                return;
+            }
+            BottomPanelTool.Visibility = Visibility.Visible;
+            TopPanelTool.Visibility = Visibility.Visible;
+            if (dispatcherTimer.IsEnabled)
+            {
+                dispatcherTimer.Interval = new TimeSpan(0, 0, 2); ;
+                dispatcherTimer.Start();
+                dispatcherTimer.Tick += new EventHandler(OnTimedEvent);
+            }
+        }
+        private void OnTimedEvent(object source, EventArgs e)
+        {
+            dispatcherTimer.Stop();
+            SpanTime = new TimeSpan();
+            SpanTime = SpanTime.Add(dispatcherTimer.Interval);
+            this.Dispatcher.Invoke(() =>
+            {
+                BottomPanelTool.Visibility = Visibility.Hidden;
+                TopPanelTool.Visibility = Visibility.Hidden;
+            });
+        }
+
+        private void ShowHideToolButton_Click(object sender, RoutedEventArgs e)
+        {
+            BottomPanelTool.Visibility = Visibility.Collapsed;
+            TopPanelTool.Visibility = Visibility.Collapsed;
+            dispatcherTimer.Stop();
+            var data = ((sender as Button).Content as MaterialDesignThemes.Wpf.PackIcon);
+            if (data.Kind.ToString().Equals("Hide"))
+            {
+                ((sender as Button).Content as MaterialDesignThemes.Wpf.PackIcon).Kind = MaterialDesignThemes.Wpf.PackIconKind.Eye;
+                BottomPanelTool.Visibility = Visibility.Visible;
+                TopPanelTool.Visibility = Visibility.Visible;
+                MainGrid.MouseMove += new MouseEventHandler(StackPanel_MouseMove);
+            }
+            else
+            {
+                ((sender as Button).Content as MaterialDesignThemes.Wpf.PackIcon).Kind = MaterialDesignThemes.Wpf.PackIconKind.EyeOff;
+                BottomPanelTool.Visibility = Visibility.Collapsed;
+                TopPanelTool.Visibility = Visibility.Collapsed;
+                MainGrid.MouseMove -= new MouseEventHandler(StackPanel_MouseMove);
+            }
+        }
+
+        private void OnCopy(object sender, ExecutedRoutedEventArgs e)
+        {
+
+        }
+
+
+        private void ZoomInBtn_Click(object sender, RoutedEventArgs e)
+        {
+            if (zoomValue < 2)
+            {
+                zoomValue += 0.1;
+                this.UpdateImageZoom();
+                zoomTextbox.Text = $"{zoomValue * 100}%";
+            }
+        }
+
+        private void ZoomOutBtn_Click(object sender, RoutedEventArgs e)
+        {
+            if (zoomValue > 0.2)
+            {
+                zoomValue -= 0.1;
+                this.UpdateImageZoom();
+                zoomTextbox.Text = $"{zoomValue * 100}%";
             }
         }
 
@@ -232,39 +310,5 @@ namespace EbookWindows.Screen
             this.destinationRectangle = null;
         }
 
-
-        private void header_MouseEnter(object sender, MouseEventArgs e)
-        {
-            ToolBar.Visibility = Visibility.Visible;
-        }
-
-        private void header_MouseLeave(object sender, MouseEventArgs e)
-        {
-            ToolBar.Visibility = Visibility.Hidden;
-        }
-
-        private void OnKeyDownHandler(object sender, KeyEventArgs e)
-        {
-            Document doc = document.Document;
-            DocumentNavigator navigator = doc == null ? null : doc.Navigator;
-            if (e.Key == Key.Left)
-            {
-                navigator.MoveBackward();
-            }
-        }
-
-        private void turnLeft(object sender, KeyEventArgs e)
-
-        {
-
-            Document doc = document.Document;
-            DocumentNavigator navigator = doc == null ? null : doc.Navigator;
-            if (e.Key == Key.Enter)
-            {
-
-                //MessageBox.Show("It is active");
-                navigator.MoveForward();
-            }
-        }
     }
 }

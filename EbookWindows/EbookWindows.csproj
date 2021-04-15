@@ -75,11 +75,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Screen\PdfReadingScreen.xaml.cs">
-      <DependentUpon>PdfReadingScreen.xaml</DependentUpon>
+    <Compile Include="Screen\Pdf_ReadingScreen.xaml.cs">
+      <DependentUpon>Pdf_ReadingScreen.xaml</DependentUpon>
     </Compile>
     <Compile Include="Screen\Shelf.xaml.cs">
       <DependentUpon>Shelf.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Screen\testUserControl.xaml.cs">
+      <DependentUpon>testUserControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Screen\WindowScreen.xaml.cs">
       <DependentUpon>WindowScreen.xaml</DependentUpon>
@@ -97,11 +100,15 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Screen\PdfReadingScreen.xaml">
+    <Page Include="Screen\Pdf_ReadingScreen.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Screen\Shelf.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Screen\testUserControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
