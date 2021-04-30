@@ -72,12 +72,19 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Screen\DetailScreen.xaml.cs">
+      <DependentUpon>DetailScreen.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Screen\Shelf.xaml.cs">
       <DependentUpon>Shelf.xaml</DependentUpon>
     </Compile>
     <Compile Include="Screen\WindowScreen.xaml.cs">
       <DependentUpon>WindowScreen.xaml</DependentUpon>
     </Compile>
+    <Page Include="Screen\DetailScreen.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Screen\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
