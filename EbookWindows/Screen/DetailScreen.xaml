@@ -4,10 +4,89 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:EbookWindows.Screen"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:system="clr-namespace:System;assembly=mscorlib"
+             xmlns:materialDesignConverters="clr-namespace:MaterialDesignThemes.Wpf.Converters;assembly=MaterialDesignThemes.Wpf"
              mc:Ignorable="d" 
-             d:DesignHeight="450" 
+             d:DesignHeight="600" 
              d:DesignWidth="800">
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="0"></RowDefinition>
+            <RowDefinition Height="330"></RowDefinition>
+            <RowDefinition Height="10*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0" Background="Green" Height="50" VerticalAlignment="Top"></Grid>
+        <Grid Grid.Row="1" Background="White">
+            <Grid VerticalAlignment="Top" HorizontalAlignment="Right" Canvas.ZIndex="2" >
+                <StackPanel HorizontalAlignment="Right" VerticalAlignment="Center" Margin="5" Orientation="Horizontal">
+                    <Button Style="{StaticResource MaterialDesignFlatButton}">
+                        <materialDesign:PackIcon Kind="Heart"></materialDesign:PackIcon>
+                    </Button>
+                    <Button Style="{StaticResource MaterialDesignFlatButton}">
+                        <materialDesign:PackIcon Kind="Download"></materialDesign:PackIcon>
+                    </Button>
+                    <materialDesign:PopupBox PlacementMode="BottomAndAlignRightEdges">
+                        <materialDesign:PopupBox.ToggleContent >
+                            <materialDesign:PackIcon Kind="Menu" />
+                        </materialDesign:PopupBox.ToggleContent>
+                        <StackPanel Width="150">
+                            <!--Thêm tính năng ở đây LOL-->
+                            <Button Style="{StaticResource MaterialDesignFlatButton}">
+                                Delete
+                            </Button>
+                        </StackPanel>
+                    </materialDesign:PopupBox>
+                </StackPanel>
+            </Grid>
+            <Grid  Margin="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="50"></RowDefinition>
+                    <RowDefinition Height="5*"></RowDefinition>
+                </Grid.RowDefinitions>
+                <TextBlock Margin="5,5,5,0" Grid.Row="0" FontSize="48" FontWeight="Bold" VerticalAlignment="Center">LAST FOR LUST</TextBlock>
+                <Grid Grid.Row="1" Background="White" Margin="10,10,10,10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition MaxWidth="200"></ColumnDefinition>
+                        <ColumnDefinition Width="2*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Grid Grid.Column="0">
+                        <Border BorderBrush="Black" BorderThickness="1">
+                            <Image>
+
+                            </Image>
+                        </Border>
+                    </Grid>
+                    <Grid Grid.Column="1" VerticalAlignment="Top" Margin="10,5,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="80"></ColumnDefinition>
+                            <ColumnDefinition Width="8*"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"></RowDefinition>
+                            <RowDefinition Height="*"></RowDefinition>
+                            <RowDefinition Height="*"></RowDefinition>
+                            <RowDefinition Height="*"></RowDefinition>
+                            <RowDefinition Height="*"></RowDefinition>
+                            <RowDefinition Height="*"></RowDefinition>
+                        </Grid.RowDefinitions>
+                        <TextBlock Grid.Column="0" Grid.Row="0" TextWrapping="Wrap">Title</TextBlock>
+                        <TextBlock Grid.Column="0" Grid.Row="1" >Author</TextBlock>
+                        <TextBlock Grid.Column="0" Grid.Row="2" >Pages</TextBlock>
+                        <TextBlock Grid.Column="0" Grid.Row="3" >Chapters</TextBlock>
+                        <TextBlock Grid.Column="0" Grid.Row="4" >Decription</TextBlock>
+                        <TextBlock Grid.Column="1" Grid.Row="0" TextWrapping="Wrap">Lust For Life</TextBlock>
+                        <TextBlock Grid.Column="1" Grid.Row="1" TextWrapping="Wrap">Justin Bieber</TextBlock>
+                        <TextBlock Grid.Column="1" Grid.Row="2" TextWrapping="Wrap">2000</TextBlock>
+                        <TextBlock Grid.Column="1" Grid.Row="3" TextWrapping="Wrap">500</TextBlock>
+                        <TextBlock Grid.Column="1" Grid.Row="4" TextWrapping="Wrap">Nothing</TextBlock>
+                    </Grid>
+                </Grid>
+            </Grid>
+
+        </Grid>
+        <Grid Grid.Row="2" Background="Black">
             
+        </Grid>
     </Grid>
 </UserControl>
