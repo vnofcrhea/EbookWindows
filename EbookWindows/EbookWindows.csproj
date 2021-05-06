@@ -37,6 +37,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Apitron.PDF.Rasterizer, Version=3.0.157.0, Culture=neutral, PublicKeyToken=6e759dbb0039406e, processorArchitecture=MSIL">
+      <HintPath>..\packages\Apitron.PDF.Rasterizer.3.0.157\lib\net471\Apitron.PDF.Rasterizer.dll</HintPath>
+    </Reference>
     <Reference Include="MaterialDesignColors, Version=2.0.0.2422, Culture=neutral, PublicKeyToken=df2a72020bd7962a, processorArchitecture=MSIL">
       <HintPath>..\packages\MaterialDesignColors.2.0.0\lib\net452\MaterialDesignColors.dll</HintPath>
     </Reference>
@@ -72,12 +75,16 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Screen\Pdf_ReadingScreen.xaml.cs">
+      <DependentUpon>Pdf_ReadingScreen.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Screen\Shelf.xaml.cs">
       <DependentUpon>Shelf.xaml</DependentUpon>
     </Compile>
     <Compile Include="Screen\WindowScreen.xaml.cs">
       <DependentUpon>WindowScreen.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ViewModels\pdfDocumentViewModel.cs" />
     <Page Include="Screen\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -90,6 +97,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Screen\Pdf_ReadingScreen.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Screen\Shelf.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
