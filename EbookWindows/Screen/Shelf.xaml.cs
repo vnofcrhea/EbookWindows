@@ -49,5 +49,11 @@ namespace EbookWindows.Screen
             ScrollList.ScrollToHorizontalOffset(ScrollList.HorizontalOffset - 150);
             
         }
+
+        private void DetailScreen_Click(object sender, RoutedEventArgs e)
+        {
+            WindowScreen win = (WindowScreen)Window.GetWindow(this);
+            win.OpenDetailScreen();
+        }
     }
 }
