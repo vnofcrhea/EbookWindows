@@ -103,7 +103,17 @@ namespace EbookWindows.Screen
         {
 
         }
+        public void OpenDetailScreen()
+        {
+            ShelfGrid.Visibility = Visibility.Collapsed;
+            detailScreen.LoadData(1);
+            detailScreen.Visibility = Visibility.Visible;
+        }
 
-
+        private void ReturnHome_Click(object sender, RoutedEventArgs e)
+        {
+            ShelfGrid.Visibility = Visibility.Visible;
+            detailScreen.Visibility = Visibility.Collapsed;
+        }
     }
 }

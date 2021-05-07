@@ -8,7 +8,8 @@
              xmlns:system="clr-namespace:System;assembly=mscorlib"
              xmlns:materialDesignConverters="clr-namespace:MaterialDesignThemes.Wpf.Converters;assembly=MaterialDesignThemes.Wpf"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="450" d:DesignWidth="800"
+             >
     <Grid Margin="0,5">
         <StackPanel>
             <DockPanel  >
@@ -40,7 +41,7 @@
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
                             <DockPanel Margin="10,5,10,5" Width="150" Height="220">
-                                <Button DockPanel.Dock="Top" BorderThickness="1" Width="150" Height="200">
+                                <Button DockPanel.Dock="Top" BorderThickness="1" Width="150" Height="200" Click="DetailScreen_Click">
                                     <Image Source="{Binding}" ></Image>
                                 </Button>
                                 <TextBlock DockPanel.Dock="Bottom" Text="No comment in thebackgroundoth mkèal"  Margin="0,3,0,0" TextTrimming="CharacterEllipsis"></TextBlock>
@@ -51,7 +52,7 @@
                 </ItemsControl>
                 </ScrollViewer>
             </Grid>
-            <Button>VIEWMORE</Button>
+            <Button Margin="5,0">VIEW MORE</Button>
         </StackPanel>
         
     </Grid>

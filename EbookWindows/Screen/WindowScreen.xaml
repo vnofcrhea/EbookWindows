@@ -9,9 +9,10 @@
         xmlns:local="clr-namespace:EbookWindows.Screen"
         mc:Ignorable="d"
         Style="{StaticResource MaterialDesignWindow1}"
-        Title="Window1" Height="450" Width="800"  ResizeMode="CanResizeWithGrip"
+        Title="Window1" Height="1000" Width="1500"  ResizeMode="CanResizeWithGrip"
         WindowStyle="SingleBorderWindow"
         WindowState="Maximized"
+        x:Name="MainWindowScreen"
         >
     <WindowChrome.WindowChrome>
         <WindowChrome     
@@ -97,14 +98,15 @@
                         <ColumnDefinition Width="250"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    <Grid Background="#0FFFFFFF">
+                    <Border BorderBrush="{StaticResource PrimaryHueDarkBrush}" BorderThickness="0,1,1,0">
+                    <Grid Background="{StaticResource MaterialDesignPaperTransparent}">
                         <StackPanel>
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*"/>
                                     <ColumnDefinition Width="34"/>
                                 </Grid.ColumnDefinitions>
-                                <Button Grid.Column="0" Style="{StaticResource MaterialDesignFlatButton}" HorizontalContentAlignment="Left" Margin="2,2,2,2" Background="#21ffffff">HOME </Button>
+                                <Button Click="ReturnHome_Click" Grid.Column="0" Style="{StaticResource MaterialDesignFlatButton}" HorizontalContentAlignment="Left" Margin="2,2,2,2" Background="#21ffffff">HOME</Button>
                                 <Button Grid.Column="1" Padding="0" Margin="0,2,2,2" Style="{StaticResource MaterialDesignFlatButton}" Width="32" Height="32">
                                     <materialDesign:PackIcon Kind="ViewGrid" Width="32" Height="32" ></materialDesign:PackIcon>
                                 </Button>
@@ -128,7 +130,11 @@
                             </ListBox>-->
                         </StackPanel>
                     </Grid>
-                    <Grid Grid.Column="1">
+                    </Border>
+                    <!--#region DETAILSCREEN -->
+                        <local:DetailScreen Grid.Column="1" x:Name="detailScreen" Visibility="Collapsed"></local:DetailScreen>
+                     <!--#endregion-->  
+                    <Grid Grid.Column="1" x:Name="ShelfGrid">
                         <ScrollViewer>
                         <StackPanel Orientation="Vertical">
                             <Grid>
@@ -143,11 +149,12 @@
                                          HorizontalAlignment="Right"/>
                             </Grid>
                             <local:Shelf></local:Shelf>
-                                <local:Shelf></local:Shelf>
+                            <local:Shelf></local:Shelf>
 
                             </StackPanel>
                         </ScrollViewer>
                     </Grid>
+                    
                     <Grid Grid.Column="1" HorizontalAlignment="Right" Width="40" Visibility="Hidden"> <!--Mờ viền trái, chưa fix được-->
                         <Grid.Background>
                             <LinearGradientBrush StartPoint="0,0" EndPoint="1,0" GradientStops="{StaticResource BlueBackgroundStops}" Opacity="0.5"/>
