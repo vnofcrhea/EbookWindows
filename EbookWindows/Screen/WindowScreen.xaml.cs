@@ -119,31 +119,34 @@ namespace EbookWindows.Screen
             detailScreen.Visibility = Visibility.Collapsed;
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+       private void addMoreBookBtn_Click(object sender, RoutedEventArgs e)
         {
-            // GET FILE PATH, NAME
             OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.ShowDialog();
-
-            string filePath = openFileDialog.FileName;
-            if (Path.GetExtension(filePath) == ".pdf")
+            openFileDialog.Filter = "Ebook Files(*.pdf, *.PDF, *.epub, *.EPUB)| *.pdf; *.PDF;*.epub; *.EPUB";
+            bool? dialogResult = openFileDialog.ShowDialog(this);
+            if (dialogResult.Value)
             {
-                //Call reading pdf screen
-            }
-            else if(Path.GetExtension(filePath) == ".epub")
-            {
-                //Call reading offline epub sceen
-                readingGrid.Visibility = Visibility.Visible;
-                epubReadingControl.ReadFile(filePath);
+                string filePath = openFileDialog.FileName;
+                string fileExtension = Path.GetExtension(filePath).ToLower();
 
+                if (fileExtension.Equals(".pdf"))
+                {
+                    pdfReadingScreen.LoadData(filePath);
+                    ShelfGrid.Visibility = Visibility.Collapsed;
+                    pdfReadingScreen.Visibility = Visibility.Visible;
+                }
+                else if (fileExtension.Equals(".epub"))
+                {
+                    epubReadingScreen.ReadFile(filePath);
+                    ShelfGrid.Visibility = Visibility.Collapsed;
+                    epubReadingScreen.Visibility = Visibility.Visible;
+                }
+                else
+                {
+                    //notthing
+                }
             }
-            else
-            {
-                MessageBox.Show("Invalid file! Please try another file.", "Alert", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-           
-
-            
         }
     }
 }
+      
