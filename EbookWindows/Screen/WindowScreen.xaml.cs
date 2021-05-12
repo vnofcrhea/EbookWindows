@@ -110,10 +110,19 @@ namespace EbookWindows.Screen
             detailScreen.Visibility = Visibility.Visible;
         }
 
+        public void OpenComicReadingScreen()
+        {
+            ShelfGrid.Visibility = Visibility.Collapsed;
+            detailScreen.Visibility = Visibility.Collapsed;
+            comicReadingScreen.Visibility = Visibility.Visible;
+            comicReadingScreen.LoadData("https://truyen.tangthuvien.vn/doc-truyen/luan-hoi-nhac-vien/chuong-1", 1);
+            //
+        }
         private void ReturnHome_Click(object sender, RoutedEventArgs e)
         {
             ShelfGrid.Visibility = Visibility.Visible;
             detailScreen.Visibility = Visibility.Collapsed;
+            comicReadingScreen.Visibility = Visibility.Collapsed;
         }
     }
 }

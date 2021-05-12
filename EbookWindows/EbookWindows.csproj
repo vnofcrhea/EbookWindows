@@ -81,6 +81,9 @@
     <Compile Include="Screen\DetailScreen.xaml.cs">
       <DependentUpon>DetailScreen.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Screen\ComicReadingScreen.xaml.cs">
+      <DependentUpon>ComicReadingScreen.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Screen\Pdf_ReadingScreen.xaml.cs">
       <DependentUpon>Pdf_ReadingScreen.xaml</DependentUpon>
     </Compile>
@@ -91,9 +94,14 @@
       <DependentUpon>WindowScreen.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\pdfDocumentViewModel.cs" />
+    <Compile Include="ViewModels\ViewModels.cs" />
     <Page Include="Screen\DetailScreen.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Screen\ComicReadingScreen.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Screen\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>

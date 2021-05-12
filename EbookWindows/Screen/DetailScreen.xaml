@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:EbookWindows.Screen"
+             xmlns:models="clr-namespace:EbookWindows.ViewModels"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:system="clr-namespace:System;assembly=mscorlib"
              xmlns:materialDesignConverters="clr-namespace:MaterialDesignThemes.Wpf.Converters;assembly=MaterialDesignThemes.Wpf"
@@ -11,13 +12,7 @@
              d:DesignHeight="600" 
              d:DesignWidth="800">
     <UserControl.Resources>
-        <DataTemplate x:Key="chapterTemplate">
-            <StackPanel Orientation="Horizontal">
-                <TextBlock Text="{Binding Path=Name}" />
-                <TextBlock Text="{Binding Path=Link}"/>
-            </StackPanel>
-        </DataTemplate>
-        <local:User x:Key="items"/>
+
     </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -94,7 +89,52 @@
             </Grid>
         </Grid>
         <Grid Grid.Row="2">
-            <ListView Margin="10" Name="lvDataBinding">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="50"/>
+            </Grid.RowDefinitions>
+            <TreeView Name="lvDataBinding" Grid.RowSpan="1" SelectedItemChanged="Select_Click">
+                <TreeView.ItemContainerStyle>
+                    <Style TargetType="{x:Type TreeViewItem}" BasedOn="{StaticResource MaterialDesignTreeViewItem}">
+                        <Setter Property="IsExpanded" Value="True"/>
+                    </Style>
+                </TreeView.ItemContainerStyle>
+                <TreeView.ItemTemplate>
+                    <HierarchicalDataTemplate DataType="{x:Type models:Chapter}" ItemsSource="{Binding Items}">
+                        <TextBlock Text="{Binding Title}" />
+                    </HierarchicalDataTemplate>
+                </TreeView.ItemTemplate>
+            </TreeView>
+            <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center">
+                <Button Style="{StaticResource MaterialDesignFlatButton}">
+                    <materialDesign:PackIcon Kind="ChevronLeftFirst"></materialDesign:PackIcon>
+                </Button>
+                <Button Style="{StaticResource MaterialDesignFlatButton}">
+                    <materialDesign:PackIcon Kind="ChevronLeft"></materialDesign:PackIcon>
+                </Button>
+
+                <ItemsControl Name="Page_Panel">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Horizontal"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Button Style="{StaticResource MaterialDesignFlatButton}"  Content="{Binding}" Click="PageIndex_Click"/>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+
+                <Button Style="{StaticResource MaterialDesignFlatButton}">
+                    <materialDesign:PackIcon Kind="ChevronRight"></materialDesign:PackIcon>
+                </Button>
+                <Button Style="{StaticResource MaterialDesignFlatButton}">
+                    <materialDesign:PackIcon Kind="ChevronRightLast"></materialDesign:PackIcon>
+                </Button>
+            </StackPanel>
+
+            <!--<ListView Margin="10" Name="lvDataBinding">
                 <ListView.ItemContainerStyle>
                     <Style TargetType="ListViewItem" BasedOn="{StaticResource MaterialDesignListBoxItem}">
                         <EventSetter Event="PreviewMouseLeftButtonDown" Handler="ListViewItem_PreviewMouseLeftButtonDown" />
@@ -105,7 +145,7 @@
                         <TextBlock Text="{Binding}" Foreground="{StaticResource MaterialDesignBody}" FontWeight="Bold" />
                     </DataTemplate>
                 </ListView.ItemTemplate>
-            </ListView>
+            </ListView>-->
         </Grid>
     </Grid>
 </UserControl>
