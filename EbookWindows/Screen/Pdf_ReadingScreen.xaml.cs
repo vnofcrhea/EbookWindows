@@ -46,18 +46,14 @@ namespace EbookWindows.Screen
 
         public Pdf_ReadingScreen()
         {
+            zoomValue = 1;
             InitializeComponent();
-            //zoomValue = 1;
-            //this.document = new DocumentViewModel();
-            //this.DataContext = this.document;
-            //this.document.PropertyChanged += DocumentOnPropertyChanged;
-
-            ////Khởi tạo document với file pdf đã chọn
-            //Document document = new Document(new FileStream("C:\\Users\\Bi\\Downloads\\Documents\\EBook\\NapBien.pdf", FileMode.Open, FileAccess.Read));
-            //(this.document).Document = document;
+            this.document = new pdfDocumentViewModel();
+            this.DataContext = this.document;
+            this.document.PropertyChanged += DocumentOnPropertyChanged;
         }
 
-        public Pdf_ReadingScreen(string fileName)
+        /*public Pdf_ReadingScreen(string fileName)
         {
             zoomValue = 1;
             InitializeComponent();
@@ -67,6 +63,13 @@ namespace EbookWindows.Screen
 
             //Khởi tạo document với file pdf đã chọn
             Document document = new Document(new FileStream(fileName, FileMode.Open, FileAccess.Read));
+            (this.document).Document = document;
+        }*/
+
+        public void LoadData(string filePath) //Load data here
+
+        {
+            Document document = new Document(new FileStream(filePath, FileMode.Open, FileAccess.Read));
             (this.document).Document = document;
         }
 

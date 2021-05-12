@@ -127,7 +127,6 @@ namespace EbookWindows.ViewModels
             if (!Directory.Exists(_tempPath))
             {
                 ZipFile.ExtractToDirectory(_filePath, _tempPath);
-                //System.Windows.MessageBox.Show("New book has been added to library!");
             }
         }
             

@@ -37,8 +37,7 @@ namespace EbookWindows.Screen
 
         public EpubReadingScreen()
         {
-            InitializeComponent();
-            
+            InitializeComponent();  
         }
 
         public void ReadFile(string filePath)
