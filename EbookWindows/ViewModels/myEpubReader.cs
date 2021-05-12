@@ -127,7 +127,7 @@ namespace EbookWindows.ViewModels
             if (!Directory.Exists(_tempPath))
             {
                 ZipFile.ExtractToDirectory(_filePath, _tempPath);
-                System.Windows.MessageBox.Show("New book has been added to library!");
+                //System.Windows.MessageBox.Show("New book has been added to library!");
             }
         }
             
@@ -148,7 +148,10 @@ namespace EbookWindows.ViewModels
                 if (chapter.Link != null)
                 {
                     // Link of chapter
-                    _tableContentLink.Add(GetPath(chapter.Link.ContentFileName.Substring(3)));
+                    string link = chapter.Link.ContentFileName;
+                    if (link.IndexOf("../") != -1)
+                        _tableContentLink.Add(GetPath(link.Substring(3)));
+                    else _tableContentLink.Add(GetPath(link));
                     _tableContentTitle.Add(chapter.Title);
                     //TableContentCombobox.Items.Add(chapter.Title);
                 }
