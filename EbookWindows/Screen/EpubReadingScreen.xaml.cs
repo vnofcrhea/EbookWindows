@@ -150,12 +150,14 @@ namespace EbookWindows.Screen
             {
                 NextButton.IsEnabled = false;
                 PreButton.IsEnabled = true;
-            }
-            
+            }            
             string uri = menuItems[currentPage];
             int currentChapter = getIndex(tableContentLink, uri);
-            TableContentComboBox.SelectedIndex = currentChapter;
-            EpubWebBrowser.Address = uri;
+            if (currentChapter != -1) 
+            {
+                TableContentComboBox.SelectedIndex = currentChapter;               
+            }
+            else EpubWebBrowser.Address = uri;
         }
         private void PreButton_Click(object sender, RoutedEventArgs e)
         {
@@ -171,11 +173,13 @@ namespace EbookWindows.Screen
                 NextButton.IsEnabled = true;
             }
             //update table content
-
             string uri = menuItems[currentPage];
             int currentChapter = getIndex(tableContentLink, uri);
-            TableContentComboBox.SelectedIndex = currentChapter;
-            EpubWebBrowser.Address = uri;
+            if (currentChapter != -1)
+            {
+                TableContentComboBox.SelectedIndex = currentChapter;
+            }
+            else EpubWebBrowser.Address = uri;
         }
         private void FirstButton_Click(object sender, RoutedEventArgs e)
         {
@@ -212,7 +216,7 @@ namespace EbookWindows.Screen
                 if (sub == s.Substring(s.LastIndexOf("\\")))
                     return i;
             }
-            return 0;
+            return -1;
         }
 
         private void ReadingHomeButton_Click(object sender, RoutedEventArgs e)
