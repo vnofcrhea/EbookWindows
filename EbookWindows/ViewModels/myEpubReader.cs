@@ -6,6 +6,7 @@ using System.IO.Compression;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using VersOne.Epub;
 
 namespace EbookWindows.ViewModels
@@ -111,15 +112,25 @@ namespace EbookWindows.ViewModels
             // GET FILE PATH, NAME
             OpenFileDialog openFileDialog = new OpenFileDialog();
             openFileDialog.ShowDialog();
-
             _filePath = openFileDialog.FileName;
-            _fileName = Path.GetFileNameWithoutExtension(_filePath);
-
-            if (!Directory.Exists(_library))
+            if (_filePath!="") //check not choose file
             {
-                Directory.CreateDirectory(_library);
+                if (Path.GetExtension(_filePath).ToLower().Equals(".epub"))//check file type
+                {
+                    _fileName = Path.GetFileNameWithoutExtension(_filePath);
+
+                    if (!Directory.Exists(_library))
+                    {
+                        Directory.CreateDirectory(_library);
+                    }
+                    _tempPath = Path.Combine(_library, _fileName);
+                }
+                else
+                {
+                    MessageBox.Show("Invalid epub file! Please choose another file.","Error",MessageBoxButton.OK,MessageBoxImage.Error);
+                }
             }
-            _tempPath = Path.Combine(_library, _fileName);
+            
         }
 
         private void unZipFile()
