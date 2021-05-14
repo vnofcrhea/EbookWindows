@@ -54,12 +54,6 @@
                             <Setter Property="Height" Value="{StaticResource ButtonIconSizeDefault}"/>
                         </Style>
                     </StackPanel.Resources>
-                    <Button>
-                        <materialDesign:PackIcon Kind="ArrowBack"></materialDesign:PackIcon>
-                    </Button>
-                    <Button x:Name="ReadingHomeButton" Click="ReadingHomeButton_Click">
-                        <materialDesign:PackIcon Kind="Home"></materialDesign:PackIcon>
-                    </Button>
                     <materialDesign:PopupBox  StaysOpen="True" IsEnabled="{Binding IsChecked, ElementName=PopupEnabled}" Foreground="{DynamicResource PrimaryHueMidBrush}">
                         <Grid Width="300" Margin="8,8,8,8">
                             <Grid.Resources>
@@ -107,20 +101,26 @@
                             </StackPanel>
                         </Grid>
                     </materialDesign:PopupBox>
-                    <Button>
+                    
+                    
+                    <Button x:Name="zoomoutButton" Click="zoomoutButton_Click">
                         <materialDesign:PackIcon Kind="ZoomOutOutline"></materialDesign:PackIcon>
                     </Button>
-                    <TextBox Foreground="AliceBlue" Width="40" Height="20" BorderBrush="{DynamicResource PrimaryHueMidBrush}" BorderThickness="0" Padding="0" VerticalContentAlignment="Center" HorizontalContentAlignment="Center">
-                        100%</TextBox>
+                    <Slider x:Name="zoomSlider" Value="0" Minimum="-7" Maximum="9" ValueChanged="zoomSlider_ValueChanged"
+                             Width="50" Height="20" BorderBrush="{DynamicResource PrimaryHueMidBrush}" BorderThickness="0" Padding="0" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
 
-                    <Button>
+                    <Button x:Name="zoominButton" Click="zoominButton_Click">
                         <materialDesign:PackIcon Kind="ZoomInOutline"></materialDesign:PackIcon>
                     </Button>
+                    
                     <Button>
-                        <materialDesign:PackIcon Kind="Forward"></materialDesign:PackIcon>
+                        <materialDesign:PackIcon Kind="Book"></materialDesign:PackIcon>
                     </Button>
                     <Button Margin="0" >
-                        <materialDesign:PackIcon Kind="FullscreenExit" ></materialDesign:PackIcon>
+                        <materialDesign:PackIcon Kind="ThemeLightDark" ></materialDesign:PackIcon>
+                    </Button>
+                    <Button x:Name="ReadingHomeButton" Click="ReadingHomeButton_Click">
+                        <materialDesign:PackIcon Kind="FolderSearch"></materialDesign:PackIcon>
                     </Button>
                 </StackPanel>
             </Border>
