@@ -29,13 +29,19 @@ namespace EbookWindows.Screen
 
         private static readonly myEpubReader myEpub = myEpubReader.getInstance();
         private static int currentPage = 0;
+
+        //zoom status
         private static double currentZoom = 0;
+        private static double minZoom = -7;
+        private static double maxZoom = 9;
 
 
 
         public EpubReadingScreen()
         {
-            InitializeComponent();  
+            
+            InitializeComponent();
+          
         }
 
         public void ReadFile(string filePath)
@@ -55,6 +61,7 @@ namespace EbookWindows.Screen
             EpubWebBrowser.Address = myEpubReader._menuItems[0];
         }
 
+        #region view/hide toolbar
         private void StackPanel_MouseMove(object sender, MouseEventArgs e)
         {
             if (!dispatcherTimer.IsEnabled)
@@ -103,13 +110,9 @@ namespace EbookWindows.Screen
                 MainGrid.MouseMove -= new MouseEventHandler(StackPanel_MouseMove);
             }
         }
+        #endregion
 
-        /// <summary>
-        /// Chapters and table of contents buttons action event
-        /// </summary>
-        /// <param name="list"></param>
-        /// <param name="s"></param>
-        /// <returns></returns>
+        #region chapters buttons
         private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             System.Windows.Controls.ComboBox comboBox = (System.Windows.Controls.ComboBox)sender;
@@ -119,7 +122,7 @@ namespace EbookWindows.Screen
                 currentPage = getIndex(myEpubReader._menuItems, uri);
 
 
-                if (currentPage == 0)
+                    if (currentPage == 0)
                 {
                     PreButton.IsEnabled = false;
                     NextButton.IsEnabled = true;
@@ -209,14 +212,8 @@ namespace EbookWindows.Screen
             TableContentComboBox.SelectedIndex = currentChapter;
             EpubWebBrowser.Address = uri;
         }
-        ///////////////////////////////////
+        #endregion
 
-        /// <summary>
-        /// Supports functions
-        /// </summary>
-        /// <param name="list"></param>
-        /// <param name="s"></param>
-        /// <returns></returns>
         private static int getIndex(List<string> list, string s)
         {
             string sub;
@@ -246,9 +243,10 @@ namespace EbookWindows.Screen
             }
         }
 
+        #region zoom buttons
         private void zoomoutButton_Click(object sender, RoutedEventArgs e)
         {
-            if (--currentZoom > zoomSlider.Minimum)
+            if (--currentZoom > minZoom)
             {
                 zoomSlider.Value = currentZoom;
                 EpubWebBrowser.ZoomLevel = currentZoom;
@@ -256,7 +254,7 @@ namespace EbookWindows.Screen
             }
             else 
             {
-                currentZoom = zoomSlider.Minimum;
+                currentZoom = minZoom;
 
                 zoomSlider.Value = currentZoom;
                 EpubWebBrowser.ZoomLevel = currentZoom;
@@ -264,10 +262,9 @@ namespace EbookWindows.Screen
                 zoominButton.IsEnabled = true;
             }           
         }
-
         private void zoominButton_Click(object sender, RoutedEventArgs e)
         {
-            if (++currentZoom < zoomSlider.Maximum)
+            if (++currentZoom < maxZoom)
             {
                 zoomSlider.Value = currentZoom;
                 EpubWebBrowser.ZoomLevel = currentZoom;
@@ -275,7 +272,7 @@ namespace EbookWindows.Screen
             }
             else
             {
-                currentZoom = zoomSlider.Maximum;
+                currentZoom = maxZoom;
 
                 zoomSlider.Value = currentZoom;
                 EpubWebBrowser.ZoomLevel = currentZoom;
@@ -283,17 +280,16 @@ namespace EbookWindows.Screen
                 zoominButton.IsEnabled = false;
             }           
         }
-
         private void zoomSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             currentZoom = zoomSlider.Value;
             EpubWebBrowser.ZoomLevel = currentZoom;
-            if (currentZoom == zoomSlider.Minimum)
+            if (currentZoom == minZoom)
             {
                 zoomoutButton.IsEnabled = false; ;
                 zoominButton.IsEnabled = true;
             }
-            else if (currentZoom == zoomSlider.Maximum)
+            else if (currentZoom == maxZoom)
             {
                 zoomoutButton.IsEnabled = true;
                 zoominButton.IsEnabled = false;
@@ -303,6 +299,12 @@ namespace EbookWindows.Screen
                 zoomoutButton.IsEnabled = true;
                 zoominButton.IsEnabled = true;
             }
+        }
+        #endregion
+
+        private void ThemeButton_Click(object sender, RoutedEventArgs e)
+        {
+          
         }
     }
 }

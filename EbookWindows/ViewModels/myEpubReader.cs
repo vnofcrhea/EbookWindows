@@ -25,14 +25,15 @@ namespace EbookWindows.ViewModels
         public static List<string> _tableContentLink = new List<string>();
         public static List<string> _tableContentTitle = new List<string>();
         public static List<string> _menuItems = new List<string>();
-        //public static int _currentPage;
-            
+        
+
         //Singleton
         private static myEpubReader instance;
 
+        #region Initialization
         private myEpubReader()
         {
-     
+
         }
 
         public myEpubReader(string filePath)
@@ -49,8 +50,9 @@ namespace EbookWindows.ViewModels
             }
             return instance;
         }
+        #endregion
 
-        //Open and readfile funtion
+        #region read file
         public bool ReadFile()
         {
             getEpubFileName();
@@ -105,17 +107,20 @@ namespace EbookWindows.ViewModels
             else return false;
             return true;
         }
+        #endregion
 
-        //Funtions for read file
+        #region supports functions
         private void getEpubFileName()
         {
-            // GET FILE PATH, NAME
             OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.ShowDialog();
-            _filePath = openFileDialog.FileName;
-            if (_filePath!="") //check not choose file
+            openFileDialog.Filter = "Ebook Files( *.epub, *.EPUB)| *.epub; *.EPUB";
+            bool? dialogResult = openFileDialog.ShowDialog();
+            if (dialogResult.Value)
             {
-                if (Path.GetExtension(_filePath).ToLower().Equals(".epub"))//check file type
+                _filePath = openFileDialog.FileName;
+                string fileExtension = Path.GetExtension(_filePath).ToLower();
+
+                if (fileExtension.Equals(".epub"))
                 {
                     _fileName = Path.GetFileNameWithoutExtension(_filePath);
 
@@ -124,23 +129,22 @@ namespace EbookWindows.ViewModels
                         Directory.CreateDirectory(_library);
                     }
                     _tempPath = Path.Combine(_library, _fileName);
+
                 }
                 else
                 {
-                    MessageBox.Show("Invalid epub file! Please choose another file.","Error",MessageBoxButton.OK,MessageBoxImage.Error);
+                    MessageBox.Show("Invalid .epub file! Please only choose .epub file.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
-            
-        }
 
+        }        
         private void unZipFile()
         {
             if (!Directory.Exists(_tempPath))
             {
                 ZipFile.ExtractToDirectory(_filePath, _tempPath);
             }
-        }
-            
+        }            
         public void Clear()
         {
             //CLEAR TABLE CONTENTS, MENU
@@ -149,7 +153,13 @@ namespace EbookWindows.ViewModels
             _tableContentTitle.Clear();
             //TableContentCombobox.Items.Clear();
         }
+        public string GetPath(string link)
+        {
+            return String.Format("file:///{0}", Path.GetFullPath(Path.Combine(_tempPath, _baseMenuXmlDiretory, link)));
+        }
+        #endregion
 
+        #region process
         public void getTableContent(List<EpubNavigationItem> navigation)
         {
             // Enumerating chapters
@@ -172,12 +182,9 @@ namespace EbookWindows.ViewModels
                 }
             }
         }
+        #endregion
 
-        public string GetPath(string link)
-        {
-            return String.Format("file:///{0}", Path.GetFullPath(Path.Combine(_tempPath, _baseMenuXmlDiretory, link)));
-        }
 
-        
+
     }
 }
