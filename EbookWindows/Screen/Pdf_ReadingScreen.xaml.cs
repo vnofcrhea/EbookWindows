@@ -44,6 +44,8 @@ namespace EbookWindows.Screen
 
         private TimeSpan SpanTime;
 
+        private WindowScreen homeScreen = null;
+
         public Pdf_ReadingScreen()
         {
             zoomValue = 1;
@@ -52,7 +54,7 @@ namespace EbookWindows.Screen
             this.DataContext = this.document;
             this.document.PropertyChanged += DocumentOnPropertyChanged;
         }
-
+      
         /*public Pdf_ReadingScreen(string fileName)
         {
             zoomValue = 1;
@@ -66,9 +68,9 @@ namespace EbookWindows.Screen
             (this.document).Document = document;
         }*/
 
-        public void LoadData(string filePath) //Load data here
-
+        public void LoadData(string filePath, WindowScreen windowScreen) //Load data here
         {
+            homeScreen = windowScreen;
             Document document = new Document(new FileStream(filePath, FileMode.Open, FileAccess.Read));
             (this.document).Document = document;
         }
@@ -313,5 +315,11 @@ namespace EbookWindows.Screen
             this.destinationRectangle = null;
         }
 
+        private void homeBtn_Click(object sender, RoutedEventArgs e)
+        {
+            //homeScreen.ReturnHomePdfReadingScreen_Click(sender, e);
+            homeScreen.ShelfGrid.Visibility = Visibility.Visible;
+            homeScreen.pdfReadingScreen.Visibility = Visibility.Collapsed;
+        }
     }
 }
