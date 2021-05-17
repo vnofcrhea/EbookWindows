@@ -57,7 +57,7 @@
                     <Button>
                         <materialDesign:PackIcon Kind="ArrowBack"></materialDesign:PackIcon>
                     </Button>
-                    <Button>
+                    <Button x:Name="homeBtn" Click="homeBtn_Click">
                         <materialDesign:PackIcon Kind="Home"></materialDesign:PackIcon>
                     </Button>
                     <materialDesign:PopupBox  StaysOpen="True" IsEnabled="False" Foreground="{DynamicResource PrimaryHueMidBrush}">

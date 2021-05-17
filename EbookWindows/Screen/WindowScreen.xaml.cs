@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -119,33 +120,16 @@ namespace EbookWindows.Screen
             detailScreen.Visibility = Visibility.Collapsed;
         }
 
-       private void addMoreBookBtn_Click(object sender, RoutedEventArgs e)
-        {
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.Filter = "Ebook Files(*.pdf, *.PDF, *.epub, *.EPUB)| *.pdf; *.PDF;*.epub; *.EPUB";
-            bool? dialogResult = openFileDialog.ShowDialog(this);
-            if (dialogResult.Value)
-            {
-                string filePath = openFileDialog.FileName;
-                string fileExtension = Path.GetExtension(filePath).ToLower();
+        //public void ReturnHomePdfReadingScreen_Click(object sender, RoutedEventArgs e)
+        //{
+        //    ShelfGrid.Visibility = Visibility.Visible;
+        //    pdfReadingScreen.Visibility = Visibility.Collapsed;
+        //}
 
-                if (fileExtension.Equals(".pdf"))
-                {
-                    pdfReadingScreen.LoadData(filePath);
-                    ShelfGrid.Visibility = Visibility.Collapsed;
-                    pdfReadingScreen.Visibility = Visibility.Visible;
-                }
-                else if (fileExtension.Equals(".epub"))
-                {
-                    epubReadingScreen.ReadFile(filePath);
-                    ShelfGrid.Visibility = Visibility.Collapsed;
-                    epubReadingScreen.Visibility = Visibility.Visible;
-                }
-                else
-                {
-                    //notthing
-                }
-            }
+        private void addMoreBookBtn_Click(object sender, RoutedEventArgs e)
+        {
+            Window popupEbookScreen = new PopupEbookScreen();
+            popupEbookScreen.Visibility = Visibility.Visible;
         }
     }
 }
