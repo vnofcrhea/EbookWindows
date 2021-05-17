@@ -9,6 +9,7 @@ namespace EbookWindows.ViewModels
 {
     public class Chapter
     {
+        
         public Chapter()
         {
             this.Items = new ObservableCollection<Chapter>();
@@ -16,11 +17,12 @@ namespace EbookWindows.ViewModels
 
         public string Title { get; set; }
         public string link { get; set; }
-
         public ObservableCollection<Chapter> Items { get; set; }
     }    // Root myDeserializedClass = JsonConvert.DeserializeObject<Root>(myJsonResponse); 
     public class Root
     {
+        public string source { get; set; }
+        public string book_id { get; set; }
         public string img_url { get; set; }
         public string book_name { get; set; }
         public string book_intro { get; set; }
@@ -35,5 +37,11 @@ namespace EbookWindows.ViewModels
         public string book_title { get; set; }
         public string chapter_title { get; set; }
         public string content { get; set; }
+    }
+    public class ShelfTag
+    {
+        public string Title { get; set; }
+        public string img_dir { get; set; }
+        public string book_dir { get; set; }
     }
 }

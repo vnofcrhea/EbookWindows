@@ -67,40 +67,41 @@
                 <RowDefinition Height="30"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            <Border Grid.Row="0"
-            <Grid Grid.Row="0" MouseMove="DragStart" >
-                <Label>EbookWindows</Label>
-                <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Right" Grid.RowSpan="2" Grid.Row="0">
-                    <StackPanel.Resources>
-                        <Style TargetType="{x:Type Button}" BasedOn="{StaticResource MaterialDesignFlatButton}">
-                            <Setter Property="Margin" Value="0,0,0,0"/>
-                            <Setter Property="Padding" Value="0"/>
-                            <Setter Property="VerticalContentAlignment" Value="Center"/>
-                            <Setter Property="BorderThickness" Value="0"></Setter>
-                            <Setter Property="Width" Value="40"/>
-                            <Setter Property="Height" Value="30"/>
-                        </Style>
-                    </StackPanel.Resources>
-                    <Button Width="100">
-                        Login
-                    </Button>
-                    <Button Click="Minimize">
-                        <materialDesign:PackIcon Kind="WindowMinimize"  />
-                    </Button >
-                    <Button Click="Maximize">
-                        <materialDesign:PackIcon Kind="WindowMaximize" />
-                    </Button>
-                    <Button Click="Close" >
-                        <materialDesign:PackIcon Kind="WindowClose" />
-                    </Button>
-                </StackPanel>
-            </Grid>
+                        <Border Grid.Row="0">
+                <Grid Grid.Row="0" MouseMove="DragStart" >
+                    <Label>EbookWindows</Label>
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Right" Grid.RowSpan="2" Grid.Row="0">
+                        <StackPanel.Resources>
+                            <Style TargetType="{x:Type Button}" BasedOn="{StaticResource MaterialDesignFlatButton}">
+                                <Setter Property="Margin" Value="0,0,0,0"/>
+                                <Setter Property="Padding" Value="0"/>
+                                <Setter Property="VerticalContentAlignment" Value="Center"/>
+                                <Setter Property="BorderThickness" Value="0"></Setter>
+                                <Setter Property="Width" Value="40"/>
+                                <Setter Property="Height" Value="30"/>
+                            </Style>
+                        </StackPanel.Resources>
+                        <Button Width="100">
+                            Login
+                        </Button>
+                        <Button Click="Minimize">
+                            <materialDesign:PackIcon Kind="WindowMinimize"  />
+                        </Button >
+                        <Button Click="Maximize">
+                            <materialDesign:PackIcon Kind="WindowMaximize" />
+                        </Button>
+                        <Button Click="Close" >
+                            <materialDesign:PackIcon Kind="WindowClose" />
+                        </Button>
+                    </StackPanel>
+                </Grid>
+            </Border>
             <Grid Grid.Row="1">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="250"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                <Border BorderBrush="{StaticResource PrimaryHueDarkBrush}" BorderThickness="0,0.15,0.15,0">
+                <Border Name="LeftHeader" BorderBrush="{StaticResource PrimaryHueDarkBrush}" BorderThickness="0,0.15,0.15,0">
                     <Grid Background="{StaticResource MaterialDesignPaperTransparent}">
                         <StackPanel>
                             <Grid>
@@ -152,31 +153,44 @@
                                 <TextBox x:Name="DemoItemsSearchBox"
                         Text="{Binding SearchKeyword, UpdateSourceTrigger=PropertyChanged}" DockPanel.Dock="Top" Margin="5,10,50,10" Width="300" Height="30" Padding="4" materialDesign:HintAssist.Hint="Search" materialDesign:HintAssist.IsFloating="True" materialDesign:TextFieldAssist.HasClearButton="True" materialDesign:TextFieldAssist.HasOutlinedTextField="True" materialDesign:TextFieldAssist.DecorationVisibility="Collapsed" materialDesign:TextFieldAssist.TextFieldCornerRadius="4"
                                          HorizontalAlignment="Right"/>
-                                </Grid>
-                                <Grid>
-                                    <Grid x:Name="shelfGrid">
+                            </Grid>
+                            <Grid>
+                                <Grid x:Name="shelfGrid">
+                                    <StackPanel>
                                         <local:Shelf></local:Shelf>
-                                        <local:Shelf></local:Shelf>
-                                    </Grid>
-
+                                    </StackPanel>
                                 </Grid>
 
-                            </StackPanel>
-                        </ScrollViewer>
-                        <Grid Name="readingGrid" Visibility="Hidden">
-                            <local:EpubReadingScreen x:Name="epubReadingControl">
+                            </Grid>
 
-                            </local:EpubReadingScreen>
-                        </Grid>
-                    </Grid>
-                    
-                    <Grid Grid.Column="1" HorizontalAlignment="Right" Width="40" Visibility="Hidden"> <!--Mờ viền trái, chưa fix được-->
-                        <Grid.Background>
-                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,0" GradientStops="{StaticResource BlueBackgroundStops}" Opacity="0.5"/>
-                        </Grid.Background>
-                        
+                        </StackPanel>
+                    </ScrollViewer>
+                    <Grid Name="readingGrid" Visibility="Hidden">
+                        <local:EpubReadingScreen x:Name="epubReadingControl">
+
+                        </local:EpubReadingScreen>
                     </Grid>
                 </Grid>
+
+                <Grid Grid.Column="1" HorizontalAlignment="Right" Width="40" Visibility="Hidden">
+                    <!--Mờ viền trái, chưa fix được-->
+                    <Grid.Background>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,0" GradientStops="{StaticResource BlueBackgroundStops}" Opacity="0.5"/>
+                    </Grid.Background>
+
+                </Grid>
             </Grid>
-        </Border>
+            <Grid Grid.Row="1" Background="#AF000000" Name="LoadingGrid"
+                  Visibility="Collapsed">
+                <StackPanel Orientation="Vertical" VerticalAlignment="Center">
+                    <ProgressBar
+  Style="{StaticResource MaterialDesignCircularProgressBar}"
+  Value="0"
+  IsIndeterminate="True" Width="100" Height="100" />
+                    <TextBlock HorizontalAlignment="Center">Loading...</TextBlock>
+                </StackPanel>
+            </Grid>
+
+        </Grid>
+    </Border>
 </Window>

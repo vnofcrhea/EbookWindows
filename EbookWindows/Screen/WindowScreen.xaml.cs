@@ -1,4 +1,5 @@
-﻿using Microsoft.IdentityModel.Tokens;
+﻿using EbookWindows.ViewModels;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
@@ -34,10 +35,7 @@ namespace EbookWindows.Screen
         public WindowScreen()
         {
             InitializeComponent();
-            this.MaxHeight = SystemParameters.MaximizedPrimaryScreenHeight; List<TodoItem> items = new List<TodoItem>();
-            items.Add(new TodoItem() { Title = "Complete this WPF tutorial", Completion = 45 });
-            items.Add(new TodoItem() { Title = "Learn C#", Completion = 80 });
-            items.Add(new TodoItem() { Title = "Wash the car", Completion = 0 });
+            this.MaxHeight = SystemParameters.MaximizedPrimaryScreenHeight; 
 
             //lbTodoList.ItemsSource = items;
         }
@@ -106,28 +104,40 @@ namespace EbookWindows.Screen
         {
 
         }
-        public void OpenDetailScreen()
+        public async void OpenDetailScreen(ShelfTag x)
         {
+            StartLoading();
+            await Task.Run(()=>detailScreen.LoadData(x));
             ShelfGrid.Visibility = Visibility.Collapsed;
-            detailScreen.LoadData(1);
             detailScreen.Visibility = Visibility.Visible;
+            EndLoading();
+        }
+        public async void OpenDetailScreen(string url)
+        {
+            StartLoading();
+            await Task.Run(() => detailScreen.LoadData(url));
+            ShelfGrid.Visibility = Visibility.Collapsed;
+            detailScreen.Visibility = Visibility.Visible;
+            EndLoading();
         }
 
-        public void OpenComicReadingScreen()
+        public async void OpenComicReadingScreen()
         {
+            await Task.Run(()=>comicReadingScreen.LoadData());
             ShelfGrid.Visibility = Visibility.Collapsed;
             detailScreen.Visibility = Visibility.Collapsed;
             comicReadingScreen.Visibility = Visibility.Visible;
-            comicReadingScreen.LoadData("https://truyen.tangthuvien.vn/doc-truyen/luan-hoi-nhac-vien/chuong-1", 1);
-            //
         }
         private void ReturnHome_Click(object sender, RoutedEventArgs e)
         {
+            StartLoading();
+            
             ShelfGrid.Visibility = Visibility.Visible;
             detailScreen.Visibility = Visibility.Collapsed;
             comicReadingScreen.Visibility = Visibility.Collapsed;
+            EndLoading();
         }
-
+        
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             // GET FILE PATH, NAME
@@ -153,6 +163,14 @@ namespace EbookWindows.Screen
            
 
             
+        }
+        public void StartLoading()
+        {
+                LoadingGrid.Visibility = Visibility.Visible;
+        }
+        public void EndLoading()
+        {
+                LoadingGrid.Visibility = Visibility.Collapsed;
         }
     }
 }

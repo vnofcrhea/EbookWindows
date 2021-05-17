@@ -12,7 +12,6 @@ namespace EbookWindows.ViewModels
     public class pdfDocumentViewModel : INotifyPropertyChanged
     {
         #region Fields
-
         public event PropertyChangedEventHandler PropertyChanged;
 
         private Document document;

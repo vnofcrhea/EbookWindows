@@ -24,10 +24,13 @@
         <Grid Grid.Row="1">
             <Grid VerticalAlignment="Top" HorizontalAlignment="Right" Canvas.ZIndex="2" >
                 <StackPanel HorizontalAlignment="Right" VerticalAlignment="Center" Margin="5" Orientation="Horizontal">
+                    <Button Style="{StaticResource MaterialDesignFlatButton}" Click="AddToLibrary_Click">
+                        <materialDesign:PackIcon Kind="Add"></materialDesign:PackIcon>
+                    </Button>
                     <Button Style="{StaticResource MaterialDesignFlatButton}">
                         <materialDesign:PackIcon Kind="Heart"></materialDesign:PackIcon>
                     </Button>
-                    <Button Style="{StaticResource MaterialDesignFlatButton}">
+                    <Button Click="DownloadContent_Click" Style="{StaticResource MaterialDesignFlatButton}">
                         <materialDesign:PackIcon Kind="Download"></materialDesign:PackIcon>
                     </Button>
                     <materialDesign:PopupBox PlacementMode="BottomAndAlignRightEdges" Width="45" HorizontalContentAlignment="Center" >

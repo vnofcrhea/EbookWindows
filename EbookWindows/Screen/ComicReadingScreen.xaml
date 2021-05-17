@@ -8,6 +8,7 @@
         xmlns:materialDesignConverters="clr-namespace:MaterialDesignThemes.Wpf.Converters;assembly=MaterialDesignThemes.Wpf"
         xmlns:local="clr-namespace:EbookWindows"
         mc:Ignorable="d"
+             MinHeight="300"
         MouseMove="StackPanel_MouseMove">
     <!--<Window.CommandBindings>
         <CommandBinding Command="Copy" Executed="OnCopy"/>
@@ -30,12 +31,15 @@
     <Grid Name="MainGrid">
         <Grid Margin="0">
             <!--#region Vùng nội dung-->
-            
-            <ScrollViewer HorizontalScrollBarVisibility="Auto" Name="PageScroller">
-                <StackPanel Margin="10,10" VerticalAlignment="Top" HorizontalAlignment="Center" Background="Transparent">
-                    <TextBox Width="1400" x:Name="Content_Box" TextWrapping="Wrap" FontSize="30" FontFamily="Georgia" IsReadOnly="True"></TextBox>
-                    <Separator/>
-                </StackPanel>
+            <ScrollViewer SizeChanged="ScrollViewer_SizeChanged">   
+            <TextBox x:Name="Content_Box" TextWrapping="WrapWithOverflow" FontSize="30" VerticalAlignment="Top"  HorizontalAlignment="Center" FontFamily="Times New Roman" IsReadOnly="True" TextChanged="Content_Box_TextChanged" AcceptsTab="False" Width="Auto"
+              Padding="50,0" 
+                     BorderThickness="1"
+                     BorderBrush="AliceBlue">
+                <TextBox.LayoutTransform>
+                    <ScaleTransform x:Name="Content_Box_Scaling"/>
+                </TextBox.LayoutTransform>
+            </TextBox>
             </ScrollViewer>
             <!--#endregion-->
             <!--region Top Toolbar-->
@@ -104,13 +108,13 @@
                             </StackPanel>
                         </Grid>
                     </materialDesign:PopupBox>
-                    <Button>
+                    <Button Click="ZoomOut_Click" x:Name="ZoomOut_Button">
                         <materialDesign:PackIcon Kind="ZoomOutOutline"></materialDesign:PackIcon>
                     </Button>
-                    <TextBox Width="40" Height="20" BorderBrush="{DynamicResource PrimaryHueMidBrush}" BorderThickness="0" Padding="0" VerticalContentAlignment="Center" HorizontalContentAlignment="Center">
+                    <TextBox Name="zoomTextbox" Width="40" Height="20" BorderBrush="{DynamicResource PrimaryHueMidBrush}" BorderThickness="0" Padding="0" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Foreground="{StaticResource MaterialDesignBody}">
                         100%</TextBox>
 
-                    <Button>
+                    <Button Click="ZoomIn_Click" x:Name="ZoomIn_Button">
                         <materialDesign:PackIcon Kind="ZoomInOutline"></materialDesign:PackIcon>
                     </Button>
                     <Button>
@@ -140,15 +144,20 @@
                             <Setter Property="Height" Value="{StaticResource ButtonIconSizeDefault}"></Setter>
                         </Style>
                     </StackPanel.Resources>
-                    
-                    <Button>
+
+                    <Button Click="PreviousChapter_Click">
                         <materialDesign:PackIcon Kind="ChevronLeft"></materialDesign:PackIcon>
                     </Button>
 
-                    <ComboBox materialDesign:ComboBoxAssist.ClassicMode="True" BorderThickness="0" Width="100" Padding="5" BorderBrush="{DynamicResource PrimaryHueMidBrush}">
+                    <ComboBox  x:Name ="Chapter_List" materialDesign:ComboBoxAssist.ClassicMode="True" BorderThickness="0" Width="100" Padding="5" BorderBrush="{DynamicResource PrimaryHueMidBrush}" DisplayMemberPath="Title" SelectedValuePath="link" SelectionChanged="Chapter_Changed">
+                        <ComboBox.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <VirtualizingStackPanel/>
+                            </ItemsPanelTemplate>
+                        </ComboBox.ItemsPanel>
                     </ComboBox>
 
-                    <Button>
+                    <Button Click="NextChapter_Click">
                         <materialDesign:PackIcon Kind="ChevronRight"></materialDesign:PackIcon>
                     </Button>
                     

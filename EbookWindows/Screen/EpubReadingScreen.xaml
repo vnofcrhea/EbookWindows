@@ -35,8 +35,9 @@
         <Grid Margin="0">
 
             <!-- Reading Web Browser-->
-            <Grid Background="AliceBlue">
-                <cefSharpWpf:ChromiumWebBrowser x:Name="EpubWebBrowser">
+            <Grid >
+                <cefSharpWpf:ChromiumWebBrowser x:Name="EpubWebBrowser" Background="{StaticResource MaterialDesignBody}"
+                                                Foreground="{StaticResource MaterialDesignPaper}">
 
                 </cefSharpWpf:ChromiumWebBrowser>
             </Grid>
