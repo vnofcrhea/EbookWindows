@@ -1,6 +1,8 @@
 ﻿using Microsoft.IdentityModel.Tokens;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -13,6 +15,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using Path = System.IO.Path;
 
 namespace EbookWindows.Screen
 {
@@ -123,6 +126,33 @@ namespace EbookWindows.Screen
             ShelfGrid.Visibility = Visibility.Visible;
             detailScreen.Visibility = Visibility.Collapsed;
             comicReadingScreen.Visibility = Visibility.Collapsed;
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            // GET FILE PATH, NAME
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.ShowDialog();
+
+            string filePath = openFileDialog.FileName;
+            if (Path.GetExtension(filePath) == ".pdf")
+            {
+                //Call reading pdf screen
+            }
+            else if(Path.GetExtension(filePath) == ".epub")
+            {
+                //Call reading offline epub sceen
+                readingGrid.Visibility = Visibility.Visible;
+                epubReadingControl.ReadFile(filePath);
+
+            }
+            else
+            {
+                MessageBox.Show("Invalid file! Please try another file.", "Alert", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+           
+
+            
         }
     }
 }

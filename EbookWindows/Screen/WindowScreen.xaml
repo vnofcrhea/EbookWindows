@@ -143,7 +143,7 @@
                     <ScrollViewer>
                         <StackPanel Orientation="Vertical">
                             <Grid>
-                                <Button Style="{StaticResource MaterialDesignFlatButton}" HorizontalAlignment="Left" Padding="5,0,7,0" VerticalContentAlignment="Center" Margin="10,0,0,0">
+                                <Button Style="{StaticResource MaterialDesignFlatButton}" Click="Button_Click" HorizontalAlignment="Left" Padding="5,0,7,0" VerticalContentAlignment="Center" Margin="10,0,0,0">
                                     <StackPanel Orientation="Horizontal" >
                                         <materialDesign:PackIcon Kind="AddCircleOutline" VerticalAlignment="Center" Width="26" Height="26" Margin="0,0,3,0" Padding="0"></materialDesign:PackIcon>
                                         <TextBlock VerticalAlignment="Center">Add More Book</TextBlock>
@@ -152,22 +152,31 @@
                                 <TextBox x:Name="DemoItemsSearchBox"
                         Text="{Binding SearchKeyword, UpdateSourceTrigger=PropertyChanged}" DockPanel.Dock="Top" Margin="5,10,50,10" Width="300" Height="30" Padding="4" materialDesign:HintAssist.Hint="Search" materialDesign:HintAssist.IsFloating="True" materialDesign:TextFieldAssist.HasClearButton="True" materialDesign:TextFieldAssist.HasOutlinedTextField="True" materialDesign:TextFieldAssist.DecorationVisibility="Collapsed" materialDesign:TextFieldAssist.TextFieldCornerRadius="4"
                                          HorizontalAlignment="Right"/>
-                            </Grid>
-                            <local:Shelf></local:Shelf>
-                            <local:Shelf></local:Shelf>
+                                </Grid>
+                                <Grid>
+                                    <Grid x:Name="shelfGrid">
+                                        <local:Shelf></local:Shelf>
+                                        <local:Shelf></local:Shelf>
+                                    </Grid>
 
-                        </StackPanel>
-                    </ScrollViewer>
-                </Grid>
+                                </Grid>
 
-                <Grid Grid.Column="1" HorizontalAlignment="Right" Width="40" Visibility="Hidden">
-                    <!--Mờ viền trái, chưa fix được-->
-                    <Grid.Background>
-                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,0" GradientStops="{StaticResource BlueBackgroundStops}" Opacity="0.5"/>
-                    </Grid.Background>
+                            </StackPanel>
+                        </ScrollViewer>
+                        <Grid Name="readingGrid" Visibility="Hidden">
+                            <local:EpubReadingScreen x:Name="epubReadingControl">
 
+                            </local:EpubReadingScreen>
+                        </Grid>
+                    </Grid>
+                    
+                    <Grid Grid.Column="1" HorizontalAlignment="Right" Width="40" Visibility="Hidden"> <!--Mờ viền trái, chưa fix được-->
+                        <Grid.Background>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,0" GradientStops="{StaticResource BlueBackgroundStops}" Opacity="0.5"/>
+                        </Grid.Background>
+                        
+                    </Grid>
                 </Grid>
             </Grid>
-        </Grid>
-    </Border>
+        </Border>
 </Window>
