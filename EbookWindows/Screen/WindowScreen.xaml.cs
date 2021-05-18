@@ -116,20 +116,75 @@ namespace EbookWindows.Screen
 
         private void ReturnHome_Click(object sender, RoutedEventArgs e)
         {
-            ShelfGrid.Visibility = Visibility.Visible;
-            detailScreen.Visibility = Visibility.Collapsed;
+            if(ShelfGrid.Visibility != Visibility.Visible)
+            {
+                ShelfGrid.Visibility = Visibility.Visible;
+                if (detailScreen.Visibility == Visibility.Visible)
+                {
+                    detailScreen.Visibility = Visibility.Collapsed;
+                    return;
+                }
+                else if (pdfReadingScreen.Visibility == Visibility.Visible)
+                {
+                    pdfReadingScreen.homeBtn_Click(sender,e);
+                    return;
+                }
+                else if (epubReadingScreen.Visibility == Visibility.Visible)
+                {
+                    epubReadingScreen.Visibility = Visibility.Collapsed;
+                    return;
+                }
+                else
+                {
+                    //do nothing
+                }
+            }
+            else
+            {
+                //do nothing
+            }
+
+
         }
 
-        //public void ReturnHomePdfReadingScreen_Click(object sender, RoutedEventArgs e)
-        //{
-        //    ShelfGrid.Visibility = Visibility.Visible;
-        //    pdfReadingScreen.Visibility = Visibility.Collapsed;
-        //}
+        public void ReturnFromReadingScreen_Click(object sender, RoutedEventArgs e)
+        {
+            ShelfGrid.Visibility = Visibility.Visible;
+            pdfReadingScreen.Visibility = Visibility.Collapsed;
+        }
+
+
+        private void filePathChanged(string filePath, string fileExtension)
+        {
+            if (fileExtension.Equals(".pdf"))
+            {
+                pdfReadingScreen.LoadData(filePath);
+                ShelfGrid.Visibility = Visibility.Collapsed;
+                pdfReadingScreen.Visibility = Visibility.Visible;
+
+
+            }
+            else if (fileExtension.Equals(".epub"))
+            {
+                epubReadingScreen.ReadFile(filePath);
+                ShelfGrid.Visibility = Visibility.Collapsed;
+                epubReadingScreen.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                //notthing
+            }
+           
+        }
 
         private void addMoreBookBtn_Click(object sender, RoutedEventArgs e)
         {
-            Window popupEbookScreen = new PopupEbookScreen();
-            popupEbookScreen.Visibility = Visibility.Visible;
+            var popupEbookScreen = new PopupEbookScreen();
+            popupEbookScreen.BrowserEvent += filePathChanged;
+            popupEbookScreen.ShowDialog();
+            
+
+
         }
     }
 }

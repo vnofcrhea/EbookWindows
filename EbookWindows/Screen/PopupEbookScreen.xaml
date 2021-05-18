@@ -10,9 +10,9 @@
         mc:Ignorable="d"
         Style="{StaticResource MaterialDesignWindow1}"
         AutomationProperties.Name="{Binding Title, RelativeSource={RelativeSource Self}}"
-        Title="BrowserLinkScreen" Height="219" Width="456" ResizeMode="CanResizeWithGrip"
-        WindowStyle="SingleBorderWindow"
-        WindowStartupLocation="CenterScreen">
+        Title="BrowserLinkScreen" Height="219" Width="456" ResizeMode="NoResize"
+        WindowStyle="SingleBorderWindow" 
+        WindowStartupLocation="CenterScreen" >
     <WindowChrome.WindowChrome>
         <WindowChrome     
             CaptionHeight="1"  
@@ -42,6 +42,9 @@
         </ResourceDictionary>
 
     </Window.Resources>
+
+    
+
     <Grid Name="MainGrid">
         <Grid Margin="0">
             <Border BorderThickness="0">
