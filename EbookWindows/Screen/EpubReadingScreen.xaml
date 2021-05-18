@@ -15,7 +15,7 @@
              xmlns:cefSharpWpf="clr-namespace:CefSharp.Wpf;assembly=CefSharp.Wpf"
 
     >
-
+    
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -32,19 +32,17 @@
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid Name="MainGrid">
-        <Grid Margin="0" >
+        <Grid Margin="0">
 
             <!-- Reading Web Browser-->
-            <Grid  Background="{DynamicResource MaterialDesignPaper}">
+            <Grid Background="AliceBlue">
                 <cefSharpWpf:ChromiumWebBrowser x:Name="EpubWebBrowser">
-                    
-                
+
                 </cefSharpWpf:ChromiumWebBrowser>
             </Grid>
 
             <!-- Tool buttons.-->
-            <Border Margin="0,5,0,0" HorizontalAlignment="Center" VerticalAlignment="Top" BorderThickness="1" BorderBrush="{DynamicResource PrimaryHueMidBrush}" CornerRadius="5" Name="TopPanelTool" 
-                    Background="{DynamicResource MaterialDesignPaper}" >
+            <Border Margin="0,5,0,0" HorizontalAlignment="Center" VerticalAlignment="Top" BorderThickness="1" BorderBrush="{DynamicResource PrimaryHueMidBrush}" CornerRadius="5" Name="TopPanelTool" Background="Black">
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" >
                     <StackPanel.Resources>
                         <Style TargetType="{x:Type Button}" BasedOn="{StaticResource MaterialDesignFlatButton}">
@@ -103,8 +101,8 @@
                             </StackPanel>
                         </Grid>
                     </materialDesign:PopupBox>
-
-
+                    
+                    
                     <Button x:Name="zoomoutButton" Click="zoomoutButton_Click">
                         <materialDesign:PackIcon Kind="ZoomOutOutline"></materialDesign:PackIcon>
                     </Button>
@@ -114,11 +112,11 @@
                     <Button x:Name="zoominButton" Click="zoominButton_Click">
                         <materialDesign:PackIcon Kind="ZoomInOutline"></materialDesign:PackIcon>
                     </Button>
-
+                    
                     <Button>
                         <materialDesign:PackIcon Kind="Book"></materialDesign:PackIcon>
                     </Button>
-                    <Button Margin="0" Name="ThemeButton" Click="ThemeButton_Click">
+                    <Button Margin="0" >
                         <materialDesign:PackIcon Kind="ThemeLightDark" ></materialDesign:PackIcon>
                     </Button>
                     <Button x:Name="ReadingHomeButton" Click="ReadingHomeButton_Click">
@@ -131,7 +129,7 @@
                 <materialDesign:PackIcon Kind="Eye" ></materialDesign:PackIcon>
             </Button>
             <!-- Chapters buttons.-->
-            <Border Background = "{DynamicResource MaterialDesignPaper}" Name="BottomPanelTool" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" BorderThickness="0,2,0,0" BorderBrush="{DynamicResource PrimaryHueMidBrush}" >
+            <Border Background="Black" Name="BottomPanelTool" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" BorderThickness="0,2,0,0" BorderBrush="{DynamicResource PrimaryHueMidBrush}" >
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                     <StackPanel.Resources>
                         <Style TargetType="{x:Type Button}" BasedOn="{StaticResource MaterialDesignFlatButton}">
@@ -151,7 +149,7 @@
                     </Button>
 
                     <ComboBox x:Name="TableContentComboBox" Foreground="AliceBlue" materialDesign:ComboBoxAssist.ClassicMode="True" BorderThickness="0" Width="100" Padding="5" BorderBrush="{DynamicResource PrimaryHueMidBrush}" SelectionChanged="ComboBox_SelectionChanged">
-
+                        
                     </ComboBox>
 
                     <Button x:Name="NextButton" Click="NextButton_Click">
@@ -162,7 +160,7 @@
                     </Button>
                 </StackPanel>
             </Border>
-
+            
         </Grid>
     </Grid>
 </UserControl>
