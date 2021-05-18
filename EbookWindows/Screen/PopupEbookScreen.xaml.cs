@@ -8,6 +8,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
+using System.Windows.Forms.Design.Behavior;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -22,6 +23,11 @@ namespace EbookWindows.Screen
     /// </summary>
     public partial class PopupEbookScreen : Window
     {
+        public delegate void BrowserHandler(string filePath, string extension);
+        public event BrowserHandler BrowserEvent;
+
+
+
         public PopupEbookScreen()
         {
             InitializeComponent();
@@ -82,8 +88,8 @@ namespace EbookWindows.Screen
                 string filePath = openFileDialog.FileName;
 
                 string fileExtension = Path.GetExtension(filePath).ToLower();
-                
-
+                BrowserEvent?.Invoke(filePath, fileExtension);
+                this.Close();
                 //if (fileExtension.Equals(".pdf"))
                 //{
                 //    pdfReadingScreen.LoadData(filePath, this);
@@ -101,6 +107,36 @@ namespace EbookWindows.Screen
                 //    notthing
                 //}
             }
+
+
         }
+
+        public void CloseMethod(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
     }
+
+    //public class WindowClosingBehavior : Behavior<Window>
+    //{
+    //    protected override void OnAttached()
+    //    {
+    //        AssociatedObject.Closing += AssociatedObject_Closing;
+    //    }
+
+    //    private void AssociatedObject_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+    //    {
+    //        Window window = sender as Window;
+    //        window.Closing -= AssociatedObject_Closing;
+    //        e.Cancel = true;
+    //        var anim = new DoubleAnimation(0, (Duration)TimeSpan.FromSeconds(0.5));
+    //        anim.Completed += (s, _) => window.Close();
+    //        window.BeginAnimation(UIElement.OpacityProperty, anim);
+    //    }
+    //    protected override void OnDetaching()
+    //    {
+    //        AssociatedObject.Closing -= AssociatedObject_Closing;
+    //    }
+    //}
 }
