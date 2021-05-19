@@ -6,6 +6,7 @@ using System.IO.Compression;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using VersOne.Epub;
 
 namespace EbookWindows.ViewModels
@@ -111,15 +112,25 @@ namespace EbookWindows.ViewModels
             // GET FILE PATH, NAME
             OpenFileDialog openFileDialog = new OpenFileDialog();
             openFileDialog.ShowDialog();
-
             _filePath = openFileDialog.FileName;
-            _fileName = Path.GetFileNameWithoutExtension(_filePath);
-
-            if (!Directory.Exists(_library))
+            if (_filePath!="") //check not choose file
             {
-                Directory.CreateDirectory(_library);
+                if (Path.GetExtension(_filePath).ToLower().Equals(".epub"))//check file type
+                {
+                    _fileName = Path.GetFileNameWithoutExtension(_filePath);
+
+                    if (!Directory.Exists(_library))
+                    {
+                        Directory.CreateDirectory(_library);
+                    }
+                    _tempPath = Path.Combine(_library, _fileName);
+                }
+                else
+                {
+                    MessageBox.Show("Invalid epub file! Please choose another file.","Error",MessageBoxButton.OK,MessageBoxImage.Error);
+                }
             }
-            _tempPath = Path.Combine(_library, _fileName);
+            
         }
 
         private void unZipFile()
@@ -127,7 +138,6 @@ namespace EbookWindows.ViewModels
             if (!Directory.Exists(_tempPath))
             {
                 ZipFile.ExtractToDirectory(_filePath, _tempPath);
-                System.Windows.MessageBox.Show("New book has been added to library!");
             }
         }
             
@@ -148,7 +158,10 @@ namespace EbookWindows.ViewModels
                 if (chapter.Link != null)
                 {
                     // Link of chapter
-                    _tableContentLink.Add(GetPath(chapter.Link.ContentFileName.Substring(3)));
+                    string link = chapter.Link.ContentFileName;
+                    if (link.IndexOf("../") != -1)
+                        _tableContentLink.Add(GetPath(link.Substring(3)));
+                    else _tableContentLink.Add(GetPath(link));
                     _tableContentTitle.Add(chapter.Title);
                     //TableContentCombobox.Items.Add(chapter.Title);
                 }

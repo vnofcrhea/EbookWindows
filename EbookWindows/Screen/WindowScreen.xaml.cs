@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -130,39 +131,75 @@ namespace EbookWindows.Screen
         }
         private void ReturnHome_Click(object sender, RoutedEventArgs e)
         {
-            StartLoading();
-            
-            ShelfGrid.Visibility = Visibility.Visible;
-            detailScreen.Visibility = Visibility.Collapsed;
-            comicReadingScreen.Visibility = Visibility.Collapsed;
-            EndLoading();
-        }
-        
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            // GET FILE PATH, NAME
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.ShowDialog();
-
-            string filePath = openFileDialog.FileName;
-            if (Path.GetExtension(filePath) == ".pdf")
+            if(ShelfGrid.Visibility != Visibility.Visible)
             {
-                //Call reading pdf screen
-            }
-            else if(Path.GetExtension(filePath) == ".epub")
-            {
-                //Call reading offline epub sceen
-                readingGrid.Visibility = Visibility.Visible;
-                epubReadingControl.ReadFile(filePath);
-
+                ShelfGrid.Visibility = Visibility.Visible;
+                if (detailScreen.Visibility == Visibility.Visible)
+                {
+                    detailScreen.Visibility = Visibility.Collapsed;
+                    return;
+                }
+                else if (pdfReadingScreen.Visibility == Visibility.Visible)
+                {
+                    pdfReadingScreen.homeBtn_Click(sender,e);
+                    return;
+                }
+                else if (epubReadingScreen.Visibility == Visibility.Visible)
+                {
+                    epubReadingScreen.Visibility = Visibility.Collapsed;
+                    return;
+                }
+                else
+                {
+                    //do nothing
+                }
             }
             else
             {
-                MessageBox.Show("Invalid file! Please try another file.", "Alert", MessageBoxButton.OK, MessageBoxImage.Error);
+                //do nothing
+            }
+
+
+        }
+
+        public void ReturnFromReadingScreen_Click(object sender, RoutedEventArgs e)
+        {
+            ShelfGrid.Visibility = Visibility.Visible;
+            pdfReadingScreen.Visibility = Visibility.Collapsed;
+        }
+
+
+        private void filePathChanged(string filePath, string fileExtension)
+        {
+            if (fileExtension.Equals(".pdf"))
+            {
+                pdfReadingScreen.LoadData(filePath);
+                ShelfGrid.Visibility = Visibility.Collapsed;
+                pdfReadingScreen.Visibility = Visibility.Visible;
+
+
+            }
+            else if (fileExtension.Equals(".epub"))
+            {
+                epubReadingScreen.ReadFile(filePath);
+                ShelfGrid.Visibility = Visibility.Collapsed;
+                epubReadingScreen.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                //notthing
             }
            
+        }
 
+        private void addMoreBookBtn_Click(object sender, RoutedEventArgs e)
+        {
+            var popupEbookScreen = new PopupEbookScreen();
+            popupEbookScreen.BrowserEvent += filePathChanged;
+            popupEbookScreen.ShowDialog();
             
+
+
         }
         public void StartLoading()
         {
@@ -174,3 +211,4 @@ namespace EbookWindows.Screen
         }
     }
 }
+      

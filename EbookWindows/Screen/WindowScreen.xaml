@@ -165,12 +165,12 @@
 
                         </StackPanel>
                     </ScrollViewer>
-                    <Grid Name="readingGrid" Visibility="Hidden">
-                        <local:EpubReadingScreen x:Name="epubReadingControl">
-
-                        </local:EpubReadingScreen>
-                    </Grid>
+                   
                 </Grid>
+                    <!--#region READINGSCREEN -->
+                    <local:EpubReadingScreen Grid.Column="1" x:Name="epubReadingScreen" Visibility="Collapsed"></local:EpubReadingScreen>
+                    <local:Pdf_ReadingScreen Grid.Column="1" x:Name="pdfReadingScreen" Visibility="Collapsed"></local:Pdf_ReadingScreen>
+                    <!--#endregion-->
 
                 <Grid Grid.Column="1" HorizontalAlignment="Right" Width="40" Visibility="Hidden">
                     <!--Mờ viền trái, chưa fix được-->

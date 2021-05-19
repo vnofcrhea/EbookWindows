@@ -44,29 +44,20 @@ namespace EbookWindows.Screen
 
         private TimeSpan SpanTime;
 
+
         public Pdf_ReadingScreen()
         {
-            InitializeComponent();
-            //zoomValue = 1;
-            //this.document = new DocumentViewModel();
-            //this.DataContext = this.document;
-            //this.document.PropertyChanged += DocumentOnPropertyChanged;
-
-            ////Khởi tạo document với file pdf đã chọn
-            //Document document = new Document(new FileStream("C:\\Users\\Bi\\Downloads\\Documents\\EBook\\NapBien.pdf", FileMode.Open, FileAccess.Read));
-            //(this.document).Document = document;
-        }
-
-        public Pdf_ReadingScreen(string fileName)
-        {
-            zoomValue = 1;
+            zoomValue = 0.8;
             InitializeComponent();
             this.document = new pdfDocumentViewModel();
             this.DataContext = this.document;
             this.document.PropertyChanged += DocumentOnPropertyChanged;
+        }
 
-            //Khởi tạo document với file pdf đã chọn
-            Document document = new Document(new FileStream(fileName, FileMode.Open, FileAccess.Read));
+        public void LoadData(string filePath) //Load data here
+        {
+            
+            Document document = new Document(new FileStream(filePath, FileMode.Open, FileAccess.Read));
             (this.document).Document = document;
         }
 
@@ -193,7 +184,7 @@ namespace EbookWindows.Screen
         {
 
             Canvas imageContainer = this.PageCanvas;
-            if (imageContainer != null && zoomTextbox.Text != null && this.document != null)
+            if (imageContainer != null && zoomLabel.Content != null && this.document != null)
             {
                 double scale = zoomValue; //lấy giá trị xoom
                 imageContainer.LayoutTransform = new ScaleTransform(scale, scale);
@@ -266,7 +257,7 @@ namespace EbookWindows.Screen
             {
                 zoomValue += 0.1;
                 this.UpdateImageZoom();
-                zoomTextbox.Text = $"{zoomValue * 100}%";
+                zoomLabel.Content = $"{zoomValue * 100}%";
             }
         }
 
@@ -276,7 +267,7 @@ namespace EbookWindows.Screen
             {
                 zoomValue -= 0.1;
                 this.UpdateImageZoom();
-                zoomTextbox.Text = $"{zoomValue * 100}%";
+                zoomLabel.Content = $"{zoomValue  * 100}%";
             }
         }
 
@@ -310,5 +301,18 @@ namespace EbookWindows.Screen
             this.destinationRectangle = null;
         }
 
+        public void homeBtn_Click(object sender, RoutedEventArgs e)
+        {
+            zoomValue = 0.8;
+            zoomLabel.Content = $"{zoomValue * 100}%";
+            PageImage.Source = null;
+            WindowScreen win = (WindowScreen)Window.GetWindow(this);
+            win.ReturnFromReadingScreen_Click(sender, e);
+        }
+
+        private void bookmarkBtn_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

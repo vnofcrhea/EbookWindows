@@ -28,8 +28,7 @@
     <Grid Name="MainGrid">
         <Grid Margin="0">
             <!--Content of book-->
-            <ScrollViewer Name="PageScroller"  ScrollViewer.CanContentScroll="True" 
-                       
+            <ScrollViewer Name="PageScroller"  ScrollViewer.CanContentScroll="True"               
                        ScrollViewer.HorizontalScrollBarVisibility="Auto"
                        ScrollViewer.VerticalScrollBarVisibility="Visible">
                 <Canvas Name="PageCanvas" VerticalAlignment="Center" HorizontalAlignment="Center">
@@ -54,65 +53,19 @@
                             <Setter Property="Height" Value="{StaticResource ButtonIconSizeDefault}"/>
                         </Style>
                     </StackPanel.Resources>
-                    <Button>
-                        <materialDesign:PackIcon Kind="ArrowBack"></materialDesign:PackIcon>
-                    </Button>
-                    <Button>
+                    
+                    <Button x:Name="homeBtn" Click="homeBtn_Click">
                         <materialDesign:PackIcon Kind="Home"></materialDesign:PackIcon>
                     </Button>
-                    <materialDesign:PopupBox  StaysOpen="True" IsEnabled="False" Foreground="{DynamicResource PrimaryHueMidBrush}">
-                        <Grid Width="300" Margin="8,8,8,8">
-                            <Grid.Resources>
-                                <Style TargetType="CheckBox" BasedOn="{StaticResource MaterialDesignCheckBox}">
-                                    <Setter Property="Margin" Value="8,8,10,8" />
-                                </Style>
-                                <Style TargetType="TextBox" BasedOn="{StaticResource MaterialDesignTextBox}">
-                                    <Setter Property="materialDesign:HintAssist.IsFloating" Value="True" />
-                                    <Setter Property="Margin" Value="8,8,8,8" />
-                                </Style>
-                            </Grid.Resources>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="Auto" />
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="*" />
-                                <RowDefinition Height="*" />
-                                <RowDefinition Height="*" />
-                                <RowDefinition Height="*" />
-                                <RowDefinition Height="*" />
-                                <RowDefinition Height="*" />
-                            </Grid.RowDefinitions>
-                            <TextBlock Grid.Column="0" Grid.Row="0" Style="{StaticResource MaterialDesignHeadline6TextBlock}" Margin="8,8,8,16" Text="OPTIONS" />
-                            <TextBox Grid.Column="0" Grid.Row="1" materialDesign:HintAssist.Hint="Setting 1" Text="200" />
-                            <TextBox Grid.Column="0" Grid.Row="2" materialDesign:HintAssist.Hint="Setting 2" Text="400" />
-                            <TextBox Grid.Column="0" Grid.Row="3" materialDesign:HintAssist.Hint="Setting 3" Text="600" />
-                            <CheckBox Grid.Column="1" Grid.Row="1" VerticalAlignment="Bottom" />
-                            <CheckBox Grid.Column="1" Grid.Row="2" IsChecked="True" VerticalAlignment="Bottom" />
-                            <CheckBox Grid.Column="1" Grid.Row="3" VerticalAlignment="Bottom" />
-                            <ComboBox Grid.Column="0" Grid.Row="4" materialDesign:HintAssist.Hint="Setting 4" materialDesign:HintAssist.IsFloating="True" MaxDropDownHeight="200" Margin="8">
-                                <ComboBoxItem Content="25%" />
-                                <ComboBoxItem Content="50%" />
-                                <ComboBoxItem Content="75%" />
-                                <ComboBoxItem Content="100%" />
-                                <ComboBoxItem Content="150%" />
-                                <ComboBoxItem Content="200%" />
-                                <ComboBoxItem Content="250%" />
-                                <ComboBoxItem Content="500%" />
-                            </ComboBox>
-                            <StackPanel Grid.Row="5" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Right">
-                                <Button Content="_Save" Command="{x:Static materialDesign:PopupBox.ClosePopupCommand}" />
-                                <Button Content="_Cancel" Command="{x:Static materialDesign:PopupBox.ClosePopupCommand}" >
-                                </Button>
-                            </StackPanel>
-                        </Grid>
-                    </materialDesign:PopupBox>
+                    <Button x:Name="bookmarkBtn" Click="bookmarkBtn_Click">
+                        <materialDesign:PackIcon Kind="Bookmark"></materialDesign:PackIcon>
+                    </Button>
                     <Button  Name="ZoomOutBtn"  Click="ZoomOutBtn_Click">
                         <materialDesign:PackIcon Kind="ZoomOutOutline"></materialDesign:PackIcon>
                     </Button>
-                    <TextBox Name="zoomTextbox"  Width="40" Height="20" BorderBrush="{DynamicResource PrimaryHueMidBrush}" BorderThickness="0" Padding="0"
-                             VerticalContentAlignment="Center" HorizontalContentAlignment="Center"  Text="100%" Foreground="#FFFFFF">
-                    </TextBox>
+                   <Label Name="zoomLabel"  Width="40" Height="20" BorderBrush="{DynamicResource PrimaryHueMidBrush}" BorderThickness="0" Padding="0"
+                             VerticalContentAlignment="Center" HorizontalContentAlignment="Center"  Content="80%" Foreground="#FFFFFF">
+                    </Label>
 
                     <Button Name="ZoomInBtn"  Click="ZoomInBtn_Click">
                         <materialDesign:PackIcon Kind="ZoomInOutline"></materialDesign:PackIcon>
