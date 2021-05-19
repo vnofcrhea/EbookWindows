@@ -121,7 +121,7 @@
                                     <Grid Grid.Column="1" >
                                         
                                         <Button Padding="0"  Style="{StaticResource MaterialDesignFlatButton}" Width="48" Height="30" VerticalAlignment="Center"
-                                                Background="{DynamicResource MaterialDesignLightSeparatorBackground}">
+                                                Background="{DynamicResource MaterialDesignLightSeparatorBackground}" Click="OpenviaLink_Click">
                                             <materialDesign:PackIcon Kind="ArrowRight" Width="45" Height="30" ></materialDesign:PackIcon>
                                         </Button>
                                     </Grid>

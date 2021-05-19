@@ -144,7 +144,7 @@
                     <ScrollViewer>
                         <StackPanel Orientation="Vertical">
                             <Grid>
-                                <Button Style="{StaticResource MaterialDesignFlatButton}" Click="Button_Click" HorizontalAlignment="Left" Padding="5,0,7,0" VerticalContentAlignment="Center" Margin="10,0,0,0">
+                                <Button Style="{StaticResource MaterialDesignFlatButton}" Click="addMoreBookBtn_Click" HorizontalAlignment="Left" Padding="5,0,7,0" VerticalContentAlignment="Center" Margin="10,0,0,0">
                                     <StackPanel Orientation="Horizontal" >
                                         <materialDesign:PackIcon Kind="AddCircleOutline" VerticalAlignment="Center" Width="26" Height="26" Margin="0,0,3,0" Padding="0"></materialDesign:PackIcon>
                                         <TextBlock VerticalAlignment="Center">Add More Book</TextBlock>

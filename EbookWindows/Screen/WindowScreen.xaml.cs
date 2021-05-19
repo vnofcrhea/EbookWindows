@@ -209,6 +209,8 @@ namespace EbookWindows.Screen
         {
                 LoadingGrid.Visibility = Visibility.Collapsed;
         }
+
+       
     }
 }
       
