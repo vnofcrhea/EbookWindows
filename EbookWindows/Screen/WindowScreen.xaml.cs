@@ -109,7 +109,7 @@ namespace EbookWindows.Screen
         {
             StartLoading();
             await Task.Run(()=>detailScreen.LoadData(x));
-            ShelfGrid.Visibility = Visibility.Collapsed;
+            MainGrid.Visibility = Visibility.Collapsed;
             detailScreen.Visibility = Visibility.Visible;
             EndLoading();
         }
@@ -117,7 +117,7 @@ namespace EbookWindows.Screen
         {
             StartLoading();
             await Task.Run(() => detailScreen.LoadData(url));
-            ShelfGrid.Visibility = Visibility.Collapsed;
+            MainGrid.Visibility = Visibility.Collapsed;
             detailScreen.Visibility = Visibility.Visible;
             EndLoading();
         }
@@ -125,15 +125,15 @@ namespace EbookWindows.Screen
         public async void OpenComicReadingScreen()
         {
             await Task.Run(()=>comicReadingScreen.LoadData());
-            ShelfGrid.Visibility = Visibility.Collapsed;
+            MainGrid.Visibility = Visibility.Collapsed;
             detailScreen.Visibility = Visibility.Collapsed;
             comicReadingScreen.Visibility = Visibility.Visible;
         }
         private void ReturnHome_Click(object sender, RoutedEventArgs e)
         {
-            if(ShelfGrid.Visibility != Visibility.Visible)
+            if(MainGrid.Visibility != Visibility.Visible)
             {
-                ShelfGrid.Visibility = Visibility.Visible;
+                MainGrid.Visibility = Visibility.Visible;
                 if (detailScreen.Visibility == Visibility.Visible)
                 {
                     detailScreen.Visibility = Visibility.Collapsed;
@@ -164,7 +164,7 @@ namespace EbookWindows.Screen
 
         public void ReturnFromReadingScreen_Click(object sender, RoutedEventArgs e)
         {
-            ShelfGrid.Visibility = Visibility.Visible;
+            MainGrid.Visibility = Visibility.Visible;
             pdfReadingScreen.Visibility = Visibility.Collapsed;
         }
 
@@ -174,7 +174,7 @@ namespace EbookWindows.Screen
             if (fileExtension.Equals(".pdf"))
             {
                 pdfReadingScreen.LoadData(filePath);
-                ShelfGrid.Visibility = Visibility.Collapsed;
+                MainGrid.Visibility = Visibility.Collapsed;
                 pdfReadingScreen.Visibility = Visibility.Visible;
 
 
@@ -182,7 +182,7 @@ namespace EbookWindows.Screen
             else if (fileExtension.Equals(".epub"))
             {
                 epubReadingScreen.ReadFile(filePath);
-                ShelfGrid.Visibility = Visibility.Collapsed;
+                MainGrid.Visibility = Visibility.Collapsed;
                 epubReadingScreen.Visibility = Visibility.Visible;
             }
             else
