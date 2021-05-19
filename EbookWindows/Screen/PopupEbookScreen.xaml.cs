@@ -116,6 +116,12 @@ namespace EbookWindows.Screen
             this.Close();
         }
 
+        private void OpenviaLink_Click(object sender, RoutedEventArgs e)
+        {
+            var x = Application.Current.MainWindow as WindowScreen;
+            x.OpenDetailScreen(linkTextBox.Text);
+            this.Close();
+        }
     }
 
     //public class WindowClosingBehavior : Behavior<Window>

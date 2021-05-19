@@ -34,6 +34,11 @@ namespace EbookWindows.Screen
         {
             List<ShelfTag> shelfTags = new List<ShelfTag>();
             var path_data = App.path + "\\data\\book";
+
+            if (!Directory.Exists(path_data))
+            {
+                Directory.CreateDirectory(path_data);
+            }
             string[] subdirectoryEntries = Directory.GetDirectories(path_data);
             foreach (var item in subdirectoryEntries)
             {
