@@ -175,6 +175,7 @@ namespace EbookWindows.Screen
             {
                 pdfReadingScreen.LoadData(filePath);
                 MainGrid.Visibility = Visibility.Collapsed;
+                epubReadingScreen.Visibility = Visibility.Collapsed;
                 pdfReadingScreen.Visibility = Visibility.Visible;
 
 
@@ -183,6 +184,7 @@ namespace EbookWindows.Screen
             {
                 epubReadingScreen.ReadFile(filePath);
                 MainGrid.Visibility = Visibility.Collapsed;
+                pdfReadingScreen.Visibility = Visibility.Collapsed;
                 epubReadingScreen.Visibility = Visibility.Visible;
             }
             else
