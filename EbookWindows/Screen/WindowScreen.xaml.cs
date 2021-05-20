@@ -192,7 +192,7 @@ namespace EbookWindows.Screen
            
         }
 
-        private void addMoreBookBtn_Click(object sender, RoutedEventArgs e)
+        public void addMoreBookBtn_Click(object sender, RoutedEventArgs e)
         {
             var popupEbookScreen = new PopupEbookScreen();
             popupEbookScreen.BrowserEvent += filePathChanged;
