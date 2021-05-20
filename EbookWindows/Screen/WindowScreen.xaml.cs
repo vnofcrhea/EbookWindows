@@ -128,8 +128,37 @@ namespace EbookWindows.Screen
 
         private void addMoreBookBtn_Click(object sender, RoutedEventArgs e)
         {
-            Window popupEbookScreen = new PopupEbookScreen();
-            popupEbookScreen.Visibility = Visibility.Visible;
+            //Window popupEbookScreen = new PopupEbookScreen();
+            //popupEbookScreen.Show();
+
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "Ebook Files(*.pdf, *.PDF, *.epub, *.EPUB)| *.pdf; *.PDF;*.epub; *.EPUB";
+            bool? dialogResult = openFileDialog.ShowDialog(this);
+            if (dialogResult.Value)
+            {
+                string filePath = openFileDialog.FileName;
+
+                string fileExtension = Path.GetExtension(filePath).ToLower();
+
+
+                if (fileExtension.Equals(".pdf"))
+                {
+                    pdfReadingScreen.LoadData(filePath, this);
+                    ShelfGrid.Visibility = Visibility.Collapsed;
+                    pdfReadingScreen.Visibility = Visibility.Visible;
+                }
+                else if (fileExtension.Equals(".epub"))
+                {
+                    epubReadingScreen.ReadFile(filePath);
+                    ShelfGrid.Visibility = Visibility.Collapsed;
+                    epubReadingScreen.Visibility = Visibility.Visible;
+                }
+                else
+                {
+                    //notthing
+                }
+            }
+
         }
     }
 }

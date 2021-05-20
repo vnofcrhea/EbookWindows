@@ -35,16 +35,27 @@ namespace EbookWindows.Screen
 
         public EpubReadingScreen()
         {
-            InitializeComponent();  
+            InitializeComponent();
+            
         }
 
+        private static int getIndex(List<string> list, string s)
+        {
+            string sub;
+            for (int i = 0; i < list.Count; i++)
+            {
+                sub = list[i].Substring(list[i].LastIndexOf("\\"));
+                if (sub == s.Substring(s.LastIndexOf("\\")))
+                    return i;
+            }
+            return -1;
+        }
         public void ReadFile(string filePath)
         {
             myEpub.ReadFile(filePath);
 
             currentPage = 0;
            
-
             TableContentComboBox.Items.Clear();
             foreach (string title in myEpubReader._tableContentTitle)
             {
@@ -52,9 +63,13 @@ namespace EbookWindows.Screen
             }
             TableContentComboBox.SelectedIndex = 0;
 
-            EpubWebBrowser.Address = myEpubReader._menuItems[0];
-        }
+            
+            bookmarkListview.ItemsSource = myEpubReader._tableContentTitle;
 
+            epubWebBrowser.Address = myEpubReader._menuItems[0];
+        }
+        
+        #region show/hide tool bar
         private void StackPanel_MouseMove(object sender, MouseEventArgs e)
         {
             if (!dispatcherTimer.IsEnabled)
@@ -103,13 +118,9 @@ namespace EbookWindows.Screen
                 MainGrid.MouseMove -= new MouseEventHandler(StackPanel_MouseMove);
             }
         }
+        #endregion
 
-        /// <summary>
-        /// Chapters and table of contents buttons action event
-        /// </summary>
-        /// <param name="list"></param>
-        /// <param name="s"></param>
-        /// <returns></returns>
+        #region chapters tool bar
         private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             System.Windows.Controls.ComboBox comboBox = (System.Windows.Controls.ComboBox)sender;
@@ -137,7 +148,7 @@ namespace EbookWindows.Screen
                     PreButton.IsEnabled = true;
                 }
 
-                EpubWebBrowser.Address = myEpubReader._menuItems[currentPage];
+                epubWebBrowser.Address = myEpubReader._menuItems[currentPage];
             }
             
         }
@@ -160,7 +171,7 @@ namespace EbookWindows.Screen
             {
                 TableContentComboBox.SelectedIndex = currentChapter;               
             }
-            else EpubWebBrowser.Address = uri;
+            else epubWebBrowser.Address = uri;
         }
         private void PreButton_Click(object sender, RoutedEventArgs e)
         {
@@ -182,7 +193,7 @@ namespace EbookWindows.Screen
             {
                 TableContentComboBox.SelectedIndex = currentChapter;
             }
-            else EpubWebBrowser.Address = uri;
+            else epubWebBrowser.Address = uri;
         }
         private void FirstButton_Click(object sender, RoutedEventArgs e)
         {
@@ -193,7 +204,7 @@ namespace EbookWindows.Screen
             //update table content
             int currentChapter = getIndex(myEpubReader._tableContentLink, uri);
             TableContentComboBox.SelectedIndex = currentChapter;
-            EpubWebBrowser.Address = uri;
+            epubWebBrowser.Address = uri;
         }
         private void LastButton_Click(object sender, RoutedEventArgs e)
         {
@@ -207,51 +218,17 @@ namespace EbookWindows.Screen
             //    TableContentComboBox.SelectedIndex = currentChapter;
             int currentChapter = getIndex(myEpubReader._tableContentLink, uri);
             TableContentComboBox.SelectedIndex = currentChapter;
-            EpubWebBrowser.Address = uri;
+            epubWebBrowser.Address = uri;
         }
-        ///////////////////////////////////
+        #endregion
 
-        /// <summary>
-        /// Supports functions
-        /// </summary>
-        /// <param name="list"></param>
-        /// <param name="s"></param>
-        /// <returns></returns>
-        private static int getIndex(List<string> list, string s)
-        {
-            string sub;
-            for(int i =0;i<list.Count;i++)
-            {
-                sub = list[i].Substring(list[i].LastIndexOf("\\"));
-                if (sub == s.Substring(s.LastIndexOf("\\")))
-                    return i;
-            }
-            return -1;
-        }
-
-        private void ReadingHomeButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (myEpub.ReadFile()) //file not ""
-            {
-                currentPage = 0;
-
-                TableContentComboBox.Items.Clear();
-                foreach (string title in myEpubReader._tableContentTitle)
-                {
-                    TableContentComboBox.Items.Add(title);
-                }
-                TableContentComboBox.SelectedIndex = 0;
-
-                EpubWebBrowser.Address = myEpubReader._menuItems[0];
-            }
-        }
-
+        #region Zoom buttons       
         private void zoomoutButton_Click(object sender, RoutedEventArgs e)
         {
             if (--currentZoom > zoomSlider.Minimum)
             {
                 zoomSlider.Value = currentZoom;
-                EpubWebBrowser.ZoomLevel = currentZoom;
+                epubWebBrowser.ZoomLevel = currentZoom;
                 zoominButton.IsEnabled = true;
             }
             else 
@@ -259,18 +236,17 @@ namespace EbookWindows.Screen
                 currentZoom = zoomSlider.Minimum;
 
                 zoomSlider.Value = currentZoom;
-                EpubWebBrowser.ZoomLevel = currentZoom;
+                epubWebBrowser.ZoomLevel = currentZoom;
                 zoomoutButton.IsEnabled = false;
                 zoominButton.IsEnabled = true;
             }           
         }
-
         private void zoominButton_Click(object sender, RoutedEventArgs e)
         {
             if (++currentZoom < zoomSlider.Maximum)
             {
                 zoomSlider.Value = currentZoom;
-                EpubWebBrowser.ZoomLevel = currentZoom;
+                epubWebBrowser.ZoomLevel = currentZoom;
                 zoominButton.IsEnabled = true;
             }
             else
@@ -278,16 +254,15 @@ namespace EbookWindows.Screen
                 currentZoom = zoomSlider.Maximum;
 
                 zoomSlider.Value = currentZoom;
-                EpubWebBrowser.ZoomLevel = currentZoom;
+                epubWebBrowser.ZoomLevel = currentZoom;
                 zoomoutButton.IsEnabled = true;
                 zoominButton.IsEnabled = false;
             }           
         }
-
         private void zoomSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             currentZoom = zoomSlider.Value;
-            EpubWebBrowser.ZoomLevel = currentZoom;
+            epubWebBrowser.ZoomLevel = currentZoom;
             if (currentZoom == zoomSlider.Minimum)
             {
                 zoomoutButton.IsEnabled = false; ;
@@ -303,6 +278,37 @@ namespace EbookWindows.Screen
                 zoomoutButton.IsEnabled = true;
                 zoominButton.IsEnabled = true;
             }
+        }
+        #endregion
+
+        private void readingHomeButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (myEpub.ReadFile()) //file not ""
+            {
+                currentPage = 0;
+
+                TableContentComboBox.Items.Clear();
+                foreach (string title in myEpubReader._tableContentTitle)
+                {
+                    TableContentComboBox.Items.Add(title);
+                }
+                TableContentComboBox.SelectedIndex = 0;
+                                
+                bookmarkListview.ItemsSource = myEpubReader._tableContentTitle;
+                bookmarkListview.Items.Refresh();
+
+                epubWebBrowser.Address = myEpubReader._menuItems[0];
+            }
+        }
+
+        private void closeBookmarkButton_Click(object sender, RoutedEventArgs e)
+        {
+            bookmarkBorder.Visibility = Visibility.Collapsed;
+        }
+
+        private void openBookmarksButton_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

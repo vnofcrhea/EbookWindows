@@ -26,8 +26,8 @@ namespace EbookWindows.ViewModels
         public static List<string> _tableContentTitle = new List<string>();
         public static List<string> _menuItems = new List<string>();
         //public static int _currentPage;
-            
-        //Singleton
+
+        #region Singleton
         private static myEpubReader instance;
 
         private myEpubReader()
@@ -49,8 +49,9 @@ namespace EbookWindows.ViewModels
             }
             return instance;
         }
+        #endregion
 
-        //Open and readfile funtion
+        #region Open and readfile funtion
         public bool ReadFile()
         {
             getEpubFileName();
@@ -105,13 +106,16 @@ namespace EbookWindows.ViewModels
             else return false;
             return true;
         }
+        #endregion
 
-        //Funtions for read file
+        #region support funtions
         private void getEpubFileName()
         {
             // GET FILE PATH, NAME
-            OpenFileDialog openFileDialog = new OpenFileDialog();
+            OpenFileDialog openFileDialog = new OpenFileDialog();          
+            openFileDialog.Filter = "Ebook Files( *.epub, *.EPUB)| *.epub; *.EPUB";
             openFileDialog.ShowDialog();
+            
             _filePath = openFileDialog.FileName;
             if (_filePath!="") //check not choose file
             {
@@ -132,15 +136,13 @@ namespace EbookWindows.ViewModels
             }
             
         }
-
         private void unZipFile()
         {
             if (!Directory.Exists(_tempPath))
             {
                 ZipFile.ExtractToDirectory(_filePath, _tempPath);
             }
-        }
-            
+        }           
         public void Clear()
         {
             //CLEAR TABLE CONTENTS, MENU
@@ -149,6 +151,11 @@ namespace EbookWindows.ViewModels
             _tableContentTitle.Clear();
             //TableContentCombobox.Items.Clear();
         }
+        public string GetPath(string link)
+        {
+            return String.Format("file:///{0}", Path.GetFullPath(Path.Combine(_tempPath, _baseMenuXmlDiretory, link)));
+        }
+        #endregion
 
         public void getTableContent(List<EpubNavigationItem> navigation)
         {
@@ -173,10 +180,7 @@ namespace EbookWindows.ViewModels
             }
         }
 
-        public string GetPath(string link)
-        {
-            return String.Format("file:///{0}", Path.GetFullPath(Path.Combine(_tempPath, _baseMenuXmlDiretory, link)));
-        }
+       
 
         
     }

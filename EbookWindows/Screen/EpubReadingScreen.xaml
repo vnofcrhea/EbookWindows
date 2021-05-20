@@ -36,13 +36,12 @@
 
             <!-- Reading Web Browser-->
             <Grid Background="AliceBlue">
-                <cefSharpWpf:ChromiumWebBrowser x:Name="EpubWebBrowser">
-
-                </cefSharpWpf:ChromiumWebBrowser>
+                <cefSharpWpf:ChromiumWebBrowser x:Name="epubWebBrowser"/>
             </Grid>
 
             <!-- Tool buttons.-->
-            <Border Margin="0,5,0,0" HorizontalAlignment="Center" VerticalAlignment="Top" BorderThickness="1" BorderBrush="{DynamicResource PrimaryHueMidBrush}" CornerRadius="5" Name="TopPanelTool" Background="Black">
+            <Border Margin="0,5,0,0" HorizontalAlignment="Center" VerticalAlignment="Top" BorderThickness="1" BorderBrush="{DynamicResource PrimaryHueMidBrush}" CornerRadius="5" Name="TopPanelTool" 
+                    Background="{DynamicResource MaterialDesignPaper}">
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" >
                     <StackPanel.Resources>
                         <Style TargetType="{x:Type Button}" BasedOn="{StaticResource MaterialDesignFlatButton}">
@@ -53,7 +52,7 @@
                             <Setter Property="Width" Value="{StaticResource ButtonIconSizeDefault}"/>
                             <Setter Property="Height" Value="{StaticResource ButtonIconSizeDefault}"/>
                         </Style>
-                    </StackPanel.Resources>
+                    </StackPanel.Resources >
                     <materialDesign:PopupBox  StaysOpen="True" IsEnabled="{Binding IsChecked, ElementName=PopupEnabled}" Foreground="{DynamicResource PrimaryHueMidBrush}">
                         <Grid Width="300" Margin="8,8,8,8">
                             <Grid.Resources>
@@ -101,8 +100,7 @@
                             </StackPanel>
                         </Grid>
                     </materialDesign:PopupBox>
-                    
-                    
+                                        
                     <Button x:Name="zoomoutButton" Click="zoomoutButton_Click">
                         <materialDesign:PackIcon Kind="ZoomOutOutline"></materialDesign:PackIcon>
                     </Button>
@@ -114,22 +112,27 @@
                     </Button>
                     
                     <Button>
-                        <materialDesign:PackIcon Kind="Book"></materialDesign:PackIcon>
+                        <materialDesign:PackIcon Kind="BookmarkAdd"></materialDesign:PackIcon>
                     </Button>
+
+                    <Button x:Name="openBookmarksButton" Click="openBookmarksButton_Click" >
+                        <materialDesign:PackIcon Kind="BookmarkMultiple"></materialDesign:PackIcon>
+                    </Button>
+
                     <Button Margin="0" >
                         <materialDesign:PackIcon Kind="ThemeLightDark" ></materialDesign:PackIcon>
                     </Button>
-                    <Button x:Name="ReadingHomeButton" Click="ReadingHomeButton_Click">
+                    <Button x:Name="readingHomeButton" Click="readingHomeButton_Click">
                         <materialDesign:PackIcon Kind="FolderSearch"></materialDesign:PackIcon>
                     </Button>
                 </StackPanel>
             </Border>
             <!-- Hide tool bar button.-->
-            <Button HorizontalAlignment="Right" VerticalAlignment="Top" Margin="5"  Style="{StaticResource MaterialDesignFlatButton}" Click="ShowHideToolButton_Click">
+            <Button  HorizontalAlignment="Right" VerticalAlignment="Top" Style="{StaticResource MaterialDesignFlatButton}" Click="ShowHideToolButton_Click">
                 <materialDesign:PackIcon Kind="Eye" ></materialDesign:PackIcon>
             </Button>
             <!-- Chapters buttons.-->
-            <Border Background="Black" Name="BottomPanelTool" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" BorderThickness="0,2,0,0" BorderBrush="{DynamicResource PrimaryHueMidBrush}" >
+            <Border Background="{DynamicResource MaterialDesignPaper}" Name="BottomPanelTool" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" BorderThickness="0,2,0,0" BorderBrush="{DynamicResource PrimaryHueMidBrush}" >
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                     <StackPanel.Resources>
                         <Style TargetType="{x:Type Button}" BasedOn="{StaticResource MaterialDesignFlatButton}">
@@ -160,7 +163,50 @@
                     </Button>
                 </StackPanel>
             </Border>
-            
+            <!-- Bookmark list buttons.-->
+            <Border HorizontalAlignment="Right" BorderThickness="1" x:Name="bookmarkBorder"
+                    BorderBrush="{DynamicResource PrimaryHueMidBrush}" Visibility="Visible"
+                    CornerRadius="5" Background="{DynamicResource MaterialDesignPaper}">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"></RowDefinition>
+                        <RowDefinition Height="auto"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Grid Grid.Row="0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                            <ColumnDefinition Width="auto"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <Label Grid.Row="0" FontSize="17" FontWeight="Bold">Chapter Bookmarks</Label>
+                        <Button Grid.Column="1" Name="closeBookmarkButton" Style="{StaticResource MaterialDesignFlatButton}" Click="closeBookmarkButton_Click">
+                            <materialDesign:PackIcon Kind="Close" ></materialDesign:PackIcon>
+                        </Button>
+                    </Grid>
+                    <Separator Grid.Row="1"  Margin="5,0,5,0"></Separator>
+                    <Grid Grid.Row="2">
+                        <ListView x:Name="bookmarkListview" 
+                                  HorizontalContentAlignment="Stretch" VerticalAlignment="Stretch">
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"></ColumnDefinition>
+                                            <ColumnDefinition Width="auto"></ColumnDefinition>
+                                        </Grid.ColumnDefinitions>
+                                    <Label Grid.Column="0" VerticalAlignment="Center" Name="bookmarkLabels" Content="{Binding}"></Label>
+                                    <Button Grid.Column="1" Name="bookmarkDeleteButtons" Style="{StaticResource MaterialDesignFlatButton}">
+                                        <materialDesign:PackIcon Kind="Delete" ></materialDesign:PackIcon>
+                                    </Button>
+                                </Grid>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                            
+                        </ListView>
+                    </Grid>
+                    
+                </Grid>
+            </Border>
         </Grid>
     </Grid>
 </UserControl>
