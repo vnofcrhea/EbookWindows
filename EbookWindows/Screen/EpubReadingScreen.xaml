@@ -111,7 +111,7 @@
                         <materialDesign:PackIcon Kind="ZoomInOutline"></materialDesign:PackIcon>
                     </Button>
 
-                    <Button>
+                    <Button x:Name="addBookmarkButton" Click="addBookmarkButton_Click">
                         <materialDesign:PackIcon Kind="BookmarkAdd"></materialDesign:PackIcon>
                     </Button>
 
@@ -122,7 +122,7 @@
                     <Button Margin="0" >
                         <materialDesign:PackIcon Kind="ThemeLightDark" ></materialDesign:PackIcon>
                     </Button>
-                    <Button x:Name="readingHomeButton" Click="readingHomeButton_Click">
+                    <Button x:Name="readingHomeButton" Click="readingOtherButton_Click">
                         <materialDesign:PackIcon Kind="FolderSearch"></materialDesign:PackIcon>
                     </Button>
                 </StackPanel>
@@ -151,7 +151,10 @@
                         <materialDesign:PackIcon Kind="ChevronLeft"></materialDesign:PackIcon>
                     </Button>
 
-                    <ComboBox x:Name="TableContentComboBox" Foreground="AliceBlue" materialDesign:ComboBoxAssist.ClassicMode="True" BorderThickness="0" Width="100" Padding="5" BorderBrush="{DynamicResource PrimaryHueMidBrush}" SelectionChanged="ComboBox_SelectionChanged">
+                    <ComboBox x:Name="TableContentComboBox" ItemsSource="{Binding Value}" SelectedValuePath="Key" DisplayMemberPath="Value"
+                              Foreground="AliceBlue" materialDesign:ComboBoxAssist.ClassicMode="True" 
+                              BorderThickness="0" Width="100" Padding="5" BorderBrush="{DynamicResource PrimaryHueMidBrush}" 
+                              SelectionChanged="ComboBox_SelectionChanged">
 
                     </ComboBox>
 
@@ -165,7 +168,7 @@
             </Border>
             <!-- Bookmark list buttons.-->
             <Border HorizontalAlignment="Right" BorderThickness="1" x:Name="bookmarkBorder"
-                    BorderBrush="{DynamicResource PrimaryHueMidBrush}" Visibility="Hidden"
+                    BorderBrush="{DynamicResource PrimaryHueMidBrush}" Visibility="Visible"
                     CornerRadius="5" Background="{DynamicResource MaterialDesignPaper}">
                 <Grid>
                     <Grid.RowDefinitions>
@@ -194,7 +197,7 @@
                                             <ColumnDefinition Width="*"></ColumnDefinition>
                                             <ColumnDefinition Width="auto"></ColumnDefinition>
                                         </Grid.ColumnDefinitions>
-                                        <Label Grid.Column="0" VerticalAlignment="Center" Name="bookmarkLabels" Content="{Binding}"></Label>
+                                        <Label Grid.Column="0" VerticalAlignment="Center" Name="bookmarkLabels" Content="{Binding Value}"></Label>
                                         <Button Grid.Column="1" Name="bookmarkDeleteButtons" Style="{StaticResource MaterialDesignFlatButton}">
                                             <materialDesign:PackIcon Kind="Delete" ></materialDesign:PackIcon>
                                         </Button>
