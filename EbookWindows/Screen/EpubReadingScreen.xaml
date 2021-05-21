@@ -189,7 +189,7 @@
                     <Separator Grid.Row="1"  Margin="5,0,5,0"></Separator>
                     <Grid Grid.Row="2">
                         <ListView x:Name="bookmarkListview" 
-                                  HorizontalContentAlignment="Stretch" VerticalAlignment="Stretch">
+                                  HorizontalContentAlignment="Stretch" VerticalAlignment="Stretch" SelectionChanged="bookmarkListview_SelectionChanged">
                             <ListView.ItemTemplate>
                                 <DataTemplate>
                                     <Grid>
@@ -198,7 +198,8 @@
                                             <ColumnDefinition Width="auto"></ColumnDefinition>
                                         </Grid.ColumnDefinitions>
                                         <Label Grid.Column="0" VerticalAlignment="Center" Name="bookmarkLabels" Content="{Binding Value}"></Label>
-                                        <Button Grid.Column="1" Name="bookmarkDeleteButtons" Style="{StaticResource MaterialDesignFlatButton}">
+                                        <Button Grid.Column="1" Name="bookmarkDeleteButtons" Click="bookmarkDeleteButtons_Click"
+                                                Style="{StaticResource MaterialDesignFlatButton}">
                                             <materialDesign:PackIcon Kind="Delete" ></materialDesign:PackIcon>
                                         </Button>
                                     </Grid>

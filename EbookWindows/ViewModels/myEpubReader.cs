@@ -24,7 +24,6 @@ namespace EbookWindows.ViewModels
 
         //Variable name for read epub 
         public static List<string> menuItems = new List<string>();
-
        
         public static Dictionary<string, string> tableContent = new Dictionary<string, string>();
      
@@ -38,11 +37,7 @@ namespace EbookWindows.ViewModels
      
         }
 
-        private myEpubReader(string filePath)
-        {
-            ReadFile(filePath);
-        }
-
+  
         public static myEpubReader getInstance()
         {
             if (instance == null)
@@ -180,25 +175,16 @@ namespace EbookWindows.ViewModels
 
         #endregion
 
+        #region table of contents
         private static void getTableContent(List<EpubNavigationItem> navigation)
         {
             // Enumerating chapters
             foreach (EpubNavigationItem chapter in navigation)
             {
                 if (chapter.Link != null)
-                {
-                    //// Link of chapter
-                    //string link = chapter.Link.ContentFileName;
-                    //if (link.IndexOf("../") != -1)
-                    //    tableContentLink.Add(GetPath(link.Substring(3)));
-                    //else tableContentLink.Add(GetPath(link));
-                    //tableContentTitle.Add(chapter.Title);
-                    
-
-                    // Link of chapter
+                {                  
                     string link = menuItems[getIndex(menuItems, chapter.Link.ContentFileName)];
-                    tableContent.Add(link, chapter.Title);
-                    
+                    tableContent.Add(link, chapter.Title);                    
                 }
                 if (chapter.NestedItems.Count > 0)
                 {
@@ -207,7 +193,6 @@ namespace EbookWindows.ViewModels
                 }
             }
         }
-
         private static void setTableContent()
         {
             Dictionary<string, string> realTablecontent = new Dictionary<string, string>();
@@ -228,6 +213,7 @@ namespace EbookWindows.ViewModels
             tableContent.Clear();
             tableContent = realTablecontent;
         }
+        #endregion
 
         #region bookmark
         public static int addBookmark(string chapterLink)
@@ -236,6 +222,15 @@ namespace EbookWindows.ViewModels
                 return 0; //chapter already bookmarked
             bookmarks.Add(chapterLink, tableContent[chapterLink]);
             updateBookmarkToFile((_tempPath + "\\"+ _baseMenuXmlDiretory + "\\" + bookmarkFileName));
+            return 1;
+        }
+        public static int deleteBookmark(string chapterLink)
+        {
+            if (!bookmarks.ContainsKey(chapterLink)){
+                return 0;
+            }
+            bookmarks.Remove(chapterLink);
+            updateBookmarkToFile((_tempPath + "\\" + _baseMenuXmlDiretory + "\\" + bookmarkFileName));
             return 1;
         }
 

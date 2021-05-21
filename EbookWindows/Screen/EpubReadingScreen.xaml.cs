@@ -311,9 +311,38 @@ namespace EbookWindows.Screen
         }
         private void addBookmarkButton_Click(object sender, RoutedEventArgs e)
         {
-            myEpubReader.addBookmark(myEpubReader.menuItems[currentPage]);
-            bookmarkListview.Items.Refresh();
+            if (myEpubReader.addBookmark(myEpubReader.menuItems[currentPage]) == 1)
+                bookmarkListview.Items.Refresh();
+            
+                //do nothing
         }
+
+        private void bookmarkDeleteButtons_Click(object sender, RoutedEventArgs e)
+        {
+            string chapterLink;
+            Button delete = (Button)sender;
+            chapterLink = delete.DataContext.GetType().GetProperty("Key").GetValue(delete.DataContext, null).ToString();
+            if (myEpubReader.deleteBookmark(chapterLink) == 1)
+                bookmarkListview.Items.Refresh();
+
+            //do nothing
+
+        }
+
         #endregion
+
+        private void bookmarkListview_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            string chapterLink;
+            ListView list = (ListView)sender;
+            if (list.SelectedItem != null)
+            {
+                chapterLink = list.SelectedItem.GetType().GetProperty("Key").GetValue(list.SelectedItem, null).ToString();
+                currentPage = getIndex(myEpubReader.menuItems, chapterLink);
+                TableContentComboBox.SelectedIndex = currentPage;
+                epubWebBrowser.Address = chapterLink;
+            }
+
+        }
     }
 }
