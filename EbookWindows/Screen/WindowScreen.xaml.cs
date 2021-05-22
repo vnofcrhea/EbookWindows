@@ -131,7 +131,7 @@ namespace EbookWindows.Screen
         }
         public void LoadShelf()
         {
-            BookTextShelf.LoadDataBookShelf();
+           // BookTextShelf.LoadDataBookShelf();
         }
         private void ReturnHome_Click(object sender, RoutedEventArgs e)
         {
@@ -148,9 +148,9 @@ namespace EbookWindows.Screen
                     pdfReadingScreen.homeBtn_Click(sender,e);
                     return;
                 }
-                else if (epubReadingScreen.Visibility == Visibility.Visible)
+                else if (comicReadingScreen.Visibility == Visibility.Visible)
                 {
-                    epubReadingScreen.Visibility = Visibility.Collapsed;
+                    comicReadingScreen.Visibility = Visibility.Collapsed;
                     return;
                 }
                 else if(comicReadingScreen.Visibility == Visibility.Visible)
