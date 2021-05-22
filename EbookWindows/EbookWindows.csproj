@@ -110,18 +110,23 @@
     <Compile Include="Screen\Pdf_ReadingScreen.xaml.cs">
       <DependentUpon>Pdf_ReadingScreen.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Screen\RecentFileUserControl.xaml.cs">
+      <DependentUpon>RecentFileUserControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Screen\Shelf.xaml.cs">
       <DependentUpon>Shelf.xaml</DependentUpon>
     </Compile>
     <Compile Include="Screen\WindowScreen.xaml.cs">
       <DependentUpon>WindowScreen.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ViewModels\Converter.cs" />
     <Compile Include="ViewModels\myEpubReader.cs" />
     <Compile Include="ViewModels\pdfDocumentViewModel.cs" />
     <Page Include="Screen\PopupEbookScreen.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Compile Include="ViewModels\RecentFile.cs" />
     <Compile Include="ViewModels\ViewModels.cs" />
     <Page Include="Screen\DetailScreen.xaml">
       <SubType>Designer</SubType>
@@ -148,6 +153,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="Screen\Pdf_ReadingScreen.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Screen\RecentFileUserControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -186,6 +195,14 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Icon\epub.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Icon\pdf.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\MaterialDesignThemes.4.0.0\build\MaterialDesignThemes.targets" Condition="Exists('..\packages\MaterialDesignThemes.4.0.0\build\MaterialDesignThemes.targets')" />
