@@ -9,7 +9,7 @@
              xmlns:materialDesignConverters="clr-namespace:MaterialDesignThemes.Wpf.Converters;assembly=MaterialDesignThemes.Wpf" xmlns:local1="clr-namespace:EbookWindows.ViewModels"
              Name="recentFileScreen"
              mc:Ignorable="d"  Loaded="LoadData"
-             d:DesignHeight="600" d:DesignWidth="300" >
+             d:DesignHeight="600" d:DesignWidth="500" >
     <UserControl.Resources>
         <local1:AbsoluteConverter x:Key="converter"  />
     </UserControl.Resources>
@@ -19,7 +19,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="40"></RowDefinition>
             <RowDefinition Height="auto"></RowDefinition>
-            <RowDefinition Height="25"></RowDefinition>
+            <RowDefinition Height="40"></RowDefinition>
         </Grid.RowDefinitions>
         <!--Title-->
 
@@ -35,34 +35,22 @@
 
         </Grid>
 
-        <Border Grid.Row="1"  Padding="0" BorderThickness="1 0 0 0" BorderBrush="{DynamicResource MaterialDesignDivider}">
+        <Border Grid.Row="1"  Padding="0" BorderThickness="0" BorderBrush="{DynamicResource MaterialDesignDivider}">
             <!--Recent File List-->
             <ListView Grid.Row="1" Name="recentFileListView" ScrollViewer.HorizontalScrollBarVisibility="Hidden">
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <Border Padding="3" BorderThickness="0 0 0 1" BorderBrush="{DynamicResource MaterialDesignDivider}">
-                            <StackPanel Orientation="Horizontal" >
-                                <Image Source="{Binding fileIcon, Converter={StaticResource converter}}"  Width="32" Height="32"/>
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="auto"></ColumnDefinition>
-                                        <ColumnDefinition Width="20"></ColumnDefinition>
-                                    </Grid.ColumnDefinitions>
-                                    <TextBlock Grid.Column="0" Text="{Binding fileName}" Margin="5,0,0,0" Width="250" VerticalAlignment="Center" FontWeight="Bold"
-                                                Foreground="AntiqueWhite" TextWrapping="Wrap" />
-                                    <Button  x:Name="deleteBtn" Grid.Column="1" Padding="0" Style="{StaticResource MaterialDesignFlatButton}" Width="20" Height="20"
-                                            Click="deleteBtn_Click">
-                                        <materialDesign:PackIcon Kind="DeleteCircleOutline" Margin="0" Width="20" Height="20" ></materialDesign:PackIcon>
-                                    </Button>
-                                </Grid>
-                            </StackPanel>
-                        </Border>
+                        <StackPanel Orientation="Horizontal">
+                            <Image DockPanel.Dock="Left" Source="{Binding fileIcon, Converter={StaticResource converter}}"  Width="32" Height="32"/>
+                            <TextBlock DockPanel.Dock="Left" Grid.Column="0" Text="{Binding fileName}" Margin="5,0,0,0" HorizontalAlignment="Stretch"  VerticalAlignment="Center" FontWeight="Bold"
+                                                Foreground="AntiqueWhite" TextWrapping="Wrap" TextTrimming="CharacterEllipsis" />
+                        </StackPanel>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
         </Border>
         <!--View button-->
-        <Button Grid.Row="2" x:Name="viewBtn" Click="viewBtn_CLick" VerticalContentAlignment="Top" Content="View more">
+        <Button Grid.Row="2" x:Name="viewBtn" Click="viewBtn_CLick" Style="{StaticResource MaterialDesignOutlinedButton}" Margin="2,0" VerticalContentAlignment="Top" Content="View more">
         </Button>
 
 
