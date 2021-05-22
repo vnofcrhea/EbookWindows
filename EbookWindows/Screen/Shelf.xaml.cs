@@ -25,10 +25,12 @@ namespace EbookWindows.Screen
     public partial class Shelf : UserControl
     {
         public string ShelfTitle = "RECENT BOOKS";
+        
         public Shelf()
         {
             InitializeComponent();
             LoadDataBookShelf();
+            ShelftitleBox.Text = ShelfTitle;
         }
         public void LoadDataBookShelf()
         {
@@ -53,18 +55,21 @@ namespace EbookWindows.Screen
                     }
                 }
             }
-            lbTodoList.ItemsSource = shelfTags;
+            this.Dispatcher.Invoke(() =>{
+                lbTodoList.ItemsSource = shelfTags;
+            });
+            
 
 
         }    
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            ScrollList.ScrollToHorizontalOffset(ScrollList.HorizontalOffset + 150);
+            //ScrollList.ScrollToHorizontalOffset(ScrollList.HorizontalOffset + 150);
             
         }
         private void Button1_Click(object sender, RoutedEventArgs e)
         {
-            ScrollList.ScrollToHorizontalOffset(ScrollList.HorizontalOffset - 150);
+//ScrollList.ScrollToHorizontalOffset(ScrollList.HorizontalOffset - 150);
         }
 
         private void DetailScreen_Click(object sender, RoutedEventArgs e)

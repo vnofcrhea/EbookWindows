@@ -129,6 +129,10 @@ namespace EbookWindows.Screen
             detailScreen.Visibility = Visibility.Collapsed;
             comicReadingScreen.Visibility = Visibility.Visible;
         }
+        public void LoadShelf()
+        {
+            BookTextShelf.LoadDataBookShelf();
+        }
         private void ReturnHome_Click(object sender, RoutedEventArgs e)
         {
             if(MainGrid.Visibility != Visibility.Visible)
@@ -166,6 +170,8 @@ namespace EbookWindows.Screen
         {
             MainGrid.Visibility = Visibility.Visible;
             pdfReadingScreen.Visibility = Visibility.Collapsed;
+            epubReadingScreen.Visibility = Visibility.Collapsed;
+            comicReadingScreen.Visibility = Visibility.Collapsed;
         }
 
 

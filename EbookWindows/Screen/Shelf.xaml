@@ -11,49 +11,42 @@
              d:DesignHeight="450" d:DesignWidth="800"
              >
     <Grid Margin="0,5">
-        <StackPanel>
-            <DockPanel  >
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="32"></RowDefinition>
+        </Grid.RowDefinitions>
+        <DockPanel Grid.Row="0">
                 <Border DockPanel.Dock="Left" Margin="5,0,0,0" Width="30" Height="2" Background="{StaticResource PrimaryHueMidBrush}" ></Border>
-                <TextBlock Name="ShelftitleBox" DockPanel.Dock="Left" Margin="5,0" Foreground="{StaticResource PrimaryHueMidBrush}" FontWeight="Bold"></TextBlock>
+                <TextBlock VerticalAlignment="Center" Name="ShelftitleBox" DockPanel.Dock="Left" Foreground="{StaticResource PrimaryHueMidBrush}" FontWeight="Bold"></TextBlock>
                 <Button DockPanel.Dock="Left" Click="Button_Click" Width="20" Height="20" Margin="0" Padding="0" Style="{StaticResource MaterialDesignFlatButton}" >
                     <materialDesign:PackIcon Kind="ChevronRight" Width="20" Height="20"  />
                 </Button>
-                <Button DockPanel.Dock="Right" Click="Button_Click" Width="20" Height="20" Margin="0" Padding="0" Style="{StaticResource MaterialDesignFlatButton}">
-                    <materialDesign:PackIcon Kind="ChevronRight"   />
-                </Button>
-                <Button Click="Button1_Click" DockPanel.Dock="Right" Width="20" Height="20"  Margin="0" Padding="0"  Style="{StaticResource MaterialDesignFlatButton}" >
-                    <materialDesign:PackIcon Kind="ChevronLeft" />
-                </Button>
+                
 
 
                 <Border DockPanel.Dock="Right" Width="Auto" Margin="0,0,5,0" Height="2" Background="{StaticResource PrimaryHueMidBrush}"></Border>
 
 
             </DockPanel>
-            <Grid >
-                <ScrollViewer Name="ScrollList"  VerticalScrollBarVisibility="Disabled"  HorizontalScrollBarVisibility="Hidden" CanContentScroll="False" HorizontalAlignment="Left" VirtualizingPanel.ScrollUnit="Pixel">
-                    <ListView Name="lbTodoList" ItemsSource="{Binding}" Margin="0,5,0,5" SelectionChanged="lbTodoList_SelectionChanged">
-                        <ListView.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <WrapPanel Orientation="Horizontal"  VerticalAlignment="Top"></WrapPanel>
-                            </ItemsPanelTemplate>
-                        </ListView.ItemsPanel>
-                        <ListView.ItemTemplate>
-                            <DataTemplate>
-                                <DockPanel Margin="0" Width="150" Height="220">
-                                    <StackPanel>
-                                        <Image Source="{Binding img_dir}" ></Image>
-                                        <TextBlock DockPanel.Dock="Bottom" Text="{Binding Title}"  Margin="0,3,0,0" TextTrimming="CharacterEllipsis">
-                                        </TextBlock>
-                                    </StackPanel>
-                                </DockPanel>
-                            </DataTemplate>
-                        </ListView.ItemTemplate>
-                    </ListView>
-                </ScrollViewer>
-            </Grid>
-            <Button Margin="5,0">VIEW MORE</Button>
-        </StackPanel>
-        
+        <Grid Grid.Row="1">
+            <ListView Padding="0,0,-40,0" Name="lbTodoList" ScrollViewer.CanContentScroll="False" ScrollViewer.VerticalScrollBarVisibility="Hidden" VerticalContentAlignment="Top"   ItemsSource="{Binding}" Margin="0,5,0,5" SelectionChanged="lbTodoList_SelectionChanged" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                <ListView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel  FlowDirection="LeftToRight"  Orientation="Horizontal" HorizontalAlignment="Stretch"  ></WrapPanel>
+                    </ItemsPanelTemplate>
+                </ListView.ItemsPanel>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Margin="0" Width="210" Height="350">
+                            <Image Source="{Binding img_dir}" DockPanel.Dock="Top" StretchDirection="Both" Stretch="Fill"></Image>
+                            <TextBlock Padding ="3,5" Background="#6a000000" VerticalAlignment="Bottom" DockPanel.Dock="Bottom" Text="{Binding Title}"  Margin="0,3,0,0" TextTrimming="CharacterEllipsis"></TextBlock>
+
+                        </Grid>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </Grid>
+        <Button  Grid.Row="2" Margin="5,0" Style="{StaticResource MaterialDesignOutlinedButton}" VerticalAlignment="Bottom">VIEW MORE</Button>
     </Grid>
 </UserControl>
