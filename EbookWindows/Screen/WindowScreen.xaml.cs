@@ -153,6 +153,11 @@ namespace EbookWindows.Screen
                     epubReadingScreen.Visibility = Visibility.Collapsed;
                     return;
                 }
+                else if(comicReadingScreen.Visibility == Visibility.Visible)
+                {
+                    comicReadingScreen.Visibility = Visibility.Collapsed;
+                    return;
+                }
                 else
                 {
                     //do nothing
@@ -182,7 +187,6 @@ namespace EbookWindows.Screen
                 pdfReadingScreen.LoadData(filePath);
                 MainGrid.Visibility = Visibility.Collapsed;
                 pdfReadingScreen.Visibility = Visibility.Visible;
-
 
             }
             else if (fileExtension.Equals(".epub"))

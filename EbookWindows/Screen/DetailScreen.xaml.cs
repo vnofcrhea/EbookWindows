@@ -45,10 +45,16 @@ namespace EbookWindows.Screen
                 JsonSerializer serializer = new JsonSerializer();
                 App.Items = (Root)serializer.Deserialize(file, typeof(Root));
             }
+            
             page_numbers = App.Items.chapter_name.Count / chapter_limit + 1;
             page_index = 1;
             this.Dispatcher.Invoke(() =>
             {
+                bookAuthor.Text = App.Items.book_author;
+                bookTotalChapter.Text = App.Items.chapter_name.Count.ToString();
+                bookDec.Text = App.Items.book_intro;
+                bookName.Text = App.Items.book_name;
+                bookImg.Source = new BitmapImage(new Uri(item.book_dir + "\\img.jpg"));
                 LoadPaging(page_index);
                 PagePanelReload();
             });
@@ -207,6 +213,33 @@ namespace EbookWindows.Screen
                 Page_Panel.Items.Add(j);
                 count++;
             }
+            if(page_index == 1)
+            {
+                lastpagebtn.IsEnabled = false;
+                prepagebtn.IsEnabled = false;
+                if(page_numbers==1)
+                {
+                    nextpagebtn.IsEnabled = false;
+                    lastpagebtn.IsEnabled = false;
+                    return;
+                }
+                nextpagebtn.IsEnabled = true;
+                lastpagebtn.IsEnabled = true;
+            }
+            else if(page_index == page_numbers)
+            {
+                nextpagebtn.IsEnabled = false;
+                lastpagebtn.IsEnabled = false;
+                lastpagebtn.IsEnabled = true;
+                prepagebtn.IsEnabled = true;
+            }  
+            else
+            {
+                nextpagebtn.IsEnabled = true;
+                lastpagebtn.IsEnabled = true;
+                lastpagebtn.IsEnabled = true;
+                prepagebtn.IsEnabled = true;
+            }    
         }
 
         private void Select_Click(object sender, RoutedPropertyChangedEventArgs<object> e)
@@ -275,6 +308,41 @@ namespace EbookWindows.Screen
         private void DownloadContent_Click(object sender, RoutedEventArgs e)
         {
             Download_Content();
+        }
+
+        private void NextPage_Click(object sender, RoutedEventArgs e)
+        {
+            page_index++;
+            LoadPaging(page_index);
+            PagePanelReload();
+        }
+
+        private void LastPage_Click(object sender, RoutedEventArgs e)
+        {
+            page_index = page_numbers;
+            LoadPaging(page_index);
+            PagePanelReload();
+        }
+
+        private void PreviousPage_Click(object sender, RoutedEventArgs e)
+        {
+            page_index--;
+            LoadPaging(page_index);
+            PagePanelReload();
+
+
+        }
+
+        private void FirstPage_Click(object sender, RoutedEventArgs e)
+        {
+            page_index=1;
+            LoadPaging(page_index);
+            PagePanelReload();
+        }
+
+        private void ScrollViewer_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            
         }
     }
 }

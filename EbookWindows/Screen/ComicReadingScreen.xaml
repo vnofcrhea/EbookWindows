@@ -31,11 +31,11 @@
     <Grid Name="MainGrid">
         <Grid Margin="0">
             <!--#region Vùng nội dung-->
-            <ScrollViewer SizeChanged="ScrollViewer_SizeChanged">   
-            <TextBox x:Name="Content_Box" TextWrapping="WrapWithOverflow" FontSize="30" VerticalAlignment="Top"  HorizontalAlignment="Center" FontFamily="Times New Roman" IsReadOnly="True" TextChanged="Content_Box_TextChanged" AcceptsTab="False" Width="Auto"
-              Padding="50,0" 
-                     BorderThickness="1"
-                     BorderBrush="AliceBlue">
+            <ScrollViewer x:Name="scrollContent_Box"  Margin="0,0,0,42" HorizontalScrollBarVisibility="Auto">   
+            <TextBox Margin="0,0,0,-2"  x:Name="Content_Box" TextWrapping="WrapWithOverflow" VerticalAlignment="Top"  HorizontalAlignment="Center" FontFamily="Times New Roman" IsReadOnly="True" TextChanged="Content_Box_TextChanged" AcceptsTab="False" Width="Auto"
+              Padding="30,20,30,20" 
+                     BorderThickness="0.2,0"
+                     BorderBrush="Gray">
                 <TextBox.LayoutTransform>
                     <ScaleTransform x:Name="Content_Box_Scaling"/>
                 </TextBox.LayoutTransform>
@@ -72,39 +72,24 @@
                                     <Setter Property="Margin" Value="8,8,8,8" />
                                 </Style>
                             </Grid.Resources>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="Auto" />
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="*" />
-                                <RowDefinition Height="*" />
-                                <RowDefinition Height="*" />
-                                <RowDefinition Height="*" />
-                                <RowDefinition Height="*" />
-                                <RowDefinition Height="*" />
-                            </Grid.RowDefinitions>
-                            <TextBlock Grid.Column="0" Grid.Row="0" Style="{StaticResource MaterialDesignHeadline6TextBlock}" Margin="8,8,8,16" Text="OPTIONS" />
-                            <TextBox Grid.Column="0" Grid.Row="1" materialDesign:HintAssist.Hint="Setting 1" Text="200" />
-                            <TextBox Grid.Column="0" Grid.Row="2" materialDesign:HintAssist.Hint="Setting 2" Text="400" />
-                            <TextBox Grid.Column="0" Grid.Row="3" materialDesign:HintAssist.Hint="Setting 3" Text="600" />
-                            <CheckBox Grid.Column="1" Grid.Row="1" VerticalAlignment="Bottom" />
-                            <CheckBox Grid.Column="1" Grid.Row="2" IsChecked="True" VerticalAlignment="Bottom" />
-                            <CheckBox Grid.Column="1" Grid.Row="3" VerticalAlignment="Bottom" />
-                            <ComboBox Grid.Column="0" Grid.Row="4" materialDesign:HintAssist.Hint="Setting 4" materialDesign:HintAssist.IsFloating="True" MaxDropDownHeight="200" Margin="8">
-                                <ComboBoxItem Content="25%" />
-                                <ComboBoxItem Content="50%" />
-                                <ComboBoxItem Content="75%" />
-                                <ComboBoxItem Content="100%" />
-                                <ComboBoxItem Content="150%" />
-                                <ComboBoxItem Content="200%" />
-                                <ComboBoxItem Content="250%" />
-                                <ComboBoxItem Content="500%" />
-                            </ComboBox>
-                            <StackPanel Grid.Row="5" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Right">
-                                <Button Content="_Save" Command="{x:Static materialDesign:PopupBox.ClosePopupCommand}" />
-                                <Button Content="_Cancel" Command="{x:Static materialDesign:PopupBox.ClosePopupCommand}" >
-                                </Button>
+                            <StackPanel>
+                                <TextBlock Style="{StaticResource MaterialDesignHeadline6TextBlock}" Margin="8,8,8,16" Text="OPTIONS" />
+
+                                <ComboBox materialDesign:HintAssist.IsFloating="True" materialDesign:HintAssist.Hint="Font Family" MaxDropDownHeight="200" Margin="8" SelectionChanged="Font_Changed">
+                                    <ComboBoxItem Content="Times New Roman" IsSelected="True"/>
+                                    <ComboBoxItem Content="Roboto" />
+                                    <ComboBoxItem Content="Arial" />
+                                    <ComboBoxItem Content="Tahoma" />
+                                </ComboBox>
+                                <TextBlock Text="Font Size" Margin="8,8,8,8" FontSize="10" Foreground="{DynamicResource MaterialDesignTextAreaBorder}"></TextBlock>
+                                <Slider Margin ="8,-32,8,8" Value="26" Minimum="10" Maximum="40" Style="{StaticResource MaterialDesignDiscreteSlider}" ValueChanged="Slider_ValueChanged"/>
+                                <StackPanel Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Left" Margin="8,8,8,8">
+                                    <TextBlock Text="Dark Mode" FontSize="10" Foreground="{DynamicResource MaterialDesignTextAreaBorder}"></TextBlock>
+                                    <CheckBox Margin="8,0,0,0"   Style="{StaticResource MaterialDesignSwitchToggleButton}" />
+                                </StackPanel>
+                                <StackPanel Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Right" >
+                                    <Button Content="Close" Command="{x:Static materialDesign:PopupBox.ClosePopupCommand}" />
+                                </StackPanel>
                             </StackPanel>
                         </Grid>
                     </materialDesign:PopupBox>
@@ -127,12 +112,13 @@
             </Border>
             <!--endregion-->
             <!--#region Nút ẩn thanh công cụ để đọc cho dễ hơn.-->
-            <Button HorizontalAlignment="Right" VerticalAlignment="Top" Margin="5"  Style="{StaticResource MaterialDesignFlatButton}" Click="ShowHideToolButton_Click">
+
+            <Button HorizontalAlignment="Right" VerticalAlignment="Top" Margin="5,5,25,5"  Style="{StaticResource MaterialDesignFlatButton}" Click="ShowHideToolButton_Click">
                 <materialDesign:PackIcon Kind="Eye" ></materialDesign:PackIcon>
             </Button>
             <!--#endregion-->
-            <!--#region Bottom Panel-->
-            <Border Name="BottomPanelTool" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" BorderThickness="0,2,0,0" BorderBrush="{DynamicResource PrimaryHueDarkBrush}" Background="{DynamicResource MaterialDesignPaper}" >
+                <!--#region Bottom Panel-->
+            <Border  Name="BottomPanelTool" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" BorderThickness="0,2,0,0" BorderBrush="{DynamicResource PrimaryHueDarkBrush}" Background="{DynamicResource MaterialDesignPaper}" >
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                     <StackPanel.Resources>
                         <Style TargetType="{x:Type Button}" BasedOn="{StaticResource MaterialDesignFlatButton}">
@@ -146,10 +132,10 @@
                     </StackPanel.Resources>
 
                     <Button Click="PreviousChapter_Click">
-                        <materialDesign:PackIcon Kind="ChevronLeft"></materialDesign:PackIcon>
+                        <materialDesign:PackIcon Kind="ChevronLeft" Width="24" Height="24"></materialDesign:PackIcon>
                     </Button>
 
-                    <ComboBox  x:Name ="Chapter_List" materialDesign:ComboBoxAssist.ClassicMode="True" BorderThickness="0" Width="100" Padding="5" BorderBrush="{DynamicResource PrimaryHueMidBrush}" DisplayMemberPath="Title" SelectedValuePath="link" SelectionChanged="Chapter_Changed">
+                    <ComboBox  x:Name ="Chapter_List" materialDesign:ComboBoxAssist.ClassicMode="True" BorderThickness="0" Width="150" Padding="5" BorderBrush="{DynamicResource PrimaryHueMidBrush}" DisplayMemberPath="Title" SelectedValuePath="link" SelectionChanged="Chapter_Changed">
                         <ComboBox.ItemsPanel>
                             <ItemsPanelTemplate>
                                 <VirtualizingStackPanel/>
@@ -158,9 +144,9 @@
                     </ComboBox>
 
                     <Button Click="NextChapter_Click">
-                        <materialDesign:PackIcon Kind="ChevronRight"></materialDesign:PackIcon>
+                        <materialDesign:PackIcon Kind="ChevronRight" Width="24" Height="24"></materialDesign:PackIcon>
                     </Button>
-                    
+
                 </StackPanel>
             </Border>
             <!--#endregion-->

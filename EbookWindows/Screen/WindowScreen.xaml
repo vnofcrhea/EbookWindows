@@ -45,14 +45,14 @@
         </ResourceDictionary>
 
     </Window.Resources>
-    <Border BorderThickness="0.15" BorderBrush="{StaticResource PrimaryHueDarkBrush}">
+    <Border BorderThickness="0" BorderBrush="{StaticResource PrimaryHueDarkBrush}" >
         <Border.Style>
             <Style TargetType="{x:Type Border}">
                 <Style.Triggers>
                     <!-- Add to avoid border disappearing when window is maximised -->
                     <DataTrigger Binding="{Binding WindowState, RelativeSource={RelativeSource AncestorType=Window}}" 
                                  Value="Maximized">
-                        <Setter Property="Margin" Value="10"/>
+                        <Setter Property="Margin" Value="8"/>
                     </DataTrigger>
                     <DataTrigger Binding="{Binding WindowState, RelativeSource={RelativeSource AncestorType=Window}}" 
                                  Value="Normal">
@@ -67,7 +67,7 @@
                 <RowDefinition Height="30"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            <Border Grid.Row="0">
+            <Border Grid.Row="0" Background="#0F000000">
                 <Grid Grid.Row="0" MouseMove="DragStart" >
                     <Label>EbookWindows</Label>
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Right" Grid.RowSpan="2" Grid.Row="0">
@@ -86,7 +86,7 @@
                         </Button>
                         <Button Click="Minimize">
                             <materialDesign:PackIcon Kind="WindowMinimize"  />
-                        </Button >
+                        </Button>
                         <Button Click="Maximize">
                             <materialDesign:PackIcon Kind="WindowMaximize" />
                         </Button>
