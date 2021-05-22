@@ -224,7 +224,7 @@ namespace EbookWindows.Screen
             }
         }
 
-        private void AddToLibrary_Click(object sender, RoutedEventArgs e)
+        private async void AddToLibrary_Click(object sender, RoutedEventArgs e)
         {
 
             var path_data = App.path + "\\data\\book" + "\\" + App.Items.source + "\\" + App.Items.book_id;
@@ -237,8 +237,10 @@ namespace EbookWindows.Screen
             File.WriteAllText(path_data + "\\" + "detail.json", JsonConvert.SerializeObject(App.Items));
             using (WebClient client = new WebClient())
             {
-                client.DownloadFileAsync(new Uri(App.Items.img_url), path_data + "\\" + "img.jpg");
+                await Task.Run(()=> { client.DownloadFile(new Uri(App.Items.img_url), path_data + "\\" + "img.jpg"); });
             };
+            WindowScreen win = (WindowScreen)Window.GetWindow(this);
+            win.LoadShelf();
         }
         public void Download_Content()
         {
