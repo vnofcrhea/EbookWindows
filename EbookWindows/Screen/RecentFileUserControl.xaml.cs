@@ -44,7 +44,12 @@ namespace EbookWindows.Screen
             if(viewingList.Count() == minItems && viewBtn.Content.Equals(viewMore))
             {
                 viewingList.RemoveAt(minItems-1);           
+            } else if(viewingList.Count() == maxItems && viewBtn.Content.Equals(viewLess))
+            {
+                viewingList.RemoveAt(maxItems - 1);
             }
+            else{ //do nothing
+                  } 
             viewingList.Insert(0, temp);
             recentFileList.Insert(0, temp);
             return true;
@@ -54,7 +59,7 @@ namespace EbookWindows.Screen
         {
             viewingList.Insert(0, viewingList[index]);
             viewingList.RemoveAt(index + 1);
-            recentFileList.Insert(0, viewingList[index]);
+            recentFileList.Insert(0, recentFileList[index]);
             recentFileList.RemoveAt(index + 1);
             return true;
         }
@@ -118,12 +123,12 @@ namespace EbookWindows.Screen
                     WindowScreen home = (WindowScreen)Window.GetWindow(this);
                     if (viewingList[index].fileIcon.Equals(pdf))
                     {
-                        home.filePathChanged(viewingList[index].filePath);
+                        home.filePathChanged(viewingList[index].filePath, index);
                         //openAFileInRecentFileList(index);
                     }
                     else if (viewingList[index].fileIcon.Equals(epub))
                     {
-                        home.filePathChanged(viewingList[index].filePath);
+                        home.filePathChanged(viewingList[index].filePath, index);
                        // openAFileInRecentFileList(index);
                     }
                     else
@@ -135,9 +140,12 @@ namespace EbookWindows.Screen
            
         }
 
-        
-
-
+        //Write File
+        public void SaveRecentFileList()
+        {
+            RecentFileDao recentFileDao = new RecentFileDao();
+            recentFileDao.WriteNewRecentFileData(recentFileList);
+        }
 
 
     }

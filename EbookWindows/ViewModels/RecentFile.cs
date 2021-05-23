@@ -35,67 +35,79 @@ namespace EbookWindows.ViewModels
             {
 
                 FileStream fileStream = new FileStream(strFileName, FileMode.Create);
+                fileStream.Close();
             }
             else
             {
-                String[] filePathList;
-                filePathList = ReadFile(strFileName);
-                if(filePathList.Length != 0)
+                String[] recentFileData;
+                recentFileData = ReadFile(strFileName);
+                if (recentFileData.Length != 0)
                 {
-                    list = LoadListFromData(filePathList);
+                    list = LoadListFromData(recentFileData);
                 }
             }
-            //var list = new BindingList<RecentFile>()
-            //    {
-            //        new RecentFile() { fileName="Hoàng Tử Bé", filePath="akisnkbdsac b", fileIcon="Icon/epub.png"},
-            //        new RecentFile() { fileName="Lâu Đài Quỷ", filePath="akisnkbdsac b", fileIcon="Icon/epub.png"},
-            //        new RecentFile() { fileName="Chuyện Mèo Con Dạy Hải Âu Biết Bay Mèo Con Dạy Hải Âu Biết Bay", filePath="akisnkbdsac b", fileIcon="Icon/pdf.png"},
-            //        new RecentFile() { fileName="Số Đỏ", filePath="akisnkbdsac b", fileIcon="Icon/epub.png"},
-            //        new RecentFile() { fileName="Chuyện Ngày Mưa", filePath="akisnkbdsac b", fileIcon="Icon/epub.png"},
-            //        new RecentFile() { fileName="Hoàng Tử Bé", filePath="akisnkbdsac b", fileIcon="Icon/epub.png"},
-            //        new RecentFile() { fileName="Lâu Đài Quỷ", filePath="akisnkbdsac b", fileIcon="Icon/epub.png"},
-            //        new RecentFile() { fileName="Chuyện Mèo Con Dạy Hải Âu Biết Bay", filePath="akisnkbdsac b", fileIcon="Icon/pdf.png"},
-            //        new RecentFile() { fileName="Số Đỏ", filePath="akisnkbdsac b", fileIcon="Icon/epub.png"},
-            //        new RecentFile() { fileName="Chuyện Ngày Mưa", filePath="akisnkbdsac b", fileIcon="Icon/epub.png"},
-            //};
-
             return list;
         }
 
-        private BindingList<RecentFile> LoadListFromData(string[] filePathList)
+        private BindingList<RecentFile> LoadListFromData(string[] recentFileData)
         {
-            BindingList<RecentFile> recentFile = new BindingList<RecentFile>();
-            int numberOfFilePath = filePathList.Length / 3;
+            BindingList<RecentFile> recentFileList = new BindingList<RecentFile>();
+            int numberOfFilePath = recentFileData.Length / 3;
             if (numberOfFilePath > 10)
             {
-                for(int i = 0; i< filePathList.Length; i = i + 3)
+                for(int i = 0; i< recentFileData.Length; i = i + 3)
                 {
-                    if (File.Exists(filePathList[i + 1]))
+                    if (File.Exists(recentFileData[i + 1]))
                     {
                         RecentFile temp = new RecentFile();
-                        temp.fileName = filePathList[i];
-                        temp.filePath = filePathList[i + 1];
-                        temp.fileIcon = filePathList[i + 2];
-                        recentFile.Add(temp);
+                        temp.fileName = recentFileData[i];
+                        temp.filePath = recentFileData[i + 1];
+                        temp.fileIcon = recentFileData[i + 2];
+                        recentFileList.Add(temp);
                     }            
                 }
             }
             else
             {
-                for (int i = 0; i < filePathList.Length; i=i+3)
+                for (int i = 0; i < recentFileData.Length; i=i+3)
                 {
-                    if (File.Exists(filePathList[i + 1]))
+                    if (File.Exists(recentFileData[i + 1]))
                     {
                         RecentFile temp = new RecentFile();
-                        temp.fileName = filePathList[i];
-                        temp.filePath = filePathList[i + 1];
-                        temp.fileIcon = filePathList[i + 2];
-                        recentFile.Add(temp);
+                        temp.fileName = recentFileData[i];
+                        temp.filePath = recentFileData[i + 1];
+                        temp.fileIcon = recentFileData[i + 2];
+                        recentFileList.Add(temp);
                     }
                 }
             }
-            return recentFile;
+            return recentFileList;
             //throw new NotImplementedException();
+        }
+
+        public bool WriteNewRecentFileData(BindingList<RecentFile> recentFileList)
+        {
+            var strFileName = App.path + @"\\data\\recentfile.txt";
+            //if (File.Exists(strFileName))
+            //{
+            //    File.Delete(strFileName);
+            //}
+            StreamWriter fileStream = new StreamWriter(strFileName);
+            int amount = recentFileList.Count();
+            if(amount > 10)
+            {
+                amount = 10;
+            }
+            fileStream.Flush();
+            for (int i = 0; i < amount; ++i)
+            {
+                fileStream.WriteLine(recentFileList[i].fileName);
+                fileStream.WriteLine(recentFileList[i].filePath);
+                fileStream.WriteLine(recentFileList[i].fileIcon);
+            }
+            fileStream.Close();
+            return true;
+
         }
 
         private String[] ReadFile(string strFileName)
@@ -103,6 +115,7 @@ namespace EbookWindows.ViewModels
             StreamReader sr = new StreamReader(strFileName);
             String[] list;
             list = File.ReadAllLines(strFileName);
+            sr.Close();
             return list;
             //throw new NotImplementedException();
         }

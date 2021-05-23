@@ -23,7 +23,7 @@ namespace EbookWindows.Screen
     /// </summary>
     public partial class PopupEbookScreen : Window
     {
-        public delegate void BrowserHandler(string filePath);
+        public delegate void BrowserHandler(string filePath, int index);
         public event BrowserHandler BrowserEvent;
 
 
@@ -86,7 +86,7 @@ namespace EbookWindows.Screen
             if (dialogResult.Value)
             {
                 string filePath = openFileDialog.FileName;
-                BrowserEvent?.Invoke(filePath);
+                BrowserEvent?.Invoke(filePath,-1);
                 this.Close();
 
             }

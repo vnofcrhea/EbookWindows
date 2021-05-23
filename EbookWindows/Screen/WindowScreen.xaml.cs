@@ -183,7 +183,7 @@ namespace EbookWindows.Screen
         }
 
 
-        public void filePathChanged(string filePath)
+        public void filePathChanged(string filePath, int index)
         {
             string fileIcon ="";
             string fileName = Path.GetFileName(filePath);
@@ -193,7 +193,6 @@ namespace EbookWindows.Screen
                 pdfReadingScreen.LoadData(filePath);
                 MainGrid.Visibility = Visibility.Collapsed;
                 pdfReadingScreen.Visibility = Visibility.Visible;
-
                 fileIcon = "Icon\\pdf.png";
 
             }
@@ -202,14 +201,20 @@ namespace EbookWindows.Screen
                 epubReadingScreen.ReadFile(filePath);
                 MainGrid.Visibility = Visibility.Collapsed;
                 epubReadingScreen.Visibility = Visibility.Visible;
-
                 fileIcon = "Icon\\epub.png"; ;
             }
             else
             {
                 //notthing
             }
-            recentFileUserControl.BrowserANewFile(fileName, filePath, fileIcon);
+            if(index < 0)
+            {
+                recentFileUserControl.BrowserANewFile(fileName, filePath, fileIcon);
+            } else
+            {
+                recentFileUserControl.openAFileInRecentFileList(index);
+            }
+          
         }
 
         private void addMoreBookBtn_Click(object sender, RoutedEventArgs e)
@@ -230,7 +235,7 @@ namespace EbookWindows.Screen
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-
+            recentFileUserControl.SaveRecentFileList();
         }
     }
 }
