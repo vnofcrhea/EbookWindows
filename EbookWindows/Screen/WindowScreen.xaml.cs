@@ -141,6 +141,7 @@ namespace EbookWindows.Screen
                 if (detailScreen.Visibility == Visibility.Visible)
                 {
                     detailScreen.Visibility = Visibility.Collapsed;
+                    
                     return;
                 }
                 else if (pdfReadingScreen.Visibility == Visibility.Visible)
@@ -148,9 +149,9 @@ namespace EbookWindows.Screen
                     pdfReadingScreen.homeBtn_Click(sender,e);
                     return;
                 }
-                else if (comicReadingScreen.Visibility == Visibility.Visible)
+                else if (epubReadingScreen.Visibility == Visibility.Visible)
                 {
-                    comicReadingScreen.Visibility = Visibility.Collapsed;
+                    epubReadingScreen.Visibility = Visibility.Collapsed;
                     return;
                 }
                 else if(comicReadingScreen.Visibility == Visibility.Visible)
@@ -171,6 +172,8 @@ namespace EbookWindows.Screen
 
         }
 
+
+
         public void ReturnFromReadingScreen_Click(object sender, RoutedEventArgs e)
         {
             MainGrid.Visibility = Visibility.Visible;
@@ -180,13 +183,17 @@ namespace EbookWindows.Screen
         }
 
 
-        private void filePathChanged(string filePath, string fileExtension)
+        public void filePathChanged(string filePath, int index)
         {
+            string fileIcon ="";
+            string fileName = Path.GetFileName(filePath);
+            string fileExtension = Path.GetExtension(filePath);
             if (fileExtension.Equals(".pdf"))
             {
                 pdfReadingScreen.LoadData(filePath);
                 MainGrid.Visibility = Visibility.Collapsed;
                 pdfReadingScreen.Visibility = Visibility.Visible;
+                fileIcon = "Icon\\pdf.png";
 
             }
             else if (fileExtension.Equals(".epub"))
@@ -194,12 +201,20 @@ namespace EbookWindows.Screen
                 epubReadingScreen.ReadFile(filePath);
                 MainGrid.Visibility = Visibility.Collapsed;
                 epubReadingScreen.Visibility = Visibility.Visible;
+                fileIcon = "Icon\\epub.png"; ;
             }
             else
             {
                 //notthing
             }
-           
+            if(index < 0)
+            {
+                recentFileUserControl.BrowserANewFile(fileName, filePath, fileIcon);
+            } else
+            {
+                recentFileUserControl.openAFileInRecentFileList(index);
+            }
+          
         }
 
         private void addMoreBookBtn_Click(object sender, RoutedEventArgs e)
@@ -208,8 +223,6 @@ namespace EbookWindows.Screen
             popupEbookScreen.BrowserEvent += filePathChanged;
             popupEbookScreen.ShowDialog();
             
-
-
         }
         public void StartLoading()
         {
@@ -220,7 +233,10 @@ namespace EbookWindows.Screen
                 LoadingGrid.Visibility = Visibility.Collapsed;
         }
 
-       
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            recentFileUserControl.SaveRecentFileList();
+        }
     }
 }
       

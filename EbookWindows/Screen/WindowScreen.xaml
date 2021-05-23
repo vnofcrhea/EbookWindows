@@ -15,6 +15,7 @@
         x:Name="MainWindowScreen"
         BorderThickness="0"
         BorderBrush="Transparent"
+        Closing="Window_Closing"
         >
     <WindowChrome.WindowChrome>
         <WindowChrome     
@@ -167,7 +168,7 @@
                         </Grid>
                         <Grid Grid.Column="1">
                             <!--Chỗ này để Nguyên Edit-->
-                            <local:RecentFileUserControl ></local:RecentFileUserControl>
+                            <local:RecentFileUserControl x:Name="recentFileUserControl" ></local:RecentFileUserControl>
                         </Grid>
                     </Grid>
 
