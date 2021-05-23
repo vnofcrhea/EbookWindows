@@ -38,39 +38,56 @@ namespace EbookWindows.Screen
 
         }
 
-      
+        public bool BrowserANewFile(string fileName, string filePath, string fileIcon)
+        {
+            RecentFile temp = new RecentFile(fileName, filePath, fileIcon);
+            if(viewingList.Count() == minItems && viewBtn.Content.Equals(viewMore))
+            {
+                viewingList.RemoveAt(minItems-1);           
+            }
+            viewingList.Insert(0, temp);
+            recentFileList.Insert(0, temp);
+            return true;
+        }
+
+        public bool openAFileInRecentFileList(int index)
+        {
+            viewingList.Insert(0, viewingList[index]);
+            viewingList.RemoveAt(index + 1);
+            recentFileList.Insert(0, viewingList[index]);
+            recentFileList.RemoveAt(index + 1);
+            return true;
+        }
 
         private void LoadData(object sender, RoutedEventArgs e)
         {
             RecentFileDao recentFileDao = new RecentFileDao();
             recentFileList = recentFileDao.GetAll();
-            foreach (var i in recentFileList.Take(minItems).ToList())
-            {
-                viewingList.Add(i);
-            }
+             MappingDataFromListToView(minItems);
             recentFileListView.ItemsSource = viewingList;
         }
 
 
+        private void MappingDataFromListToView(int amount)
+        {
+            viewingList.Clear();
+            foreach (var i in recentFileList.Take(amount).ToList())
+            {
+                viewingList.Add(i);
+            }
+            
+        }
+
         private void viewBtn_CLick(object sender, RoutedEventArgs e)
         {
             if (viewBtn.Content.Equals(viewMore))
-            {       
-                viewingList.Clear();
-                foreach (var i in recentFileList.Take(maxItems).ToList())
-                {
-                    viewingList.Add(i);
-                }
+            {
+                MappingDataFromListToView(maxItems);
                 viewBtn.Content = viewLess;
             }
             else
             {
-                viewingList.Clear();
-                foreach (var i in recentFileList.Take(minItems).ToList())
-                {
-
-                    viewingList.Add(i);
-                }
+                MappingDataFromListToView(minItems);
                 viewBtn.Content = viewMore;
             }
 
@@ -117,6 +134,12 @@ namespace EbookWindows.Screen
             }
            
         }
+
+        
+
+
+
+
     }
 }
 

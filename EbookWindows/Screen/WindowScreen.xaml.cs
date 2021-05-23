@@ -209,7 +209,7 @@ namespace EbookWindows.Screen
             {
                 //notthing
             }
-           // recentFileUserControl.addFile(fileName, filePath, fileIcon);
+            recentFileUserControl.BrowserANewFile(fileName, filePath, fileIcon);
         }
 
         private void addMoreBookBtn_Click(object sender, RoutedEventArgs e)
@@ -228,7 +228,10 @@ namespace EbookWindows.Screen
                 LoadingGrid.Visibility = Visibility.Collapsed;
         }
 
-       
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+
+        }
     }
 }
       

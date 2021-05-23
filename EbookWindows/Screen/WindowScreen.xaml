@@ -15,6 +15,7 @@
         x:Name="MainWindowScreen"
         BorderThickness="0"
         BorderBrush="Transparent"
+        Closing="Window_Closing"
         >
     <WindowChrome.WindowChrome>
         <WindowChrome     
