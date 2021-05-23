@@ -167,7 +167,7 @@
                         </Grid>
                         <Grid Grid.Column="1">
                             <!--Chỗ này để Nguyên Edit-->
-                            <local:RecentFileUserControl ></local:RecentFileUserControl>
+                            <local:RecentFileUserControl x:Name="recentFileUserControl" ></local:RecentFileUserControl>
                         </Grid>
                     </Grid>
 
