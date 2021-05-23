@@ -35,8 +35,9 @@
         <Grid Margin="0">
 
             <!-- Reading Web Browser-->
-            <Grid Background="WhiteSmoke">
+            <Grid Background="{DynamicResource MaterialDesignPaper}">
                 <cefSharpWpf:ChromiumWebBrowser x:Name="epubWebBrowser"/>
+
             </Grid>
 
             <!-- Tool buttons.-->
@@ -55,15 +56,6 @@
                     </StackPanel.Resources >
                     <materialDesign:PopupBox  StaysOpen="True" IsEnabled="{Binding IsChecked, ElementName=PopupEnabled}" Foreground="{DynamicResource PrimaryHueMidBrush}">
                         <Grid Width="300" Margin="8,8,8,8">
-                            <Grid.Resources>
-                                <Style TargetType="CheckBox" BasedOn="{StaticResource MaterialDesignCheckBox}">
-                                    <Setter Property="Margin" Value="8,8,10,8" />
-                                </Style>
-                                <Style TargetType="TextBox" BasedOn="{StaticResource MaterialDesignTextBox}">
-                                    <Setter Property="materialDesign:HintAssist.IsFloating" Value="True" />
-                                    <Setter Property="Margin" Value="8,8,8,8" />
-                                </Style>
-                            </Grid.Resources>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="Auto" />
@@ -77,27 +69,39 @@
                                 <RowDefinition Height="*" />
                             </Grid.RowDefinitions>
                             <TextBlock Grid.Column="0" Grid.Row="0" Style="{StaticResource MaterialDesignHeadline6TextBlock}" Margin="8,8,8,16" Text="OPTIONS" />
-                            <TextBox Grid.Column="0" Grid.Row="1" materialDesign:HintAssist.Hint="Setting 1" Text="200" />
-                            <TextBox Grid.Column="0" Grid.Row="2" materialDesign:HintAssist.Hint="Setting 2" Text="400" />
-                            <TextBox Grid.Column="0" Grid.Row="3" materialDesign:HintAssist.Hint="Setting 3" Text="600" />
-                            <CheckBox Grid.Column="1" Grid.Row="1" VerticalAlignment="Bottom" />
-                            <CheckBox Grid.Column="1" Grid.Row="2" IsChecked="True" VerticalAlignment="Bottom" />
-                            <CheckBox Grid.Column="1" Grid.Row="3" VerticalAlignment="Bottom" />
-                            <ComboBox Grid.Column="0" Grid.Row="4" materialDesign:HintAssist.Hint="Setting 4" materialDesign:HintAssist.IsFloating="True" MaxDropDownHeight="200" Margin="8">
-                                <ComboBoxItem Content="25%" />
-                                <ComboBoxItem Content="50%" />
-                                <ComboBoxItem Content="75%" />
-                                <ComboBoxItem Content="100%" />
-                                <ComboBoxItem Content="150%" />
-                                <ComboBoxItem Content="200%" />
-                                <ComboBoxItem Content="250%" />
-                                <ComboBoxItem Content="500%" />
+                            <ComboBox Grid.Column="0" Grid.Row="1" x:Name="textFontComboBox" ItemsSource="{Binding}" SelectionChanged="textFontComboBox_SelectionChanged"
+                                      materialDesign:HintAssist.Hint="Font" materialDesign:HintAssist.IsFloating="True" MaxDropDownHeight="200">
+
                             </ComboBox>
-                            <StackPanel Grid.Row="5" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Right">
+                            <Grid  Grid.Column="0" Grid.Row="2">
+                                <StackPanel Orientation="Vertical">
+                                    <Label Content="Background" Style="{DynamicResource MaterialDesignLabel}"/>
+                                    <Grid>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Button Style="{DynamicResource MaterialDesignFlatButton}" Width="30" Background="Black" Click="changeBackgroundButton_Click" Margin="0,0,5,0"></Button>
+                                            <Button Style="{DynamicResource MaterialDesignFlatButton}" Width="30" Background="White" Click="changeBackgroundButton_Click" Margin="0,0,5,0"></Button>
+                                            <Button Style="{DynamicResource MaterialDesignFlatButton}" Width="30" Background="LightYellow" Click="changeBackgroundButton_Click" Margin="0,0,5,0"></Button>
+                                            <Button Style="{DynamicResource MaterialDesignFlatButton}" Width="30" Background="#F0F8FF" Click="changeBackgroundButton_Click" Margin="0,0,5,0"></Button>
+                                        </StackPanel>
+                                    </Grid>
+                                </StackPanel>
+                            </Grid>
+                            <Grid Grid.Column="0" Grid.Row="3" >
+                                <StackPanel Orientation="Vertical">
+                                    <Label Content="Forceground" Style="{DynamicResource MaterialDesignLabel}"/>
+                                    <Grid>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Button Style="{DynamicResource MaterialDesignFlatButton}" Width="30" Background="Black" Click="changeForcegroundButton_Click" Margin="0,0,5,0"></Button>
+                                            <Button Style="{DynamicResource MaterialDesignFlatButton}" Width="30" Background="White" Click="changeForcegroundButton_Click" Margin="0,0,5,0"></Button>
+                                        </StackPanel>
+                                    </Grid>
+                                </StackPanel>
+                            </Grid>
+                            <!--<StackPanel Grid.Row="4" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Right">
                                 <Button Content="_Save" Command="{x:Static materialDesign:PopupBox.ClosePopupCommand}" />
                                 <Button Content="_Cancel" Command="{x:Static materialDesign:PopupBox.ClosePopupCommand}" >
                                 </Button>
-                            </StackPanel>
+                            </StackPanel>-->
                         </Grid>
                     </materialDesign:PopupBox>
 
@@ -166,9 +170,9 @@
                     </Button>
                 </StackPanel>
             </Border>
-            <!-- Bookmark list buttons.-->
+            <!-- Bookmark list.-->
             <Border HorizontalAlignment="Right" BorderThickness="1" x:Name="bookmarkBorder"
-                    BorderBrush="{DynamicResource PrimaryHueMidBrush}" Visibility="Visible"
+                    BorderBrush="{DynamicResource PrimaryHueMidBrush}" Visibility="Collapsed"
                     CornerRadius="5" Background="{DynamicResource MaterialDesignPaper}">
                 <Grid>
                     <Grid.RowDefinitions>

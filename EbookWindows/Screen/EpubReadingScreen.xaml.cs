@@ -51,23 +51,19 @@ namespace EbookWindows.Screen
         }
         public void ReadFile(string filePath)
         {
+            myEpubReader.getInstance();
             myEpubReader.ReadFile(filePath);
 
             currentPage = 0;
 
-            //TableContentComboBox.Items.Clear();
-            //foreach (string title in myEpubReader.tableContentTitle)
-            //{
-            //    TableContentComboBox.Items.Add(title);
-            //}
-            //TableContentComboBox.SelectedIndex = 0;
+            textFontComboBox.ItemsSource = myEpubReader.fontFamilys;
 
             TableContentComboBox.ItemsSource = myEpubReader.tableContent;
             TableContentComboBox.Items.Refresh();
             TableContentComboBox.SelectedIndex = 0;
 
             bookmarkListview.ItemsSource = myEpubReader.bookmarks;
-            bookmarkListview.Items.Refresh();           
+            bookmarkListview.Items.Refresh();
 
             epubWebBrowser.Address = myEpubReader.menuItems[0];
         }
@@ -313,8 +309,10 @@ namespace EbookWindows.Screen
         {
             if (myEpubReader.addBookmark(myEpubReader.menuItems[currentPage]) == 1)
                 bookmarkListview.Items.Refresh();
-            
-                //do nothing
+            else
+            {
+                MessageBox.Show("This chapter already bookmarked!", "Same Bookmark", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
         }
 
         private void bookmarkDeleteButtons_Click(object sender, RoutedEventArgs e)
@@ -329,8 +327,6 @@ namespace EbookWindows.Screen
 
         }
 
-        #endregion
-
         private void bookmarkListview_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             string chapterLink;
@@ -343,6 +339,40 @@ namespace EbookWindows.Screen
                 epubWebBrowser.Address = chapterLink;
             }
 
+        }
+
+
+        #endregion
+
+
+        private void changeBackgroundButton_Click(object sender, RoutedEventArgs e)
+        {
+            Button button = (Button)sender;
+            string color = button.Background.ToString();
+            myEpubReader.changeBackgroundColor(color);
+            //
+            epubWebBrowser.Address = myEpubReader.menuItems[currentPage];
+        }
+
+        private void changeForcegroundButton_Click(object sender, RoutedEventArgs e)
+        {
+            Button button = (Button)sender;
+            string color = button.Background.ToString();
+            myEpubReader.changeForegroundColor(color);
+            //
+            epubWebBrowser.Address = myEpubReader.menuItems[currentPage];
+        }
+
+        private void textFontComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            System.Windows.Controls.ComboBox comboBox = (System.Windows.Controls.ComboBox)sender;
+            if (comboBox.SelectedItem != null)
+            {
+                //get the selected font
+                string font = comboBox.SelectedItem.ToString();
+                myEpubReader.changeFontFamily(font);
+                epubWebBrowser.Address = myEpubReader.menuItems[currentPage];
+            }
         }
     }
 }
