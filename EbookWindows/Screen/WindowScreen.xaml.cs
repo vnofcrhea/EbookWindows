@@ -129,6 +129,10 @@ namespace EbookWindows.Screen
             detailScreen.Visibility = Visibility.Collapsed;
             comicReadingScreen.Visibility = Visibility.Visible;
         }
+        public void LoadShelf()
+        {
+           // BookTextShelf.LoadDataBookShelf();
+        }
         private void ReturnHome_Click(object sender, RoutedEventArgs e)
         {
             if(MainGrid.Visibility != Visibility.Visible)
@@ -137,6 +141,7 @@ namespace EbookWindows.Screen
                 if (detailScreen.Visibility == Visibility.Visible)
                 {
                     detailScreen.Visibility = Visibility.Collapsed;
+                    
                     return;
                 }
                 else if (pdfReadingScreen.Visibility == Visibility.Visible)
@@ -147,6 +152,11 @@ namespace EbookWindows.Screen
                 else if (epubReadingScreen.Visibility == Visibility.Visible)
                 {
                     epubReadingScreen.Visibility = Visibility.Collapsed;
+                    return;
+                }
+                else if(comicReadingScreen.Visibility == Visibility.Visible)
+                {
+                    comicReadingScreen.Visibility = Visibility.Collapsed;
                     return;
                 }
                 else
@@ -162,22 +172,29 @@ namespace EbookWindows.Screen
 
         }
 
+
+
         public void ReturnFromReadingScreen_Click(object sender, RoutedEventArgs e)
         {
             MainGrid.Visibility = Visibility.Visible;
             pdfReadingScreen.Visibility = Visibility.Collapsed;
+            epubReadingScreen.Visibility = Visibility.Collapsed;
+            comicReadingScreen.Visibility = Visibility.Collapsed;
         }
 
 
-        private void filePathChanged(string filePath, string fileExtension)
+        public void filePathChanged(string filePath, int index)
         {
+            string fileIcon ="";
+            string fileName = Path.GetFileName(filePath);
+            string fileExtension = Path.GetExtension(filePath);
             if (fileExtension.Equals(".pdf"))
             {
                 pdfReadingScreen.LoadData(filePath);
                 MainGrid.Visibility = Visibility.Collapsed;
                 epubReadingScreen.Visibility = Visibility.Collapsed;
                 pdfReadingScreen.Visibility = Visibility.Visible;
-
+                fileIcon = "Icon\\pdf.png";
 
             }
             else if (fileExtension.Equals(".epub"))
@@ -186,12 +203,20 @@ namespace EbookWindows.Screen
                 MainGrid.Visibility = Visibility.Collapsed;
                 pdfReadingScreen.Visibility = Visibility.Collapsed;
                 epubReadingScreen.Visibility = Visibility.Visible;
+                fileIcon = "Icon\\epub.png"; ;
             }
             else
             {
                 //notthing
             }
-           
+            if(index < 0)
+            {
+                recentFileUserControl.BrowserANewFile(fileName, filePath, fileIcon);
+            } else
+            {
+                recentFileUserControl.openAFileInRecentFileList(index);
+            }
+          
         }
 
         public void addMoreBookBtn_Click(object sender, RoutedEventArgs e)
@@ -200,8 +225,6 @@ namespace EbookWindows.Screen
             popupEbookScreen.BrowserEvent += filePathChanged;
             popupEbookScreen.ShowDialog();
             
-
-
         }
         public void StartLoading()
         {
@@ -212,7 +235,10 @@ namespace EbookWindows.Screen
                 LoadingGrid.Visibility = Visibility.Collapsed;
         }
 
-       
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            recentFileUserControl.SaveRecentFileList();
+        }
     }
 }
       
