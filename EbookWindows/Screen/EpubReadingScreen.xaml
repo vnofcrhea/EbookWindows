@@ -36,8 +36,9 @@
 
             <!-- Reading Web Browser-->
             <Grid Background="{DynamicResource MaterialDesignPaper}">
-                <cefSharpWpf:ChromiumWebBrowser x:Name="epubWebBrowser"/>
-
+                <ScrollViewer>
+                    <cefSharpWpf:ChromiumWebBrowser x:Name="epubWebBrowser" ScrollViewer.VerticalScrollBarVisibility="Disabled" ScrollViewer.HorizontalScrollBarVisibility="Disabled" />
+                </ScrollViewer>
             </Grid>
 
             <!-- Tool buttons.-->

@@ -29,21 +29,22 @@ namespace EbookWindows.Screen
         Root_Reading chapter_content = new Root_Reading();
         public bool isOnline = true;
         public double Scaling_Rate = 1;
-        
+
         public ComicReadingScreen()
         {
             InitializeComponent();
+            DarkModeChecker.IsChecked = App.isDarkMode();
         }
         #region Execute
         public void LoadData()
         {
-                this.Dispatcher.Invoke(() =>
-                {
-                    Load_ChapterList();
-                    Chapter_List.SelectedValue = App.chapter.link;
-                    WindowScreen win = (WindowScreen)Window.GetWindow(this);
-                    Content_Box.MaxWidth = (win.ActualWidth - win.LeftHeader.ActualWidth);
-                });
+            this.Dispatcher.Invoke(() =>
+            {
+                Load_ChapterList();
+                Chapter_List.SelectedValue = App.chapter.link;
+                WindowScreen win = (WindowScreen)Window.GetWindow(this);
+                Content_Box.MaxWidth = (win.ActualWidth - win.LeftHeader.ActualWidth);
+            });
             //Task.Delay(1000).Wait();
             //this.Dispatcher.InvokeAsync(() =>
             //{
@@ -88,7 +89,7 @@ namespace EbookWindows.Screen
         }
         public void WriteRecentChapter()
         {
-           // var chapter_dir = App.book_dir + "\\content\\" + index + ".json";
+            // var chapter_dir = App.book_dir + "\\content\\" + index + ".json";
         }
         #endregion
         #region Event
@@ -125,7 +126,7 @@ namespace EbookWindows.Screen
             });
         }
         private void ShowHideToolButton_Click(object sender, RoutedEventArgs e)
-        {            
+        {
             dispatcherTimer.Stop();
             var data = ((sender as Button).Content as MaterialDesignThemes.Wpf.PackIcon);
             if (data.Kind.ToString().Equals("Hide"))
@@ -162,7 +163,7 @@ namespace EbookWindows.Screen
                     Content_Box.MaxWidth = (win.ActualWidth - win.LeftHeader.ActualWidth) * 0.75;
                 }
                 else
-                Content_Box.MaxWidth = this.ActualWidth * 0.75;
+                    Content_Box.MaxWidth = this.ActualWidth * 0.75;
             });
         }
 
@@ -187,10 +188,7 @@ namespace EbookWindows.Screen
         {
             Content_Box.FontSize = fontSize;
         }
-        private void ChangeColorTheme()
-        {
-            App.ChangeBaseTheme();
-        }
+       
 
         #endregion
 
@@ -233,23 +231,23 @@ namespace EbookWindows.Screen
             zoomTextbox.Text = (Scaling_Rate * 100).ToString() + '%';
         }
 
-    
+
         private void ZoomOut_Click(object sender, RoutedEventArgs e)
         {
             var x = (sender as Button);
-                Scaling_Rate -= 0.25;
+            Scaling_Rate -= 0.25;
             ZoomIn_Button.IsEnabled = true;
-                if (Scaling_Rate == 0.25)
-                {
-                    x.IsEnabled = false;
-                }
-                else
-                {
-                    x.IsEnabled = true;
-                }
-                Content_Box_Scaling.ScaleX = Scaling_Rate;
-                Content_Box_Scaling.ScaleY = Scaling_Rate;
-                zoomTextbox.Text = (Scaling_Rate * 100).ToString() + '%';
+            if (Scaling_Rate == 0.25)
+            {
+                x.IsEnabled = false;
+            }
+            else
+            {
+                x.IsEnabled = true;
+            }
+            Content_Box_Scaling.ScaleX = Scaling_Rate;
+            Content_Box_Scaling.ScaleY = Scaling_Rate;
+            zoomTextbox.Text = (Scaling_Rate * 100).ToString() + '%';
         }
 
         private void ScrollViewer_SizeChanged(object sender, SizeChangedEventArgs e)
@@ -265,6 +263,16 @@ namespace EbookWindows.Screen
         private void Font_Changed(object sender, SelectionChangedEventArgs e)
         {
             Content_Box.FontFamily = new FontFamily(((sender as ComboBox).SelectedValue as ComboBoxItem).Content.ToString());
+        }
+
+        private void DarkMode_Enable(object sender, RoutedEventArgs e)
+        {
+            App.ChangeBaseTheme(BaseTheme.Dark);
+        }
+
+        private void DarkMode_Disable(object sender, RoutedEventArgs e)
+        {
+            App.ChangeBaseTheme(BaseTheme.Light);
         }
     }
 }

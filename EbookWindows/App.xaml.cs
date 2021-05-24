@@ -19,15 +19,19 @@ namespace EbookWindows
         public static Chapter chapter;
         public static Root Items;
         public static string path = System.IO.Directory.GetParent(System.Reflection.Assembly.GetExecutingAssembly().Location).ToString();
-        public static void ChangeBaseTheme()
+        public static void ChangeBaseTheme(BaseTheme x)
+        {
+                (App.Current.Resources.MergedDictionaries[0] as BundledTheme).BaseTheme = x;
+        }
+        public static bool isDarkMode()
         {
             if ((App.Current.Resources.MergedDictionaries[0] as BundledTheme).BaseTheme == BaseTheme.Dark)
-            { 
-                (App.Current.Resources.MergedDictionaries[0] as BundledTheme).BaseTheme = BaseTheme.Light; 
+            {
+                return true;
             }
             else
             {
-                (App.Current.Resources.MergedDictionaries[0] as BundledTheme).BaseTheme = BaseTheme.Dark;
+                return false;
             }
         }
     }

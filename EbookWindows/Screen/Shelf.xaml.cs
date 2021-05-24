@@ -24,7 +24,7 @@ namespace EbookWindows.Screen
     /// </summary>
     public partial class Shelf : UserControl
     {
-        public string ShelfTitle = "RECENT BOOKS";
+        public string ShelfTitle = "ONLINE BOOKS";
         
         public Shelf()
         {

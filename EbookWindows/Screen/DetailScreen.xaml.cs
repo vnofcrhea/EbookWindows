@@ -62,19 +62,25 @@ namespace EbookWindows.Screen
         #region Loading Data Online 
         public void LoadData(string url) //Load data online here
         {
-                var json = new WebClient().DownloadString(App.base_url + "/api/books?url="+url);
-                App.Items = JsonConvert.DeserializeObject<Root>(json);
-                #region //Xác định số trang
-                page_numbers = App.Items.chapter_name.Count / chapter_limit + 1;
-                page_index = 1;
-                #endregion
-                this.Dispatcher.Invoke(() =>
-                {
-                    LoadPaging(page_index);
-                    PagePanelReload();
-                });
+            var json = new WebClient().DownloadString(App.base_url + "/api/books?url=" + url);
+            App.Items = JsonConvert.DeserializeObject<Root>(json);
             
-        }
+            #region //Xác định số trang
+            page_numbers = App.Items.chapter_name.Count / chapter_limit + 1;
+            page_index = 1;
+            #endregion
+            this.Dispatcher.Invoke(() =>
+            {
+                bookAuthor.Text = App.Items.book_author;
+                bookTotalChapter.Text = App.Items.chapter_name.Count.ToString();
+                bookDec.Text = App.Items.book_intro;
+                bookName.Text = App.Items.book_name;
+                bookImg.Source = new BitmapImage(new Uri(App.Items.img_url));
+                LoadPaging(page_index);
+                PagePanelReload();
+            });
+
+        } 
         #endregion
         #region LOADING PAGING
         public void LoadPaging(int page)

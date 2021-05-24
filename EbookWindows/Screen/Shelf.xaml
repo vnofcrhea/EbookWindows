@@ -47,10 +47,11 @@
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <Grid>
-                            <Image Source="{Binding img_dir}" DockPanel.Dock="Top" StretchDirection="Both" Stretch="Fill"></Image>
-                            <TextBlock  Padding ="3,5" Background="#6a000000" VerticalAlignment="Bottom" DockPanel.Dock="Bottom" Text="{Binding Title}"  Margin="0,3,0,0" TextTrimming="CharacterEllipsis"></TextBlock>
-                            
-
+                            <Image Source="{Binding img_dir}" StretchDirection="Both" Stretch="Fill"></Image>
+                            <Border Background="{DynamicResource MaterialDesignPaper}" Opacity="0.7"  VerticalAlignment="Bottom" Padding="0" BorderThickness="0"  HorizontalAlignment="Stretch" Height="25" Width="220">
+                            </Border>
+                            <TextBlock  Padding ="3,5" VerticalAlignment="Bottom"  Margin="0,3,0,0" Text="{Binding Title}" FontWeight="DemiBold" TextTrimming="CharacterEllipsis">
+                            </TextBlock>
                         </Grid>
                     </DataTemplate>
                 </ListView.ItemTemplate>
