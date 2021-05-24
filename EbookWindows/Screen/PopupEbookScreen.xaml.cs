@@ -23,7 +23,7 @@ namespace EbookWindows.Screen
     /// </summary>
     public partial class PopupEbookScreen : Window
     {
-        public delegate void BrowserHandler(string filePath, string extension);
+        public delegate void BrowserHandler(string filePath, int index);
         public event BrowserHandler BrowserEvent;
 
 
@@ -86,26 +86,9 @@ namespace EbookWindows.Screen
             if (dialogResult.Value)
             {
                 string filePath = openFileDialog.FileName;
-
-                string fileExtension = Path.GetExtension(filePath).ToLower();
-                BrowserEvent?.Invoke(filePath, fileExtension);
+                BrowserEvent?.Invoke(filePath,-1);
                 this.Close();
-                //if (fileExtension.Equals(".pdf"))
-                //{
-                //    pdfReadingScreen.LoadData(filePath, this);
-                //    ShelfGrid.Visibility = Visibility.Collapsed;
-                //    pdfReadingScreen.Visibility = Visibility.Visible;
-                //}
-                //else if (fileExtension.Equals(".epub"))
-                //{
-                //    epubReadingScreen.ReadFile(filePath);
-                //    ShelfGrid.Visibility = Visibility.Collapsed;
-                //    epubReadingScreen.Visibility = Visibility.Visible;
-                //}
-                //else
-                //{
-                //    notthing
-                //}
+
             }
 
 

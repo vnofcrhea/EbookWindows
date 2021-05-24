@@ -33,8 +33,6 @@ namespace EbookWindows.Screen
         public ComicReadingScreen()
         {
             InitializeComponent();
-            this.MouseMove -= StackPanel_MouseMove;
-            //Chapter_List.SelectedIndex=
         }
         #region Execute
         public void LoadData()
@@ -75,6 +73,7 @@ namespace EbookWindows.Screen
             this.Dispatcher.Invoke(() =>
             {
                 Content_Box.Text = chapter_content.content;
+                scrollContent_Box.ScrollToVerticalOffset(0);
             });
         }
         public void Load_ChapterList()
@@ -87,7 +86,10 @@ namespace EbookWindows.Screen
             }
 
         }
-
+        public void WriteRecentChapter()
+        {
+           // var chapter_dir = App.book_dir + "\\content\\" + index + ".json";
+        }
         #endregion
         #region Event
         private void StackPanel_MouseMove(object sender, MouseEventArgs e)
@@ -95,10 +97,14 @@ namespace EbookWindows.Screen
             if (!dispatcherTimer.IsEnabled)
             {
                 dispatcherTimer.IsEnabled = true;
+                dispatcherTimer.Interval = new TimeSpan(0, 0, 2); ;
+                dispatcherTimer.Start();
+                dispatcherTimer.Tick += new EventHandler(OnTimedEvent);
                 return;
             }
             BottomPanelTool.Visibility = Visibility.Visible;
             TopPanelTool.Visibility = Visibility.Visible;
+            scrollContent_Box.Margin = new Thickness(0, 0, 0, 42);
             if (dispatcherTimer.IsEnabled)
             {
                 dispatcherTimer.Interval = new TimeSpan(0, 0, 2); ;
@@ -115,12 +121,11 @@ namespace EbookWindows.Screen
             {
                 BottomPanelTool.Visibility = Visibility.Hidden;
                 TopPanelTool.Visibility = Visibility.Hidden;
+                scrollContent_Box.Margin = new Thickness(0, 0, 0, 0);
             });
         }
         private void ShowHideToolButton_Click(object sender, RoutedEventArgs e)
-        {
-            BottomPanelTool.Visibility = Visibility.Collapsed;
-            TopPanelTool.Visibility = Visibility.Collapsed;
+        {            
             dispatcherTimer.Stop();
             var data = ((sender as Button).Content as MaterialDesignThemes.Wpf.PackIcon);
             if (data.Kind.ToString().Equals("Hide"))
@@ -128,14 +133,18 @@ namespace EbookWindows.Screen
                 ((sender as Button).Content as MaterialDesignThemes.Wpf.PackIcon).Kind = MaterialDesignThemes.Wpf.PackIconKind.Eye;
                 BottomPanelTool.Visibility = Visibility.Visible;
                 TopPanelTool.Visibility = Visibility.Visible;
-
+                dispatcherTimer.Start();
                 this.MouseMove += StackPanel_MouseMove;
+                scrollContent_Box.Margin = new Thickness(0, 0, 0, 42);
             }
             else
             {
                 ((sender as Button).Content as MaterialDesignThemes.Wpf.PackIcon).Kind = MaterialDesignThemes.Wpf.PackIconKind.EyeOff;
                 BottomPanelTool.Visibility = Visibility.Collapsed;
                 TopPanelTool.Visibility = Visibility.Collapsed;
+                dispatcherTimer.Stop();
+                scrollContent_Box.Margin = new Thickness(0, 0, 0, 0);
+
                 this.MouseMove -= StackPanel_MouseMove;
             }
         }
@@ -246,6 +255,16 @@ namespace EbookWindows.Screen
         private void ScrollViewer_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             Content_Box.Width = (sender as ScrollViewer).ActualWidth;
+        }
+
+        private void Slider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            Content_Box.FontSize = (sender as Slider).Value;
+        }
+
+        private void Font_Changed(object sender, SelectionChangedEventArgs e)
+        {
+            Content_Box.FontFamily = new FontFamily(((sender as ComboBox).SelectedValue as ComboBoxItem).Content.ToString());
         }
     }
 }

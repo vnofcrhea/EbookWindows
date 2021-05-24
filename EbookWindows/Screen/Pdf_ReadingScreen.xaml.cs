@@ -27,7 +27,7 @@ namespace EbookWindows.Screen
     /// </summary>
     public partial class Pdf_ReadingScreen : UserControl
     {
-
+        FileStream file;
         private double zoomValue { get; set; }
 
         private delegate void SetImageSourceDelegate(byte[] source, IList<Link> links, int width, int height);
@@ -56,9 +56,10 @@ namespace EbookWindows.Screen
 
         public void LoadData(string filePath) //Load data here
         {
-            
-            Document document = new Document(new FileStream(filePath, FileMode.Open, FileAccess.Read));
+            file = new FileStream(filePath, FileMode.Open, FileAccess.Read);
+            Document document = new Document(file);          
             (this.document).Document = document;
+
         }
 
         private void DocumentOnPropertyChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
@@ -306,6 +307,8 @@ namespace EbookWindows.Screen
             zoomValue = 0.8;
             zoomLabel.Content = $"{zoomValue * 100}%";
             PageImage.Source = null;
+            file.Close();
+       
             WindowScreen win = (WindowScreen)Window.GetWindow(this);
             win.ReturnFromReadingScreen_Click(sender, e);
         }
