@@ -122,10 +122,6 @@
                     <Button x:Name="openBookmarksButton" Click="openBookmarksButton_Click" >
                         <materialDesign:PackIcon Kind="BookmarkMultiple"></materialDesign:PackIcon>
                     </Button>
-
-                    <Button Margin="0" >
-                        <materialDesign:PackIcon Kind="ThemeLightDark" ></materialDesign:PackIcon>
-                    </Button>
                     <Button x:Name="readingHomeButton" Click="readingOtherButton_Click">
                         <materialDesign:PackIcon Kind="FolderSearch"></materialDesign:PackIcon>
                     </Button>
