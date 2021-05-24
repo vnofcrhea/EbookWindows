@@ -254,9 +254,10 @@ namespace EbookWindows.Screen
                 App.chapter = item;
                 WindowScreen win = (WindowScreen)Window.GetWindow(this);
                 win.OpenComicReadingScreen();
+                
             }
         }
-
+          
         private async void AddToLibrary_Click(object sender, RoutedEventArgs e)
         {
 
@@ -297,14 +298,24 @@ namespace EbookWindows.Screen
             Console.WriteLine("EndInit");
         }
         public static void getjsonstring(string item)
-        { 
-            var json = new WebClient().DownloadString(App.base_url + "/api/chapters?url=" + item);
+        {
             var count = App.Items.chapter_link.FindIndex(x => x.Contains(item));
             var path_data = App.path + "\\data\\book" + "\\" + App.Items.source + "\\" + App.Items.book_id + "\\content";
-            File.WriteAllText(path_data + "\\" + count +".json", json);
-            Console.WriteLine(count);
+            if (File.Exists(path_data + "\\" + count + ".json"))
+                return;
+            while (true)
+            {
+                try
+                {
+                    var json = new WebClient().DownloadString(App.base_url + "/api/chapters?url=" + item);
+                    File.WriteAllText(path_data + "\\" + count + ".json", json);
+                    return;
+                }
+                catch (Exception e)
+                {
+                }
+            }
         }
-
         private void DownloadContent_Click(object sender, RoutedEventArgs e)
         {
             Download_Content();

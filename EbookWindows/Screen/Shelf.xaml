@@ -30,17 +30,27 @@
 
             </DockPanel>
         <Grid Grid.Row="1">
-            <ListView Padding="0,0,-40,0" Name="lbTodoList" ScrollViewer.CanContentScroll="False" ScrollViewer.VerticalScrollBarVisibility="Hidden" VerticalContentAlignment="Top"   ItemsSource="{Binding}" Margin="0,5,0,5" SelectionChanged="lbTodoList_SelectionChanged" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+            <ListView Padding="0,0,-40,0" Name="lbTodoList" ScrollViewer.CanContentScroll="False" ScrollViewer.VerticalScrollBarVisibility="Hidden" VerticalContentAlignment="Top" HorizontalContentAlignment="Center"  ItemsSource="{Binding}" Margin="0,5,0,5" SelectionChanged="lbTodoList_SelectionChanged" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                <ListView.ItemContainerStyle>
+                    <Style x:Name="name" TargetType="{x:Type ListViewItem}" BasedOn="{StaticResource MaterialDesignListBoxItem}">
+                        <Setter Property="Margin" Value="5,0"></Setter>
+                        <Setter Property="Height" Value="350"></Setter>
+                        <Setter Property="Width" Value="220"></Setter>
+                    </Style>
+                </ListView.ItemContainerStyle>
                 <ListView.ItemsPanel>
                     <ItemsPanelTemplate>
-                        <WrapPanel  FlowDirection="LeftToRight"  Orientation="Horizontal" HorizontalAlignment="Stretch"  ></WrapPanel>
+                        <WrapPanel FlowDirection="LeftToRight"  Orientation="Horizontal" HorizontalAlignment="Center">
+                        </WrapPanel> 
                     </ItemsPanelTemplate>
                 </ListView.ItemsPanel>
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <Grid Margin="0" Width="210" Height="350">
+                        <Grid>
                             <Image Source="{Binding img_dir}" DockPanel.Dock="Top" StretchDirection="Both" Stretch="Fill"></Image>
-                            <TextBlock Padding ="3,5" Background="#6a000000" VerticalAlignment="Bottom" DockPanel.Dock="Bottom" Text="{Binding Title}"  Margin="0,3,0,0" TextTrimming="CharacterEllipsis"></TextBlock>
+                            <TextBlock  Padding ="3,5" Background="#6a000000" VerticalAlignment="Bottom" DockPanel.Dock="Bottom" Text="{Binding Title}"  Margin="0,3,0,0" TextTrimming="CharacterEllipsis"></TextBlock>
+                            
+
                         </Grid>
                     </DataTemplate>
                 </ListView.ItemTemplate>

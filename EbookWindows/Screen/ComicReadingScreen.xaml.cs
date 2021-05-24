@@ -86,7 +86,10 @@ namespace EbookWindows.Screen
             }
 
         }
-
+        public void WriteRecentChapter()
+        {
+           // var chapter_dir = App.book_dir + "\\content\\" + index + ".json";
+        }
         #endregion
         #region Event
         private void StackPanel_MouseMove(object sender, MouseEventArgs e)

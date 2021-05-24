@@ -73,15 +73,55 @@
                             <RowDefinition Height="20"></RowDefinition>
                             <RowDefinition Height="20"></RowDefinition>
                             <RowDefinition Height="*"></RowDefinition>
+                            <RowDefinition Height="50"></RowDefinition>
                         </Grid.RowDefinitions>
                         <TextBlock Grid.Column="0" Grid.Row="0" >Author:</TextBlock>
                         <TextBlock Grid.Column="0" Grid.Row="1" >Total Chapter:</TextBlock>
                         <TextBlock Grid.Column="0" Grid.Row="2" VerticalAlignment="Top" >Decription:</TextBlock>
                         <TextBlock x:Name="bookAuthor" Grid.Column="1" Grid.Row="0" TextWrapping="Wrap">Justin Bieber</TextBlock>
                         <TextBlock x:Name="bookTotalChapter" Grid.Column="1" Grid.Row="1" TextWrapping="Wrap">500</TextBlock>
-                        <ScrollViewer SizeChanged="ScrollViewer_SizeChanged"  Grid.Column="1" Grid.Row="2" ScrollViewer.HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Hidden">
-                            <TextBlock x:Name="bookDec" TextWrapping="Wrap">Nothing</TextBlock>
-                        </ScrollViewer>
+                        <TextBlock Grid.Column="1" Grid.Row="2" x:Name="bookDec" TextWrapping="Wrap" >Nothing</TextBlock>
+                        <Grid Grid.ColumnSpan="2" Grid.Row="3" VerticalAlignment="Top" Canvas.ZIndex="2">
+                            <StackPanel HorizontalAlignment="Left" VerticalAlignment="Center"  Orientation="Horizontal">
+                                <StackPanel.Resources>
+                                    <Style TargetType="{x:Type Button}" BasedOn="{StaticResource MaterialDesignOutlinedButton}">
+                                        <Setter Property="Margin" Value="5,0"></Setter>
+                                    </Style>
+                                </StackPanel.Resources>
+                                <Button Click="AddToLibrary_Click" VerticalContentAlignment="Center" Padding="5,0">
+                                    <StackPanel Orientation="Horizontal">
+                                        <materialDesign:PackIcon Kind="Add" Width="24" Height="24"></materialDesign:PackIcon>
+                                        <TextBlock VerticalAlignment="Center" FontSize="11" Margin="5,0"> Add to Library</TextBlock>
+                                    </StackPanel>
+                                </Button>
+                                <!--<Button>
+                                    <StackPanel Orientation="Horizontal">
+                                        <materialDesign:PackIcon Kind="Heart" Width="20" Height="20"></materialDesign:PackIcon>
+                                        <TextBlock VerticalAlignment="Center" FontSize="11" Margin="5,0"> Add to Favorive</TextBlock>
+                                    </StackPanel>
+                                </Button>-->
+                                <Button Click="DownloadContent_Click">
+                                    <StackPanel Orientation="Horizontal">
+                                        <materialDesign:PackIcon Kind="Download" Width="24" Height="24"></materialDesign:PackIcon>
+                                        <TextBlock VerticalAlignment="Center" FontSize="11" Margin="5,0"> Add to Library</TextBlock>
+                                    </StackPanel>
+                                </Button>
+                                <Button>
+                                    <StackPanel Orientation="Horizontal">
+                                        <!--<materialDesign:PackIcon Kind="Download" Width="24" Height="24"></materialDesign:PackIcon>-->
+                                        <TextBlock VerticalAlignment="Center" FontSize="11" Margin="5,0">Read First Chapter</TextBlock>
+                                    </StackPanel>
+                                </Button>
+                                <Button>
+                                    <StackPanel Orientation="Horizontal">
+                                        <!--<materialDesign:PackIcon Kind="Download" Width="24" Height="24"></materialDesign:PackIcon>-->
+                                        <TextBlock VerticalAlignment="Center" FontSize="11" Margin="5,0">Read Newest Chapter</TextBlock>
+                                    </StackPanel>
+                                </Button>
+                                </StackPanel>
+                            </Grid>
+
+                        
                     </Grid>
                 </Grid>
             </Grid>
