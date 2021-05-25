@@ -54,10 +54,14 @@ namespace EbookWindows.Screen
             this.document.PropertyChanged += DocumentOnPropertyChanged;
         }
 
+        /// <summary>
+        /// Load data with a file path
+        /// </summary>
+        /// <param name="filePath">the file path need to read</param>
         public void LoadData(string filePath) //Load data here
         {
             file = new FileStream(filePath, FileMode.Open, FileAccess.Read);
-            Document document = new Document(file);          
+            Document document = new Document(file);
             (this.document).Document = document;
 
         }
@@ -268,7 +272,7 @@ namespace EbookWindows.Screen
             {
                 zoomValue -= 0.1;
                 this.UpdateImageZoom();
-                zoomLabel.Content = $"{zoomValue  * 100}%";
+                zoomLabel.Content = $"{zoomValue * 100}%";
             }
         }
 
@@ -308,7 +312,7 @@ namespace EbookWindows.Screen
             zoomLabel.Content = $"{zoomValue * 100}%";
             PageImage.Source = null;
             file.Close();
-       
+
             WindowScreen win = (WindowScreen)Window.GetWindow(this);
             win.ReturnFromReadingScreen_Click(sender, e);
         }

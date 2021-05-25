@@ -133,6 +133,11 @@ namespace EbookWindows.Screen
         {
            // BookTextShelf.LoadDataBookShelf();
         }
+        /// <summary>
+        /// return home screen when press homebutton
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ReturnHome_Click(object sender, RoutedEventArgs e)
         {
             if(MainGrid.Visibility != Visibility.Visible)
@@ -172,8 +177,11 @@ namespace EbookWindows.Screen
 
         }
 
-
-
+        /// <summary>
+        /// Back to home when press return home button of reading screen
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         public void ReturnFromReadingScreen_Click(object sender, RoutedEventArgs e)
         {
             MainGrid.Visibility = Visibility.Visible;
@@ -183,6 +191,11 @@ namespace EbookWindows.Screen
         }
 
 
+        /// <summary>
+        /// Home load reading screen when open a file from file path
+        /// </summary>
+        /// <param name="filePath">path of file</param>
+        /// <param name="index">-1: if press browser button; index: index in recent file ListView</param>
         public void filePathChanged(string filePath, int index)
         {
             string fileIcon ="";
@@ -209,10 +222,11 @@ namespace EbookWindows.Screen
             {
                 //notthing
             }
-            if(index < 0)
+            if(index < 0) //index = -1
             {
                 recentFileUserControl.BrowserANewFile(fileName, filePath, fileIcon);
-            } else
+            }
+            else //index >= 0
             {
                 recentFileUserControl.openAFileInRecentFileList(index);
             }
@@ -234,7 +248,11 @@ namespace EbookWindows.Screen
         {
                 LoadingGrid.Visibility = Visibility.Collapsed;
         }
-
+        /// <summary>
+        /// event before app closed
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             recentFileUserControl.SaveRecentFileList();
