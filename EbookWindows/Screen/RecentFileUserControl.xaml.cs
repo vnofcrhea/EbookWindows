@@ -37,24 +37,73 @@ namespace EbookWindows.Screen
             InitializeComponent();
 
         }
-
-        public bool BrowserANewFile(string fileName, string filePath, string fileIcon)
+        /// <summary>
+        /// Loading data after RecentFileUserControl()
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void LoadData(object sender, RoutedEventArgs e)
         {
-            RecentFile temp = new RecentFile(fileName, filePath, fileIcon);
-            if(viewingList.Count() == minItems && viewBtn.Content.Equals(viewMore))
-            {
-                viewingList.RemoveAt(minItems-1);           
-            } else if(viewingList.Count() == maxItems && viewBtn.Content.Equals(viewLess))
-            {
-                viewingList.RemoveAt(maxItems - 1);
-            }
-            else{ //do nothing
-                  } 
-            viewingList.Insert(0, temp);
-            recentFileList.Insert(0, temp);
-            return true;
+            RecentFileDao recentFileDao = new RecentFileDao();
+            recentFileList = recentFileDao.GetAll();
+            MappingDataFromListToView(minItems);
+            recentFileListView.ItemsSource = viewingList;
         }
 
+        /// <summary>
+        /// Open a file from device
+        /// </summary>
+        /// <param name="fileName"></param>
+        /// <param name="filePath"></param>
+        /// <param name="fileIcon"></param>
+        /// <returns></returns>
+        public bool BrowserANewFile(string fileName, string filePath, string fileIcon)
+        {
+            int index = IsFilePathExist(filePath);
+            //filepath is not exist in recentFileList
+            if (index == -1)
+            {
+                RecentFile temp = new RecentFile(fileName, filePath, fileIcon);
+                if (viewingList.Count() == minItems && viewBtn.Content.Equals(viewMore))
+                {
+                    viewingList.RemoveAt(minItems - 1);
+                }
+                else if (viewingList.Count() == maxItems && viewBtn.Content.Equals(viewLess))
+                {
+                    viewingList.RemoveAt(maxItems - 1);
+                }
+                else
+                { //do nothing
+                }
+                viewingList.Insert(0, temp);
+                recentFileList.Insert(0, temp);
+                return true;
+            }
+            ////filepath is exist in recentFileList
+            else
+            {
+                //swap recentfileList[index]
+                recentFileList.Insert(0, recentFileList[index]);
+                recentFileList.RemoveAt(index + 1);
+                //Loading data in recentFileListView again
+                if (viewBtn.Content.Equals(viewMore))
+                {
+                    MappingDataFromListToView(minItems);
+                }
+                else if (viewBtn.Content.Equals(viewLess))
+                {
+                    MappingDataFromListToView(maxItems);
+                }
+                return true;
+            }
+            //return false;
+        }
+
+        /// <summary>
+        /// Select a file in recentFileListView
+        /// </summary>
+        /// <param name="index">index of file was selected</param>
+        /// <returns></returns>
         public bool openAFileInRecentFileList(int index)
         {
             viewingList.Insert(0, viewingList[index]);
@@ -64,15 +113,32 @@ namespace EbookWindows.Screen
             return true;
         }
 
-        private void LoadData(object sender, RoutedEventArgs e)
+        /// <summary>
+        /// Check: filepath is exist in  recentlistList
+        /// </summary>
+        /// <param name="newfilePath"></param>
+        /// <returns>-1: if the filepath isn't exist; index of filepath exist in recentList</returns>
+        private int IsFilePathExist(string newfilePath)
         {
-            RecentFileDao recentFileDao = new RecentFileDao();
-            recentFileList = recentFileDao.GetAll();
-             MappingDataFromListToView(minItems);
-            recentFileListView.ItemsSource = viewingList;
+            int amount = recentFileList.Count();
+            if (recentFileList.Count() > 10)
+            {
+                amount = 10;
+            }
+            for (int i = 0; i < amount; ++i)
+            {
+                if (newfilePath.Equals(recentFileList[i].filePath))
+                {
+                    return i;
+                }
+            }
+            return -1;
         }
 
-
+        /// <summary>
+        /// Mapping data from recentFileList to viewingList with amount
+        /// </summary>
+        /// <param name="amount"></param>
         private void MappingDataFromListToView(int amount)
         {
             viewingList.Clear();
@@ -80,7 +146,7 @@ namespace EbookWindows.Screen
             {
                 viewingList.Add(i);
             }
-            
+
         }
 
         private void viewBtn_CLick(object sender, RoutedEventArgs e)
@@ -112,7 +178,7 @@ namespace EbookWindows.Screen
         {
             int index = recentFileListView.SelectedIndex;
             //MessageBox.Show(index.ToString());
-            if(index > -1)
+            if (index > -1)
             {
                 if (!File.Exists(viewingList[index].filePath))
                 {
@@ -129,15 +195,17 @@ namespace EbookWindows.Screen
                     else if (viewingList[index].fileIcon.Equals(epub))
                     {
                         home.filePathChanged(viewingList[index].filePath, index);
-                       // openAFileInRecentFileList(index);
+                        // openAFileInRecentFileList(index);
                     }
                     else
                     {
                         //do nothing
                     }
                 }
+
+                recentFileListView.SelectedIndex = -1;
             }
-           
+
         }
 
         //Write File
