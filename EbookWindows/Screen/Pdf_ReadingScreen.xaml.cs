@@ -27,6 +27,7 @@ namespace EbookWindows.Screen
     /// </summary>
     public partial class Pdf_ReadingScreen : UserControl
     {
+        private int bottom = 0;
         FileStream file;
         private double zoomValue { get; set; }
 
@@ -54,10 +55,14 @@ namespace EbookWindows.Screen
             this.document.PropertyChanged += DocumentOnPropertyChanged;
         }
 
+        /// <summary>
+        /// Load data with a file path
+        /// </summary>
+        /// <param name="filePath">the file path need to read</param>
         public void LoadData(string filePath) //Load data here
         {
             file = new FileStream(filePath, FileMode.Open, FileAccess.Read);
-            Document document = new Document(file);          
+            Document document = new Document(file);
             (this.document).Document = document;
 
         }
@@ -79,7 +84,7 @@ namespace EbookWindows.Screen
             IList<Link> links = currentPage.Links;
 
             SetImageSourceDelegate del = this.SetImageSource; //gán sự kiện vào hàm delegate
-            this.Dispatcher.Invoke(del, image, links, desiredWidth, desiredHeight); //thực hiện hàm
+            this.Dispatcher.Invoke(del, image, links, desiredWidth, desiredHeight); //thực hiện hàm SetImageSource
         }
 
         private void SetImageSource(byte[] image, IList<Link> links, int width, int height)
@@ -142,19 +147,21 @@ namespace EbookWindows.Screen
         {
             if (destinationInfo == null)
             {
-                this.PageScroller.ScrollToTop();
+                //this.pageScroller.ScrollToTop();
+                this.pageScroller.ScrollToVerticalOffset(0.1);
                 return;
             }
             double value = zoomValue;
             double scale = value;
 
-            double horizontalScale = this.PageScroller.ViewportWidth / this.PageImage.ActualWidth;
-            double verticalScale = this.PageScroller.ViewportHeight / this.PageImage.ActualHeight;
+            double horizontalScale = this.pageScroller.ViewportWidth / this.PageImage.ActualWidth;
+            MessageBox.Show($"{pageScroller.ViewportWidth} : {PageImage.ActualWidth} = {horizontalScale}");
+            double verticalScale = this.pageScroller.ViewportHeight / this.PageImage.ActualHeight;
 
             if (destinationInfo.Bottom != 0 && destinationInfo.Right != this.PageImage.ActualWidth)
             {
-                double expectedHScale = this.PageScroller.ViewportWidth / destinationInfo.Height;
-                double expectidVScale = this.PageScroller.ViewportHeight / destinationInfo.Width;
+                double expectedHScale = this.pageScroller.ViewportWidth / destinationInfo.Height;
+                double expectidVScale = this.pageScroller.ViewportHeight / destinationInfo.Width;
                 horizontalScale = expectedHScale;
                 verticalScale = expectidVScale;
 
@@ -162,8 +169,8 @@ namespace EbookWindows.Screen
 
             }
 
-            this.PageScroller.ScrollToHorizontalOffset(destinationInfo.Left * scale);
-            this.PageScroller.ScrollToVerticalOffset((this.PageImage.ActualHeight - destinationInfo.Top) * scale);
+            this.pageScroller.ScrollToHorizontalOffset(destinationInfo.Left * scale);
+            this.pageScroller.ScrollToVerticalOffset((this.PageImage.ActualHeight - destinationInfo.Top) * scale);
 
         }
 
@@ -191,8 +198,6 @@ namespace EbookWindows.Screen
                 imageContainer.LayoutTransform = new ScaleTransform(scale, scale);
             }
         }
-
-
 
 
         //Nhat develop for reading screen
@@ -268,7 +273,7 @@ namespace EbookWindows.Screen
             {
                 zoomValue -= 0.1;
                 this.UpdateImageZoom();
-                zoomLabel.Content = $"{zoomValue  * 100}%";
+                zoomLabel.Content = $"{zoomValue * 100}%";
             }
         }
 
@@ -307,8 +312,9 @@ namespace EbookWindows.Screen
             zoomValue = 0.8;
             zoomLabel.Content = $"{zoomValue * 100}%";
             PageImage.Source = null;
+            bottom = 0;
             file.Close();
-       
+
             WindowScreen win = (WindowScreen)Window.GetWindow(this);
             win.ReturnFromReadingScreen_Click(sender, e);
         }
@@ -317,5 +323,58 @@ namespace EbookWindows.Screen
         {
 
         }
+
+        private void closeBookmarkBtn_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void bookmarkListview_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void bookmarkDeleteButtons_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void PageScroller_Changed(object sender, ScrollChangedEventArgs e)
+        {
+            if (PageImage.Source != null)
+            {
+                if (pageScroller.VerticalOffset == pageScroller.ScrollableHeight)
+                {
+                    if (bottom == 0)
+                    {
+                        bottom = 1;
+                        this.pageScroller.ScrollToVerticalOffset(pageScroller.ScrollableHeight - 0.1);
+                    }
+
+                    else
+                    {
+                        document.Document.Navigator.MoveForward();
+                        bottom = 0;
+                    }
+
+                    //MessageBox.Show("lan 2");
+                }
+                else if (pageScroller.VerticalOffset == 0)
+                {
+                    document.Document.Navigator.MoveBackward();
+                }
+            }
+
+
+        }
+
+        //private void Arrow_KeyDown(object sender, KeyEventArgs e)
+        //{
+        //document.Document.Navigator.MoveForward();
+        //    if(e.Key == Key.Right)
+        //    {
+        //        document.Document.Navigator.MoveForward();
+        //    }
+        //}
     }
 }
