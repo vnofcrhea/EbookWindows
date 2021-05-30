@@ -1,4 +1,5 @@
-﻿using EbookWindows.ViewModels;
+﻿using EbookWindows.Model;
+using EbookWindows.ViewModels;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -29,38 +30,46 @@ namespace EbookWindows.Screen
         public Shelf()
         {
             InitializeComponent();
-            LoadDataBookShelf();
+            LoadBook_ShortPanel();
             ShelftitleBox.Text = ShelfTitle;
         }
-        public void LoadDataBookShelf()
+        public void LoadBook_ShortPanel()
         {
-            var path_data = App.Global.Directory_Folder + "\\data\\book";
-
-            if (!Directory.Exists(path_data))
-            {
-                Directory.CreateDirectory(path_data);
-            }
-            string[] subdirectoryEntries = Directory.GetDirectories(path_data);
-            foreach (var item in subdirectoryEntries)
-            {
-                var sub1 = Directory.GetDirectories(item);
-                foreach (var item1 in sub1)
-                {
-                    using (StreamReader file = File.OpenText(item1 + "\\detail.json"))
-                    {
-                        JsonSerializer serializer = new JsonSerializer();
-                        Root root = (Root)serializer.Deserialize(file, typeof(Root));
-                        App.Global.shelfTag.Add(new ShelfTag() { Title = root.book_name, img_dir = item1 + "\\img.jpg", book_dir = item1 });
-                    }
-                }
-            }
             this.Dispatcher.Invoke(() => {
-                lbTodoList.ItemsSource = App.Global.shelfTag;
+                this.DataContext = App.Global.Book_Short_ViewModel;
             });
-
-
-
         }
+        #region Old Bussiness
+        //public void LoadDataBookShelf()
+        //{
+        //    var path_data = App.Global.Directory_Folder + "\\data\\book";
+
+        //    if (!Directory.Exists(path_data))
+        //    {
+        //        Directory.CreateDirectory(path_data);
+        //    }
+        //    string[] subdirectoryEntries = Directory.GetDirectories(path_data);
+        //    foreach (var item in subdirectoryEntries)
+        //    {
+        //        var sub1 = Directory.GetDirectories(item);
+        //        foreach (var item1 in sub1)
+        //        {
+        //            using (StreamReader file = File.OpenText(item1 + "\\detail.json"))
+        //            {
+        //                JsonSerializer serializer = new JsonSerializer();
+        //                Book root = (Book)serializer.Deserialize(file, typeof(Book));
+        //                App.Global.List_Book_Short.Add(new Book_Short() { Title = root.book_name, img_dir = item1 + "\\img.jpg", book_dir = item1 });
+        //            }
+        //        }
+        //    }
+        //    this.Dispatcher.Invoke(() => {
+        //        lbTodoList.ItemsSource = App.Global.List_Book_Short;
+        //    });
+
+
+
+        //}
+        #endregion
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             //ScrollList.ScrollToHorizontalOffset(ScrollList.HorizontalOffset + 150);
@@ -85,9 +94,8 @@ namespace EbookWindows.Screen
             if (x.SelectedIndex != -1)
             {
                 WindowScreen win = (WindowScreen)Window.GetWindow(this);
-                win.OpenDetailScreen(x.SelectedItem as ShelfTag);
+                win.OpenDetailScreen(x.SelectedItem as Book_Short);
                 lbTodoList.SelectedIndex = -1;
-
             }
         }
 

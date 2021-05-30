@@ -18,6 +18,11 @@ namespace EbookWindows
         public static void ChangeBaseTheme(BaseTheme x)
         {
                 (App.Current.Resources.MergedDictionaries[0] as BundledTheme).BaseTheme = x;
+          
+        }
+        public App()
+        {
+            Global.Book_Short_ViewModel.LoadListBookShort();
         }
         public static bool isDarkMode()
         {

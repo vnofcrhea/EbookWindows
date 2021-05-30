@@ -17,6 +17,7 @@ using System.Windows.Shapes;
 using EbookWindows.ViewModels;
 using Newtonsoft.Json;
 using MaterialDesignThemes.Wpf;
+using EbookWindows.Model;
 namespace EbookWindows.Screen
 {
     /// <summary>
@@ -26,7 +27,7 @@ namespace EbookWindows.Screen
     {
         System.Windows.Threading.DispatcherTimer dispatcherTimer = new System.Windows.Threading.DispatcherTimer();
         private TimeSpan SpanTime;
-        Root_Reading chapter_content = new Root_Reading();
+        Book_Content chapter_content = new Book_Content();
         public bool isOnline = true;
         public double Scaling_Rate = 1;
 
@@ -41,7 +42,7 @@ namespace EbookWindows.Screen
             this.Dispatcher.Invoke(() =>
             {
                 Load_ChapterList();
-                Chapter_List.SelectedValue = App.Global.chapter.link;
+                Chapter_List.SelectedValue = App.Global.Chapter.link;
                 WindowScreen win = (WindowScreen)Window.GetWindow(this);
                 Content_Box.MaxWidth = (win.ActualWidth - win.LeftHeader.ActualWidth);
             });
@@ -55,21 +56,21 @@ namespace EbookWindows.Screen
         public void LoadContent(Chapter chapter)
         {
             var index = App.Global.Items.chapter_link.FindIndex(e => e.Contains(chapter.link));
-            var chapter_dir = App.Global.book_dir + "\\content\\" + index + ".json";
+            var chapter_dir = App.Global.Book_Directory + "\\content\\" + index + ".json";
             if (File.Exists(chapter_dir))
             {
                 Console.WriteLine(1);
                 using (StreamReader file = File.OpenText(chapter_dir))
                 {
                     JsonSerializer serializer = new JsonSerializer();
-                    chapter_content = (Root_Reading)serializer.Deserialize(file, typeof(Root_Reading));
+                    chapter_content = (Book_Content)serializer.Deserialize(file, typeof(Book_Content));
                 }
             }
             else
             {
-                Console.WriteLine(App.Global.book_dir + "\\content\\" + index + ".json");
-                var json = new WebClient().DownloadString(App.Global.base_url + "/api/chapters?url=" + chapter.link);
-                chapter_content = JsonConvert.DeserializeObject<Root_Reading>(json);
+                Console.WriteLine(App.Global.Book_Directory + "\\content\\" + index + ".json");
+                var json = new WebClient().DownloadString(App.Global.API_URL_Primary + "/api/chapters?url=" + chapter.link);
+                chapter_content = JsonConvert.DeserializeObject<Book_Content>(json);
             }
             this.Dispatcher.Invoke(() =>
             {

@@ -18,6 +18,7 @@ using System.Windows.Shapes;
 using EbookWindows.ViewModels;
 using System.IO;
 using System.ComponentModel;
+using EbookWindows.Model;
 
 namespace EbookWindows.Screen
 {
@@ -37,50 +38,90 @@ namespace EbookWindows.Screen
 
         }
 
-        public void LoadData(ShelfTag item) //Load data offine here
-        {
-            App.Global.book_dir = item.book_dir;
-            using (StreamReader file = File.OpenText(item.book_dir + "\\detail.json"))
-            {
-                JsonSerializer serializer = new JsonSerializer();
-                App.Global.Items = (Root)serializer.Deserialize(file, typeof(Root));
-            }
+        //public void LoadData(Book_Short item) //Load data offine here
+        //{
+        //    App.Global.Book_Directory = item.book_dir;
+        //    using (StreamReader file = File.OpenText(item.book_dir + "\\detail.json"))
+        //    {
+        //        JsonSerializer serializer = new JsonSerializer();
+        //        App.Global.Items = (Book)serializer.Deserialize(file, typeof(Book));
+        //    }
             
-            page_numbers = App.Global.Items.chapter_name.Count / chapter_limit + 1;
+        //    page_numbers = App.Global.Items.chapter_name.Count / chapter_limit + 1;
+        //    page_index = 1;
+        //    this.Dispatcher.Invoke(() =>
+        //    {
+        //        bookAuthor.Text = App.Global.Items.book_author;
+        //        bookTotalChapter.Text = App.Global.Items.chapter_name.Count.ToString();
+        //        bookDec.Text = App.Global.Items.book_intro;
+        //        bookName.Text = App.Global.Items.book_name;
+        //        bookImg.Source = new BitmapImage(new Uri(item.book_dir + "\\img.jpg"));
+        //        LoadPaging(page_index);
+        //        PagePanelReload();
+        //    });
+        //}
+
+        public void LoadData(Book_Short item) //Load data offine here
+        {
+            App.Global.Book_ViewModel.LoadData(item);
+            page_numbers = App.Global.Book_ViewModel.bookTotalChapter / chapter_limit + 1;
             page_index = 1;
             this.Dispatcher.Invoke(() =>
-            {
-                bookAuthor.Text = App.Global.Items.book_author;
-                bookTotalChapter.Text = App.Global.Items.chapter_name.Count.ToString();
-                bookDec.Text = App.Global.Items.book_intro;
-                bookName.Text = App.Global.Items.book_name;
+            {//Gán DataContext được 
+                bookAuthor.Text = App.Global.Book_ViewModel.book_author;
+                bookTotalChapter.Text = App.Global.Book_ViewModel.bookTotalChapter.ToString();
+                bookDec.Text = App.Global.Book_ViewModel.book_intro;
+                bookName.Text = App.Global.Book_ViewModel.book_name;
                 bookImg.Source = new BitmapImage(new Uri(item.book_dir + "\\img.jpg"));
                 LoadPaging(page_index);
                 PagePanelReload();
             });
         }
         #region Loading Data Online 
+
         public void LoadData(string url) //Load data online here
         {
-            var json = new WebClient().DownloadString(App.Global.base_url + "/api/books?url=" + url);
-            App.Global.Items = JsonConvert.DeserializeObject<Root>(json);
-            
+            App.Global.Book_ViewModel.LoadData(url);
             #region //Xác định số trang
-            page_numbers = App.Global.Items.chapter_name.Count / chapter_limit + 1;
+            page_numbers = App.Global.Book_ViewModel.bookTotalChapter / chapter_limit + 1;
             page_index = 1;
             #endregion
             this.Dispatcher.Invoke(() =>
-            {
-                bookAuthor.Text = App.Global.Items.book_author;
-                bookTotalChapter.Text = App.Global.Items.chapter_name.Count.ToString();
-                bookDec.Text = App.Global.Items.book_intro;
-                bookName.Text = App.Global.Items.book_name;
-                bookImg.Source = new BitmapImage(new Uri(App.Global.Items.img_url));
+            {//Gán DataContext được 
+                bookAuthor.Text = App.Global.Book_ViewModel.book_author;
+                bookTotalChapter.Text = App.Global.Book_ViewModel.bookTotalChapter.ToString();
+                bookDec.Text = App.Global.Book_ViewModel.book_intro;
+                bookName.Text = App.Global.Book_ViewModel.book_name;
+                bookImg.Source = new BitmapImage(new Uri(App.Global.Book_ViewModel.img_url));
                 LoadPaging(page_index);
                 PagePanelReload();
             });
 
-        } 
+        }
+
+
+
+        //public void LoadData(string url) //Load data online here
+        //{
+        //    var json = new WebClient().DownloadString(App.Global.API_URL_Primary + "/api/books?url=" + url);
+        //    App.Global.Items = JsonConvert.DeserializeObject<Book>(json);
+            
+        //    #region //Xác định số trang
+        //    page_numbers = App.Global.Items.chapter_name.Count / chapter_limit + 1;
+        //    page_index = 1;
+        //    #endregion
+        //    this.Dispatcher.Invoke(() =>
+        //    {
+        //        bookAuthor.Text = App.Global.Items.book_author;
+        //        bookTotalChapter.Text = App.Global.Items.chapter_name.Count.ToString();
+        //        bookDec.Text = App.Global.Items.book_intro;
+        //        bookName.Text = App.Global.Items.book_name;
+        //        bookImg.Source = new BitmapImage(new Uri(App.Global.Items.img_url));
+        //        LoadPaging(page_index);
+        //        PagePanelReload();
+        //    });
+
+        //} 
         #endregion
         #region LOADING PAGING
         public void LoadPaging(int page)
@@ -90,20 +131,20 @@ namespace EbookWindows.Screen
             int count = 0;
             int index_start = (page - 1) * chapter_limit;
             int check_count = 0;
-            foreach (var item in App.Global.Items.season_name)
+            foreach (var item in App.Global.Book_ViewModel.season_name)
             {
-                if (App.Global.Items.season_index[count] < index_start)
+                if (App.Global.Book_ViewModel.season_index[count] < index_start)
                 {
-                    if (count < App.Global.Items.season_name.Count - 1)
+                    if (count < App.Global.Book_ViewModel.season_name.Count - 1)
                     {
-                        if (App.Global.Items.season_index[count + 1] > index_start)
+                        if (App.Global.Book_ViewModel.season_index[count + 1] > index_start)
                         {
                             Chapter childItem1 = new Chapter() { Title = item };
-                            if (count < App.Global.Items.season_index.Count - 1)
+                            if (count < App.Global.Book_ViewModel.season_index.Count - 1)
                             {
-                                for (int i = index_start; i < App.Global.Items.season_index[count + 1]; i++)
+                                for (int i = index_start; i < App.Global.Book_ViewModel.season_index[count + 1]; i++)
                                 {
-                                    childItem1.Items.Add(new Chapter { Title = App.Global.Items.chapter_name[i], link = App.Global.Items.chapter_link[i] });
+                                    childItem1.Items.Add(new Chapter { Title = App.Global.Book_ViewModel.chapter_name[i], link = App.Global.Book_ViewModel.chapter_link[i] });
                                     check_count++;
                                     if (check_count >= chapter_limit)
                                         break;
@@ -111,9 +152,9 @@ namespace EbookWindows.Screen
                             }
                             else
                             {
-                                for (int i = index_start; i < App.Global.Items.chapter_name.Count; i++)
+                                for (int i = index_start; i < App.Global.Book_ViewModel.chapter_name.Count; i++)
                                 {
-                                    childItem1.Items.Add(new Chapter { Title = App.Global.Items.chapter_name[i], link = App.Global.Items.chapter_link[i] });
+                                    childItem1.Items.Add(new Chapter { Title = App.Global.Book_ViewModel.chapter_name[i], link = App.Global.Book_ViewModel.chapter_link[i] });
                                     check_count++;
                                     if (check_count >= chapter_limit)
                                         break;
@@ -131,9 +172,9 @@ namespace EbookWindows.Screen
                     else
                     {
                         Chapter childItem1 = new Chapter() { Title = item };
-                        for (int i = index_start; i < App.Global.Items.chapter_name.Count; i++)
+                        for (int i = index_start; i < App.Global.Book_ViewModel.chapter_name.Count; i++)
                         {
-                            childItem1.Items.Add(new Chapter { Title = App.Global.Items.chapter_name[i], link = App.Global.Items.chapter_link[i] });
+                            childItem1.Items.Add(new Chapter { Title = App.Global.Book_ViewModel.chapter_name[i], link = App.Global.Book_ViewModel.chapter_link[i] });
                             check_count++;
                             if (check_count >= chapter_limit)
                                 break;
@@ -146,11 +187,11 @@ namespace EbookWindows.Screen
                     }
                 }
                 Chapter childItem = new Chapter() { Title = item };
-                if (count < App.Global.Items.season_index.Count - 1)
+                if (count < App.Global.Book_ViewModel.season_index.Count - 1)
                 {
-                    for (int i = App.Global.Items.season_index[count]; i < App.Global.Items.season_index[count + 1]; i++)
+                    for (int i = App.Global.Book_ViewModel.season_index[count]; i < App.Global.Book_ViewModel.season_index[count + 1]; i++)
                     {
-                        childItem.Items.Add(new Chapter { Title = App.Global.Items.chapter_name[i], link = App.Global.Items.chapter_link[i] });
+                        childItem.Items.Add(new Chapter { Title = App.Global.Book_ViewModel.chapter_name[i], link = App.Global.Book_ViewModel.chapter_link[i] });
                         check_count++;
                         if (check_count >= chapter_limit)
                             break;
@@ -158,9 +199,9 @@ namespace EbookWindows.Screen
                 }
                 else
                 {
-                    for (int i = App.Global.Items.season_index[count]; i < App.Global.Items.chapter_name.Count; i++)
+                    for (int i = App.Global.Book_ViewModel.season_index[count]; i < App.Global.Book_ViewModel.chapter_name.Count; i++)
                     {
-                        childItem.Items.Add(new Chapter { Title = App.Global.Items.chapter_name[i], link = App.Global.Items.chapter_link[i] });
+                        childItem.Items.Add(new Chapter { Title = App.Global.Book_ViewModel.chapter_name[i], link = App.Global.Book_ViewModel.chapter_link[i] });
 
                         check_count++;
                         if (check_count >= chapter_limit)
@@ -257,7 +298,7 @@ namespace EbookWindows.Screen
                 return;
             else
             {
-                App.Global.chapter = item;
+                App.Global.Chapter = item;
                 WindowScreen win = (WindowScreen)Window.GetWindow(this);
                 win.OpenComicReadingScreen();
                 
@@ -313,12 +354,13 @@ namespace EbookWindows.Screen
             {
                 try
                 {
-                    var json = new WebClient().DownloadString(App.Global.base_url + "/api/chapters?url=" + item);
+                    var json = new WebClient().DownloadString(App.Global.API_URL_Primary + "/api/chapters?url=" + item);
                     File.WriteAllText(path_data + "\\" + count + ".json", json);
                     return;
                 }
-                catch (Exception e)
+                catch
                 {
+
                 }
             }
         }

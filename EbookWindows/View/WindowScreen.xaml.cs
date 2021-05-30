@@ -1,4 +1,5 @@
-﻿using EbookWindows.ViewModels;
+﻿using EbookWindows.Model;
+using EbookWindows.ViewModels;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.Win32;
 using System;
@@ -105,7 +106,7 @@ namespace EbookWindows.Screen
         {
 
         }
-        public async void OpenDetailScreen(ShelfTag x)
+        public async void OpenDetailScreen(Book_Short x)
         {
             StartLoading();
             await Task.Run(()=>detailScreen.LoadData(x));
