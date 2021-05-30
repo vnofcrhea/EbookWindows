@@ -41,7 +41,7 @@ namespace EbookWindows.Screen
             this.Dispatcher.Invoke(() =>
             {
                 Load_ChapterList();
-                Chapter_List.SelectedValue = App.chapter.link;
+                Chapter_List.SelectedValue = App.Global.chapter.link;
                 WindowScreen win = (WindowScreen)Window.GetWindow(this);
                 Content_Box.MaxWidth = (win.ActualWidth - win.LeftHeader.ActualWidth);
             });
@@ -54,8 +54,8 @@ namespace EbookWindows.Screen
 
         public void LoadContent(Chapter chapter)
         {
-            var index = App.Items.chapter_link.FindIndex(e => e.Contains(chapter.link));
-            var chapter_dir = App.book_dir + "\\content\\" + index + ".json";
+            var index = App.Global.Items.chapter_link.FindIndex(e => e.Contains(chapter.link));
+            var chapter_dir = App.Global.book_dir + "\\content\\" + index + ".json";
             if (File.Exists(chapter_dir))
             {
                 Console.WriteLine(1);
@@ -67,8 +67,8 @@ namespace EbookWindows.Screen
             }
             else
             {
-                Console.WriteLine(App.book_dir + "\\content\\" + index + ".json");
-                var json = new WebClient().DownloadString(App.base_url + "/api/chapters?url=" + chapter.link);
+                Console.WriteLine(App.Global.book_dir + "\\content\\" + index + ".json");
+                var json = new WebClient().DownloadString(App.Global.base_url + "/api/chapters?url=" + chapter.link);
                 chapter_content = JsonConvert.DeserializeObject<Root_Reading>(json);
             }
             this.Dispatcher.Invoke(() =>
@@ -80,10 +80,10 @@ namespace EbookWindows.Screen
         public void Load_ChapterList()
         {
             Chapter_List.Items.Clear();
-            var sum = App.Items.chapter_name.Count;
+            var sum = App.Global.Items.chapter_name.Count;
             for (int i = 0; i < sum; i++)
             {
-                Chapter_List.Items.Add(new Chapter { Title = App.Items.chapter_name[i], link = App.Items.chapter_link[i] });
+                Chapter_List.Items.Add(new Chapter { Title = App.Global.Items.chapter_name[i], link = App.Global.Items.chapter_link[i] });
             }
 
         }

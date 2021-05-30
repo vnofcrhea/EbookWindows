@@ -14,11 +14,7 @@ namespace EbookWindows
     /// </summary>
     public partial class App : Application
     {
-        public static string base_url = "https://flask-web-scraping.herokuapp.com";
-        public static string book_dir = null;
-        public static Chapter chapter;
-        public static Root Items;
-        public static string path = System.IO.Directory.GetParent(System.Reflection.Assembly.GetExecutingAssembly().Location).ToString();
+        public static Global Global { get; set; } = new Global(); //Dynamic Global Data Use for all Windows,UserControl
         public static void ChangeBaseTheme(BaseTheme x)
         {
                 (App.Current.Resources.MergedDictionaries[0] as BundledTheme).BaseTheme = x;

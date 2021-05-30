@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:EbookWindows.Screen"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:material="clr-namespace:EbookWindows.Material"
              xmlns:system="clr-namespace:System;assembly=mscorlib"
              xmlns:materialDesignConverters="clr-namespace:MaterialDesignThemes.Wpf.Converters;assembly=MaterialDesignThemes.Wpf"
              mc:Ignorable="d" 
@@ -16,6 +17,7 @@
             <RowDefinition Height="*"></RowDefinition>
             <RowDefinition Height="32"></RowDefinition>
         </Grid.RowDefinitions>
+        
         <DockPanel Grid.Row="0">
                 <Border DockPanel.Dock="Left" Margin="5,0,0,0" Width="30" Height="2" Background="{StaticResource PrimaryHueMidBrush}" ></Border>
                 <TextBlock VerticalAlignment="Center" Name="ShelftitleBox" DockPanel.Dock="Left" Foreground="{StaticResource PrimaryHueMidBrush}" FontWeight="Bold"></TextBlock>
@@ -29,28 +31,31 @@
 
 
             </DockPanel>
-        <Grid Grid.Row="1">
-            <ListView Padding="0,0,-40,0" Name="lbTodoList" ScrollViewer.CanContentScroll="False" ScrollViewer.VerticalScrollBarVisibility="Hidden" VerticalContentAlignment="Top" HorizontalContentAlignment="Center"  ItemsSource="{Binding}" Margin="0,5,0,5" SelectionChanged="lbTodoList_SelectionChanged" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+        <Grid Grid.Row="1" SizeChanged="lbTodoList_SizeChanged">
+            <ListView Padding="0,0,-40,0" Margin="5"  Name="lbTodoList" ScrollViewer.CanContentScroll="False" ScrollViewer.VerticalScrollBarVisibility="Hidden" VerticalContentAlignment="Top" HorizontalContentAlignment="Center"  ItemsSource="{Binding}" SelectionChanged="lbTodoList_SelectionChanged" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                 <ListView.ItemContainerStyle>
                     <Style x:Name="name" TargetType="{x:Type ListViewItem}" BasedOn="{StaticResource MaterialDesignListBoxItem}">
-                        <Setter Property="Margin" Value="5,0"></Setter>
-                        <Setter Property="Height" Value="350"></Setter>
-                        <Setter Property="Width" Value="220"></Setter>
+                        
+                        <Setter Property="Width" Value="250"></Setter>
+                        <Setter Property="Height" Value="400"></Setter>
+                        <Setter Property="Padding" Value="5"></Setter>
                     </Style>
                 </ListView.ItemContainerStyle>
                 <ListView.ItemsPanel>
                     <ItemsPanelTemplate>
-                        <WrapPanel FlowDirection="LeftToRight"  Orientation="Horizontal" HorizontalAlignment="Center">
-                        </WrapPanel> 
+                        <material:StretchyWrapPanel x:Name="contentx"  >
+                        </material:StretchyWrapPanel> 
                     </ItemsPanelTemplate>
                 </ListView.ItemsPanel>
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <Grid>
+                        <Grid HorizontalAlignment="Center">
                             <Image Source="{Binding img_dir}" StretchDirection="Both" Stretch="Fill"></Image>
-                            <Border Background="{DynamicResource MaterialDesignPaper}" Opacity="0.7"  VerticalAlignment="Bottom" Padding="0" BorderThickness="0"  HorizontalAlignment="Stretch" Height="25" Width="220">
-                            </Border>
-                            <TextBlock  Padding ="3,5" VerticalAlignment="Bottom"  Margin="0,3,0,0" Text="{Binding Title}" FontWeight="DemiBold" TextTrimming="CharacterEllipsis">
+                            
+                            <TextBlock   Padding ="3,5" VerticalAlignment="Bottom"  Margin="0,3,0,0" Text="{Binding Title}" FontWeight="DemiBold" TextTrimming="CharacterEllipsis">
+                                <TextBlock.Background>
+                                    <SolidColorBrush Color="{DynamicResource MaterialDesignShadow}" Opacity="1"></SolidColorBrush>
+                                </TextBlock.Background>
                             </TextBlock>
                         </Grid>
                     </DataTemplate>

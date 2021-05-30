@@ -39,21 +39,21 @@ namespace EbookWindows.Screen
 
         public void LoadData(ShelfTag item) //Load data offine here
         {
-            App.book_dir = item.book_dir;
+            App.Global.book_dir = item.book_dir;
             using (StreamReader file = File.OpenText(item.book_dir + "\\detail.json"))
             {
                 JsonSerializer serializer = new JsonSerializer();
-                App.Items = (Root)serializer.Deserialize(file, typeof(Root));
+                App.Global.Items = (Root)serializer.Deserialize(file, typeof(Root));
             }
             
-            page_numbers = App.Items.chapter_name.Count / chapter_limit + 1;
+            page_numbers = App.Global.Items.chapter_name.Count / chapter_limit + 1;
             page_index = 1;
             this.Dispatcher.Invoke(() =>
             {
-                bookAuthor.Text = App.Items.book_author;
-                bookTotalChapter.Text = App.Items.chapter_name.Count.ToString();
-                bookDec.Text = App.Items.book_intro;
-                bookName.Text = App.Items.book_name;
+                bookAuthor.Text = App.Global.Items.book_author;
+                bookTotalChapter.Text = App.Global.Items.chapter_name.Count.ToString();
+                bookDec.Text = App.Global.Items.book_intro;
+                bookName.Text = App.Global.Items.book_name;
                 bookImg.Source = new BitmapImage(new Uri(item.book_dir + "\\img.jpg"));
                 LoadPaging(page_index);
                 PagePanelReload();
@@ -62,20 +62,20 @@ namespace EbookWindows.Screen
         #region Loading Data Online 
         public void LoadData(string url) //Load data online here
         {
-            var json = new WebClient().DownloadString(App.base_url + "/api/books?url=" + url);
-            App.Items = JsonConvert.DeserializeObject<Root>(json);
+            var json = new WebClient().DownloadString(App.Global.base_url + "/api/books?url=" + url);
+            App.Global.Items = JsonConvert.DeserializeObject<Root>(json);
             
             #region //Xác định số trang
-            page_numbers = App.Items.chapter_name.Count / chapter_limit + 1;
+            page_numbers = App.Global.Items.chapter_name.Count / chapter_limit + 1;
             page_index = 1;
             #endregion
             this.Dispatcher.Invoke(() =>
             {
-                bookAuthor.Text = App.Items.book_author;
-                bookTotalChapter.Text = App.Items.chapter_name.Count.ToString();
-                bookDec.Text = App.Items.book_intro;
-                bookName.Text = App.Items.book_name;
-                bookImg.Source = new BitmapImage(new Uri(App.Items.img_url));
+                bookAuthor.Text = App.Global.Items.book_author;
+                bookTotalChapter.Text = App.Global.Items.chapter_name.Count.ToString();
+                bookDec.Text = App.Global.Items.book_intro;
+                bookName.Text = App.Global.Items.book_name;
+                bookImg.Source = new BitmapImage(new Uri(App.Global.Items.img_url));
                 LoadPaging(page_index);
                 PagePanelReload();
             });
@@ -90,20 +90,20 @@ namespace EbookWindows.Screen
             int count = 0;
             int index_start = (page - 1) * chapter_limit;
             int check_count = 0;
-            foreach (var item in App.Items.season_name)
+            foreach (var item in App.Global.Items.season_name)
             {
-                if (App.Items.season_index[count] < index_start)
+                if (App.Global.Items.season_index[count] < index_start)
                 {
-                    if (count < App.Items.season_name.Count - 1)
+                    if (count < App.Global.Items.season_name.Count - 1)
                     {
-                        if (App.Items.season_index[count + 1] > index_start)
+                        if (App.Global.Items.season_index[count + 1] > index_start)
                         {
                             Chapter childItem1 = new Chapter() { Title = item };
-                            if (count < App.Items.season_index.Count - 1)
+                            if (count < App.Global.Items.season_index.Count - 1)
                             {
-                                for (int i = index_start; i < App.Items.season_index[count + 1]; i++)
+                                for (int i = index_start; i < App.Global.Items.season_index[count + 1]; i++)
                                 {
-                                    childItem1.Items.Add(new Chapter { Title = App.Items.chapter_name[i], link = App.Items.chapter_link[i] });
+                                    childItem1.Items.Add(new Chapter { Title = App.Global.Items.chapter_name[i], link = App.Global.Items.chapter_link[i] });
                                     check_count++;
                                     if (check_count >= chapter_limit)
                                         break;
@@ -111,9 +111,9 @@ namespace EbookWindows.Screen
                             }
                             else
                             {
-                                for (int i = index_start; i < App.Items.chapter_name.Count; i++)
+                                for (int i = index_start; i < App.Global.Items.chapter_name.Count; i++)
                                 {
-                                    childItem1.Items.Add(new Chapter { Title = App.Items.chapter_name[i], link = App.Items.chapter_link[i] });
+                                    childItem1.Items.Add(new Chapter { Title = App.Global.Items.chapter_name[i], link = App.Global.Items.chapter_link[i] });
                                     check_count++;
                                     if (check_count >= chapter_limit)
                                         break;
@@ -131,9 +131,9 @@ namespace EbookWindows.Screen
                     else
                     {
                         Chapter childItem1 = new Chapter() { Title = item };
-                        for (int i = index_start; i < App.Items.chapter_name.Count; i++)
+                        for (int i = index_start; i < App.Global.Items.chapter_name.Count; i++)
                         {
-                            childItem1.Items.Add(new Chapter { Title = App.Items.chapter_name[i], link = App.Items.chapter_link[i] });
+                            childItem1.Items.Add(new Chapter { Title = App.Global.Items.chapter_name[i], link = App.Global.Items.chapter_link[i] });
                             check_count++;
                             if (check_count >= chapter_limit)
                                 break;
@@ -146,11 +146,11 @@ namespace EbookWindows.Screen
                     }
                 }
                 Chapter childItem = new Chapter() { Title = item };
-                if (count < App.Items.season_index.Count - 1)
+                if (count < App.Global.Items.season_index.Count - 1)
                 {
-                    for (int i = App.Items.season_index[count]; i < App.Items.season_index[count + 1]; i++)
+                    for (int i = App.Global.Items.season_index[count]; i < App.Global.Items.season_index[count + 1]; i++)
                     {
-                        childItem.Items.Add(new Chapter { Title = App.Items.chapter_name[i], link = App.Items.chapter_link[i] });
+                        childItem.Items.Add(new Chapter { Title = App.Global.Items.chapter_name[i], link = App.Global.Items.chapter_link[i] });
                         check_count++;
                         if (check_count >= chapter_limit)
                             break;
@@ -158,9 +158,9 @@ namespace EbookWindows.Screen
                 }
                 else
                 {
-                    for (int i = App.Items.season_index[count]; i < App.Items.chapter_name.Count; i++)
+                    for (int i = App.Global.Items.season_index[count]; i < App.Global.Items.chapter_name.Count; i++)
                     {
-                        childItem.Items.Add(new Chapter { Title = App.Items.chapter_name[i], link = App.Items.chapter_link[i] });
+                        childItem.Items.Add(new Chapter { Title = App.Global.Items.chapter_name[i], link = App.Global.Items.chapter_link[i] });
 
                         check_count++;
                         if (check_count >= chapter_limit)
@@ -257,7 +257,7 @@ namespace EbookWindows.Screen
                 return;
             else
             {
-                App.chapter = item;
+                App.Global.chapter = item;
                 WindowScreen win = (WindowScreen)Window.GetWindow(this);
                 win.OpenComicReadingScreen();
                 
@@ -267,31 +267,31 @@ namespace EbookWindows.Screen
         private async void AddToLibrary_Click(object sender, RoutedEventArgs e)
         {
 
-            var path_data = App.path + "\\data\\book" + "\\" + App.Items.source + "\\" + App.Items.book_id;
+            var path_data = App.Global.Directory_Folder + "\\data\\book" + "\\" + App.Global.Items.source + "\\" + App.Global.Items.book_id;
             #region create path. 
             if (!Directory.Exists(path_data))
             {
                 Directory.CreateDirectory(path_data);
             }
             #endregion
-            File.WriteAllText(path_data + "\\" + "detail.json", JsonConvert.SerializeObject(App.Items));
+            File.WriteAllText(path_data + "\\" + "detail.json", JsonConvert.SerializeObject(App.Global.Items));
             using (WebClient client = new WebClient())
             {
-                await Task.Run(()=> { client.DownloadFile(new Uri(App.Items.img_url), path_data + "\\" + "img.jpg"); });
+                await Task.Run(()=> { client.DownloadFile(new Uri(App.Global.Items.img_url), path_data + "\\" + "img.jpg"); });
             };
             WindowScreen win = (WindowScreen)Window.GetWindow(this);
             win.LoadShelf();
         }
         public void Download_Content()
         {
-            var path_data = App.path + "\\data\\book" + "\\" + App.Items.source + "\\" + App.Items.book_id + "\\content";
+            var path_data = App.Global.Directory_Folder + "\\data\\book" + "\\" + App.Global.Items.source + "\\" + App.Global.Items.book_id + "\\content";
             if (!Directory.Exists(path_data))
             {
                 Directory.CreateDirectory(path_data);
             }
 
 
-            Parallel.ForEach(App.Items.chapter_link, new ParallelOptions { MaxDegreeOfParallelism = -1 }, getjsonstring);
+            Parallel.ForEach(App.Global.Items.chapter_link, new ParallelOptions { MaxDegreeOfParallelism = -1 }, getjsonstring);
             List<Task> TaskList = new List<Task>();
             //foreach (var url in App.Items.chapter_link)
             //{
@@ -305,15 +305,15 @@ namespace EbookWindows.Screen
         }
         public static void getjsonstring(string item)
         {
-            var count = App.Items.chapter_link.FindIndex(x => x.Contains(item));
-            var path_data = App.path + "\\data\\book" + "\\" + App.Items.source + "\\" + App.Items.book_id + "\\content";
+            var count = App.Global.Items.chapter_link.FindIndex(x => x.Contains(item));
+            var path_data = App.Global.Directory_Folder + "\\data\\book" + "\\" + App.Global.Items.source + "\\" + App.Global.Items.book_id + "\\content";
             if (File.Exists(path_data + "\\" + count + ".json"))
                 return;
             while (true)
             {
                 try
                 {
-                    var json = new WebClient().DownloadString(App.base_url + "/api/chapters?url=" + item);
+                    var json = new WebClient().DownloadString(App.Global.base_url + "/api/chapters?url=" + item);
                     File.WriteAllText(path_data + "\\" + count + ".json", json);
                     return;
                 }

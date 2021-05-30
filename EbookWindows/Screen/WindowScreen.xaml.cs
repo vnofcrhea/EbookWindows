@@ -37,7 +37,7 @@ namespace EbookWindows.Screen
         {
             InitializeComponent();
             this.MaxHeight = SystemParameters.MaximizedPrimaryScreenHeight; 
-
+            //TreeView_BookList.Items[]
             //lbTodoList.ItemsSource = items;
         }
         [DllImport("user32.dll")]
@@ -256,6 +256,19 @@ namespace EbookWindows.Screen
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             recentFileUserControl.SaveRecentFileList();
+        }
+
+        private void LeftHeader_Click(object sender, RoutedEventArgs e)
+        {
+            if (LeftHeaderColumn.Width.Value == 0)
+                LeftHeaderColumn.Width = new GridLength(250, GridUnitType.Pixel);
+            else
+                LeftHeaderColumn.Width = new GridLength(0, GridUnitType.Pixel);
+        }
+
+        private void SolidColorBrush_ColorChanged(object sender, RoutedPropertyChangedEventArgs<Color> e)
+        {
+
         }
     }
 }
