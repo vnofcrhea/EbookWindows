@@ -1,4 +1,5 @@
-﻿using Microsoft.Win32;
+﻿using EbookWindows.ViewModels;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -86,6 +87,22 @@ namespace EbookWindows.Screen
             if (dialogResult.Value)
             {
                 string filePath = openFileDialog.FileName;
+                //string fileName = Path.GetFileName(filePath);
+                //string fileExtension = Path.GetExtension(filePath);
+                //string fileIcon = "";
+                //if (fileExtension.Equals(".pdf"))
+                //{
+                //    fileIcon = "Icon\\pdf.png";
+                //}
+                //else if (fileExtension.Equals(".epub"))
+                //{
+                //    fileIcon = "Icon\\epub.png";
+                //}
+                //else
+                //{
+                //    //nothing
+                //}
+                //RecentFile recentFile = new RecentFile(filePath, fileName, fileIcon);
                 BrowserEvent?.Invoke(filePath,-1);
                 this.Close();
 
@@ -106,26 +123,4 @@ namespace EbookWindows.Screen
             this.Close();
         }
     }
-
-    //public class WindowClosingBehavior : Behavior<Window>
-    //{
-    //    protected override void OnAttached()
-    //    {
-    //        AssociatedObject.Closing += AssociatedObject_Closing;
-    //    }
-
-    //    private void AssociatedObject_Closing(object sender, System.ComponentModel.CancelEventArgs e)
-    //    {
-    //        Window window = sender as Window;
-    //        window.Closing -= AssociatedObject_Closing;
-    //        e.Cancel = true;
-    //        var anim = new DoubleAnimation(0, (Duration)TimeSpan.FromSeconds(0.5));
-    //        anim.Completed += (s, _) => window.Close();
-    //        window.BeginAnimation(UIElement.OpacityProperty, anim);
-    //    }
-    //    protected override void OnDetaching()
-    //    {
-    //        AssociatedObject.Closing -= AssociatedObject_Closing;
-    //    }
-    //}
 }

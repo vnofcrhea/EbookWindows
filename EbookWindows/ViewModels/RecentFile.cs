@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace EbookWindows.ViewModels
 {
@@ -13,12 +14,22 @@ namespace EbookWindows.ViewModels
         public string fileName { get; set; }
         public string filePath { get; set; }
         public string fileIcon { get; set; }
+        public string recentLocation { get; set; }
         public RecentFile() { }
         public RecentFile(string fileName, string filePath, string fileIcon)
         {
             this.fileName = fileName;
             this.filePath = filePath;
             this.fileIcon = fileIcon;
+            this.recentLocation = "0";
+        }
+
+        public RecentFile(string fileName, string filePath, string fileIcon, string recentLocal)
+        {
+            this.fileName = fileName;
+            this.filePath = filePath;
+            this.fileIcon = fileIcon;
+            this.recentLocation = recentLocal;
         }
     }
 
@@ -33,7 +44,6 @@ namespace EbookWindows.ViewModels
 
             if (!File.Exists(strFileName))
             {
-
                 FileStream fileStream = new FileStream(strFileName, FileMode.Create);
                 fileStream.Close();
             }
@@ -52,10 +62,10 @@ namespace EbookWindows.ViewModels
         private BindingList<RecentFile> LoadListFromData(string[] recentFileData)
         {
             BindingList<RecentFile> recentFileList = new BindingList<RecentFile>();
-            int numberOfFilePath = recentFileData.Length / 3;
-            if (numberOfFilePath > 10)
+            int numberOfFilePath = recentFileData.Length / 4;
+            if (numberOfFilePath != 0)
             {
-                for(int i = 0; i< recentFileData.Length; i = i + 3)
+                for (int i = 0; i < recentFileData.Length; i = i + 4)
                 {
                     if (File.Exists(recentFileData[i + 1]))
                     {
@@ -63,24 +73,16 @@ namespace EbookWindows.ViewModels
                         temp.fileName = recentFileData[i];
                         temp.filePath = recentFileData[i + 1];
                         temp.fileIcon = recentFileData[i + 2];
-                        recentFileList.Add(temp);
-                    }            
-                }
-            }
-            else
-            {
-                for (int i = 0; i < recentFileData.Length; i=i+3)
-                {
-                    if (File.Exists(recentFileData[i + 1]))
-                    {
-                        RecentFile temp = new RecentFile();
-                        temp.fileName = recentFileData[i];
-                        temp.filePath = recentFileData[i + 1];
-                        temp.fileIcon = recentFileData[i + 2];
+                        temp.recentLocation = recentFileData[i + 3];
                         recentFileList.Add(temp);
                     }
                 }
             }
+            else
+            {
+                //nothing
+            }
+
             return recentFileList;
             //throw new NotImplementedException();
         }
@@ -104,6 +106,7 @@ namespace EbookWindows.ViewModels
                 fileStream.WriteLine(recentFileList[i].fileName);
                 fileStream.WriteLine(recentFileList[i].filePath);
                 fileStream.WriteLine(recentFileList[i].fileIcon);
+                fileStream.WriteLine(recentFileList[i].recentLocation);
             }
             fileStream.Close();
             return true;
