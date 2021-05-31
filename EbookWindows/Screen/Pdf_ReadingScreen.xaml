@@ -28,7 +28,7 @@
     <Grid Name="MainGrid">
         <Grid Margin="0">
             <!--Content of book-->
-            <ScrollViewer Name="pageScroller"  ScrollViewer.CanContentScroll="True"   ScrollChanged="PageScroller_Changed"             
+            <ScrollViewer Name="PageScroller"  ScrollViewer.CanContentScroll="True"   ScrollChanged="PageScroller_Changed"             
                        ScrollViewer.HorizontalScrollBarVisibility="Auto"
                        ScrollViewer.VerticalScrollBarVisibility="Visible">
                 <Canvas Name="PageCanvas" VerticalAlignment="Center" HorizontalAlignment="Center">
