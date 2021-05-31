@@ -203,7 +203,8 @@ namespace EbookWindows.Screen
             string fileExtension = Path.GetExtension(filePath);
             if (fileExtension.Equals(".pdf"))
             {
-                pdfReadingScreen.LoadData(filePath);
+                int location = recentFileUserControl.GetRecentLocationOfFile(filePath);
+                pdfReadingScreen.LoadData(filePath, location);
                 MainGrid.Visibility = Visibility.Collapsed;
                 epubReadingScreen.Visibility = Visibility.Collapsed;
                 pdfReadingScreen.Visibility = Visibility.Visible;
@@ -220,7 +221,7 @@ namespace EbookWindows.Screen
             }
             else
             {
-                //notthing
+                //nothing
             }
             if(index < 0) //index = -1
             {

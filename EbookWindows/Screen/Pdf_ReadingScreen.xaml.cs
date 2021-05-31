@@ -3,11 +3,11 @@ using Apitron.PDF.Rasterizer.Configuration;
 using Apitron.PDF.Rasterizer.Navigation;
 using EbookWindows.ViewModels;
 //using Spire.Pdf;
-using Spire.Pdf.Bookmarks;
-using Spire.Pdf.General;
+//using Spire.Pdf.Bookmarks;
+//using Spire.Pdf.General;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
+//using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
@@ -68,12 +68,16 @@ namespace EbookWindows.Screen
         /// Load data with a file path
         /// </summary>
         /// <param name="filePath">the file path need to read</param>
-        public void LoadData(string filePath) //Load data here
+        public void LoadData(string filePath, int location) //Load data here
         {
             //tempFile = filePath;
             file = new FileStream(filePath, FileMode.Open, FileAccess.Read);
             Document document = new Document(file);
             (this.document).Document = document;
+            if(location != 0)
+            {
+                document.Navigator.GoToPage(location);
+            }
            // pdf.LoadFromFile(filePath);
             //bookmarkListView.ItemsSource = pdf.Bookmarks;
         }
@@ -339,24 +343,24 @@ namespace EbookWindows.Screen
 
         public void homeBtn_Click(object sender, RoutedEventArgs e)
         {
+            WindowScreen home = (WindowScreen)Window.GetWindow(this);
             zoomValue = 0.8;
             zoomLabel.Content = $"{zoomValue * 100}%";
             PageImage.Source = null;
             bottom = 0;
-            
+            int location = PageConboBox.SelectedIndex;
+            home.recentFileUserControl.UpdateLocationOfFile(location);
             file.Close();
-<<<<<<< HEAD
+
             //FileStream newSt = new FileStream(tempFile, FileMode.Open, FileAccess.Write);
             //pdf.SaveToFile(filePath);
-            //pdf.SaveToStream(newSt);
+            //pdf.SaveToStream(newSt);S
             //pdf.SaveToFile(tempFile);
             //pdf.Close();
             //newSt.Close();
-=======
 
->>>>>>> 6451114989e0db3ec8ef79794680be938f0bab61
-            WindowScreen win = (WindowScreen)Window.GetWindow(this);
-            win.ReturnFromReadingScreen_Click(sender, e);
+
+            home.ReturnFromReadingScreen_Click(sender, e);
         }
 
         private void bookmarkBtn_Click(object sender, RoutedEventArgs e)

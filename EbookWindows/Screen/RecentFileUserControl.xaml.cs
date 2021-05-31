@@ -79,7 +79,7 @@ namespace EbookWindows.Screen
                 recentFileList.Insert(0, temp);
                 return true;
             }
-            ////filepath is exist in recentFileList
+            //filepath is exist in recentFileList
             else
             {
                 //swap recentfileList[index]
@@ -111,6 +111,17 @@ namespace EbookWindows.Screen
             recentFileList.Insert(0, recentFileList[index]);
             recentFileList.RemoveAt(index + 1);
             return true;
+        }
+
+        public int GetRecentLocationOfFile(string filePath)
+        {
+            int location = 0;
+            int index = IsFilePathExist(filePath);
+            if (index != -1) 
+            {
+                Int32.TryParse(recentFileList[index].recentLocation, out location);
+            }
+            return location;
         }
 
         /// <summary>
@@ -146,6 +157,12 @@ namespace EbookWindows.Screen
             {
                 viewingList.Add(i);
             }
+
+        }
+
+        public void UpdateLocationOfFile(int location)
+        {
+            recentFileList[0].recentLocation = location.ToString();
 
         }
 
@@ -189,7 +206,7 @@ namespace EbookWindows.Screen
                     WindowScreen home = (WindowScreen)Window.GetWindow(this);
                     if (viewingList[index].fileIcon.Equals(pdf))
                     {
-                        home.filePathChanged(viewingList[index].filePath, index);
+                        home.filePathChanged(viewingList[index].filePath, index );
                         //openAFileInRecentFileList(index);
                     }
                     else if (viewingList[index].fileIcon.Equals(epub))
