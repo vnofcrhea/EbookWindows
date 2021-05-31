@@ -345,12 +345,16 @@ namespace EbookWindows.Screen
             bottom = 0;
             
             file.Close();
+<<<<<<< HEAD
             //FileStream newSt = new FileStream(tempFile, FileMode.Open, FileAccess.Write);
             //pdf.SaveToFile(filePath);
             //pdf.SaveToStream(newSt);
             //pdf.SaveToFile(tempFile);
             //pdf.Close();
             //newSt.Close();
+=======
+
+>>>>>>> 6451114989e0db3ec8ef79794680be938f0bab61
             WindowScreen win = (WindowScreen)Window.GetWindow(this);
             win.ReturnFromReadingScreen_Click(sender, e);
         }
