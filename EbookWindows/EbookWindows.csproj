@@ -102,6 +102,7 @@
     <Compile Include="Model\Chapter.cs" />
     <Compile Include="ViewModels\Book_Short_ViewModel.cs" />
     <Compile Include="ViewModels\Book_ViewModel.cs" />
+    <Compile Include="ViewModels\Chapter_ViewModel.cs" />
     <Compile Include="View\PopupEbookScreen.xaml.cs">
       <DependentUpon>PopupEbookScreen.xaml</DependentUpon>
     </Compile>
@@ -134,7 +135,7 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Compile Include="ViewModels\RecentFile.cs" />
-    <Compile Include="Model\Models.cs" />
+    <Compile Include="Model\Chapter_Content.cs" />
     <Page Include="View\DetailScreen.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

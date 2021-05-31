@@ -135,7 +135,7 @@
                         <materialDesign:PackIcon Kind="ChevronLeft" Width="24" Height="24"></materialDesign:PackIcon>
                     </Button>
 
-                    <ComboBox  x:Name ="Chapter_List" materialDesign:ComboBoxAssist.ClassicMode="True" BorderThickness="0" Width="150" Padding="5" BorderBrush="{DynamicResource PrimaryHueMidBrush}" DisplayMemberPath="Title" SelectedValuePath="link" SelectionChanged="Chapter_Changed">
+                    <ComboBox  x:Name ="Chapter_List" ItemsSource="{Binding Chapter}"  materialDesign:ComboBoxAssist.ClassicMode="True" BorderThickness="0" Width="150" Padding="5" BorderBrush="{DynamicResource PrimaryHueMidBrush}" DisplayMemberPath="Title" SelectedValuePath="link" SelectionChanged="Chapter_Changed">
                         <ComboBox.ItemsPanel>
                             <ItemsPanelTemplate>
                                 <VirtualizingStackPanel/>

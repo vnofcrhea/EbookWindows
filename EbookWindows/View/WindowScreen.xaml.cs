@@ -4,6 +4,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -37,7 +38,8 @@ namespace EbookWindows.Screen
         public WindowScreen()
         {
             InitializeComponent();
-            this.MaxHeight = SystemParameters.MaximizedPrimaryScreenHeight; 
+            this.MaxHeight = SystemParameters.MaximizedPrimaryScreenHeight;
+            LoadTreeViewList();
             //TreeView_BookList.Items[]
             //lbTodoList.ItemsSource = items;
         }
@@ -132,7 +134,7 @@ namespace EbookWindows.Screen
         }
         public void LoadShelf()
         {
-           // BookTextShelf.LoadDataBookShelf();
+            BookTextShelf.LoadBook_ShortPanel();
         }
         /// <summary>
         /// return home screen when press homebutton
@@ -270,6 +272,15 @@ namespace EbookWindows.Screen
         private void SolidColorBrush_ColorChanged(object sender, RoutedPropertyChangedEventArgs<Color> e)
         {
 
+        }
+
+        public void LoadTreeViewList()
+        {
+            App.Global.Book_TreeView.Clear();
+            Book_Short_TreeView ChildTree = new Book_Short_TreeView() { Title = "BOOK_CONTENTS" };
+            ChildTree.Items.AddRange(App.Global.Book_Short_ViewModel.Book_Short.ToList());
+            App.Global.Book_TreeView.Add(ChildTree);
+            TreeView_BookList.ItemsSource = App.Global.Book_TreeView;
         }
     }
 }

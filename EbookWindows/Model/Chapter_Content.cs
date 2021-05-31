@@ -7,9 +7,7 @@ using System.Threading.Tasks;
 
 namespace EbookWindows.Model
 {
-    
-    
-    public class Book_Content
+    public class Chapter_Content
     {
         public string book_title { get; set; }
         public string chapter_title { get; set; }

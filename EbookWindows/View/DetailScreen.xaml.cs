@@ -126,7 +126,6 @@ namespace EbookWindows.Screen
         #region LOADING PAGING
         public void LoadPaging(int page)
         {
-
             lvDataBinding.Items.Clear();
             int count = 0;
             int index_start = (page - 1) * chapter_limit;
@@ -218,15 +217,6 @@ namespace EbookWindows.Screen
 
         }
         #endregion
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void ListViewItem_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-
-        }
 
         private void PageIndex_Click(object sender, RoutedEventArgs e)
         {
@@ -291,82 +281,81 @@ namespace EbookWindows.Screen
 
         private void Select_Click(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
-            var item = (sender as TreeView).SelectedItem as Chapter;
-            if (item == null)
+            if (!((sender as TreeView).SelectedItem is Chapter item))
                 return;
             if (item.Items.Count > 0)
                 return;
             else
             {
-                App.Global.Chapter = item;
+                App.Global.Chapter_ViewModel.Current_Chapter = item;
                 WindowScreen win = (WindowScreen)Window.GetWindow(this);
                 win.OpenComicReadingScreen();
-                
             }
         }
           
         private async void AddToLibrary_Click(object sender, RoutedEventArgs e)
         {
-
-            var path_data = App.Global.Directory_Folder + "\\data\\book" + "\\" + App.Global.Items.source + "\\" + App.Global.Items.book_id;
-            #region create path. 
-            if (!Directory.Exists(path_data))
-            {
-                Directory.CreateDirectory(path_data);
-            }
-            #endregion
-            File.WriteAllText(path_data + "\\" + "detail.json", JsonConvert.SerializeObject(App.Global.Items));
-            using (WebClient client = new WebClient())
-            {
-                await Task.Run(()=> { client.DownloadFile(new Uri(App.Global.Items.img_url), path_data + "\\" + "img.jpg"); });
-            };
-            WindowScreen win = (WindowScreen)Window.GetWindow(this);
-            win.LoadShelf();
-        }
-        public void Download_Content()
-        {
-            var path_data = App.Global.Directory_Folder + "\\data\\book" + "\\" + App.Global.Items.source + "\\" + App.Global.Items.book_id + "\\content";
-            if (!Directory.Exists(path_data))
-            {
-                Directory.CreateDirectory(path_data);
-            }
-
-
-            Parallel.ForEach(App.Global.Items.chapter_link, new ParallelOptions { MaxDegreeOfParallelism = -1 }, getjsonstring);
-            List<Task> TaskList = new List<Task>();
-            //foreach (var url in App.Items.chapter_link)
+            #region old code
+            //var path_data = App.Global.Directory_Folder + "\\data\\book" + "\\" + App.Global.Items.source + "\\" + App.Global.Items.book_id;
+            //#region create path. 
+            //if (!Directory.Exists(path_data))
             //{
-            //     Task LastTask = new Task(() => {getjsonstring(url, count); });
-            //    TaskList.Add(LastTask);
-            //    count++;
+            //    Directory.CreateDirectory(path_data);
             //}
-
-            //Task.WaitAll(TaskList.ToArray());
-            Console.WriteLine("EndInit");
+            //#endregion
+            //File.WriteAllText(path_data + "\\" + "detail.json", JsonConvert.SerializeObject(App.Global.Items));
+            //using (WebClient client = new WebClient())
+            //{
+            //    await Task.Run(()=> { client.DownloadFile(new Uri(App.Global.Items.img_url), path_data + "\\" + "img.jpg"); });
+            //};
+            #endregion
+            await Task.Run(()=> App.Global.Book_ViewModel.AddToLibrary());
+            await Task.Run(()=>(App.Current.MainWindow as WindowScreen).LoadShelf());
         }
-        public static void getjsonstring(string item)
-        {
-            var count = App.Global.Items.chapter_link.FindIndex(x => x.Contains(item));
-            var path_data = App.Global.Directory_Folder + "\\data\\book" + "\\" + App.Global.Items.source + "\\" + App.Global.Items.book_id + "\\content";
-            if (File.Exists(path_data + "\\" + count + ".json"))
-                return;
-            while (true)
-            {
-                try
-                {
-                    var json = new WebClient().DownloadString(App.Global.API_URL_Primary + "/api/chapters?url=" + item);
-                    File.WriteAllText(path_data + "\\" + count + ".json", json);
-                    return;
-                }
-                catch
-                {
+        //public void Download_Content()
+        //{
+        //    var path_data = App.Global.Directory_Folder + "\\data\\book" + "\\" + App.Global.Items.source + "\\" + App.Global.Items.book_id + "\\content";
+        //    if (!Directory.Exists(path_data))
+        //    {
+        //        Directory.CreateDirectory(path_data);
+        //    }
 
-                }
-            }
-        }
+
+        //    Parallel.ForEach(App.Global.Items.chapter_link, new ParallelOptions { MaxDegreeOfParallelism = -1 }, getjsonstring);
+        //    List<Task> TaskList = new List<Task>();
+        //    //foreach (var url in App.Items.chapter_link)
+        //    //{
+        //    //     Task LastTask = new Task(() => {getjsonstring(url, count); });
+        //    //    TaskList.Add(LastTask);
+        //    //    count++;
+        //    //}
+
+        //    //Task.WaitAll(TaskList.ToArray());
+        //    Console.WriteLine("EndInit");
+        //}
+        //public static void getjsonstring(string item)
+        //{
+        //    var count = App.Global.Items.chapter_link.FindIndex(x => x.Contains(item));
+        //    var path_data = App.Global.Directory_Folder + "\\data\\book" + "\\" + App.Global.Items.source + "\\" + App.Global.Items.book_id + "\\content";
+        //    if (File.Exists(path_data + "\\" + count + ".json"))
+        //        return;
+        //    while (true)
+        //    {
+        //        try
+        //        {
+        //            var json = new WebClient().DownloadString(App.Global.API_URL_Primary + "/api/chapters?url=" + item);
+        //            File.WriteAllText(path_data + "\\" + count + ".json", json);
+        //            return;
+        //        }
+        //        catch
+        //        {
+
+        //        }
+        //    }
+        //}
         private void DownloadContent_Click(object sender, RoutedEventArgs e)
         {
-            Download_Content();
+            App.Global.Book_ViewModel.Download_Content();
         }
 
         private void NextPage_Click(object sender, RoutedEventArgs e)
@@ -388,8 +377,6 @@ namespace EbookWindows.Screen
             page_index--;
             LoadPaging(page_index);
             PagePanelReload();
-
-
         }
 
         private void FirstPage_Click(object sender, RoutedEventArgs e)

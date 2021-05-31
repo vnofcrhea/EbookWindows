@@ -27,7 +27,6 @@ namespace EbookWindows.Screen
     {
         System.Windows.Threading.DispatcherTimer dispatcherTimer = new System.Windows.Threading.DispatcherTimer();
         private TimeSpan SpanTime;
-        Book_Content chapter_content = new Book_Content();
         public bool isOnline = true;
         public double Scaling_Rate = 1;
 
@@ -41,58 +40,46 @@ namespace EbookWindows.Screen
         {
             this.Dispatcher.Invoke(() =>
             {
-                Load_ChapterList();
-                Chapter_List.SelectedValue = App.Global.Chapter.link;
+                App.Global.Chapter_ViewModel.Load_ChapterList();
+                Load_DataContext(); // Binding DataContext
+                Chapter_List.SelectedValue = App.Global.Chapter_ViewModel.Current_Chapter.link;
                 WindowScreen win = (WindowScreen)Window.GetWindow(this);
                 Content_Box.MaxWidth = (win.ActualWidth - win.LeftHeader.ActualWidth);
             });
-            //Task.Delay(1000).Wait();
-            //this.Dispatcher.InvokeAsync(() =>
-            //{
-            //   
-            //});
+            
         }
-
-        public void LoadContent(Chapter chapter)
+        public void Load_DataContext() //Load/Reload DataContext
         {
-            var index = App.Global.Items.chapter_link.FindIndex(e => e.Contains(chapter.link));
-            var chapter_dir = App.Global.Book_Directory + "\\content\\" + index + ".json";
-            if (File.Exists(chapter_dir))
-            {
-                Console.WriteLine(1);
-                using (StreamReader file = File.OpenText(chapter_dir))
-                {
-                    JsonSerializer serializer = new JsonSerializer();
-                    chapter_content = (Book_Content)serializer.Deserialize(file, typeof(Book_Content));
-                }
-            }
-            else
-            {
-                Console.WriteLine(App.Global.Book_Directory + "\\content\\" + index + ".json");
-                var json = new WebClient().DownloadString(App.Global.API_URL_Primary + "/api/chapters?url=" + chapter.link);
-                chapter_content = JsonConvert.DeserializeObject<Book_Content>(json);
-            }
             this.Dispatcher.Invoke(() =>
             {
-                Content_Box.Text = chapter_content.content;
+                this.DataContext = App.Global.Chapter_ViewModel;
+            });
+        }
+        public void Load_Content(Chapter chapter)
+        {
+            App.Global.Chapter_ViewModel.Current_Chapter = chapter;
+            App.Global.Chapter_ViewModel.Load_Content();
+            this.Dispatcher.Invoke(() =>
+            {
+                Content_Box.Text = App.Global.Chapter_ViewModel.Current_Chapter_Content.content;
                 scrollContent_Box.ScrollToVerticalOffset(0);
             });
         }
-        public void Load_ChapterList()
-        {
-            Chapter_List.Items.Clear();
-            var sum = App.Global.Items.chapter_name.Count;
-            for (int i = 0; i < sum; i++)
-            {
-                Chapter_List.Items.Add(new Chapter { Title = App.Global.Items.chapter_name[i], link = App.Global.Items.chapter_link[i] });
-            }
-
-        }
+        
         public void WriteRecentChapter()
         {
             // var chapter_dir = App.book_dir + "\\content\\" + index + ".json";
         }
         #endregion
+        private async void Chapter_Changed(object sender, SelectionChangedEventArgs e)
+        {
+            if (!((sender as ComboBox).SelectedItem is Chapter item))
+                return;
+            WindowScreen win = (WindowScreen)Window.GetWindow(this);
+            win.StartLoading();
+            await Task.Run(() => Load_Content(item));
+            win.EndLoading();
+        }
         #region Event
         private void StackPanel_MouseMove(object sender, MouseEventArgs e)
         {
@@ -167,34 +154,9 @@ namespace EbookWindows.Screen
                     Content_Box.MaxWidth = this.ActualWidth * 0.75;
             });
         }
-
-        private async void Chapter_Changed(object sender, SelectionChangedEventArgs e)
-        {
-            var item = (sender as ComboBox).SelectedItem as Chapter;
-            if (item == null)
-                return;
-            WindowScreen win = (WindowScreen)Window.GetWindow(this);
-            win.StartLoading();
-            await Task.Run(() => LoadContent(item));
-            win.EndLoading();
-        }
-        #endregion
-
-        #region Personality
-        private void ChangeFont(string fontFamilyName)
-        {
-            Content_Box.FontFamily = new FontFamily(fontFamilyName);
-        }
-        private void ChangeFontSize(double fontSize)
-        {
-            Content_Box.FontSize = fontSize;
-        }
-       
-
-        #endregion
-
-
-
+        
+        
+        
         public void Content_Box_TextChanged(object sender, TextChangedEventArgs e)
         {
             UpdatePageView();
@@ -250,7 +212,8 @@ namespace EbookWindows.Screen
             Content_Box_Scaling.ScaleY = Scaling_Rate;
             zoomTextbox.Text = (Scaling_Rate * 100).ToString() + '%';
         }
-
+        #endregion
+        #region Persionality
         private void ScrollViewer_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             Content_Box.Width = (sender as ScrollViewer).ActualWidth;
@@ -275,5 +238,6 @@ namespace EbookWindows.Screen
         {
             App.ChangeBaseTheme(BaseTheme.Light);
         }
+        #endregion
     }
 }

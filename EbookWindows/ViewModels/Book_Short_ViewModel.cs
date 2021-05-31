@@ -28,6 +28,7 @@ namespace EbookWindows.ViewModels
         }    
         public void LoadListBookShort()
         {
+            _List_Book_Short.Clear();
             var path_data = App.Global.Directory_Folder + "\\data\\book";
 
             if (!Directory.Exists(path_data))
