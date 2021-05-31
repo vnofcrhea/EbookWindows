@@ -38,14 +38,12 @@
         <Border Grid.Row="1"  Padding="0" BorderThickness="0" BorderBrush="{DynamicResource MaterialDesignDivider}" >
             <!--Recent File List-->
             <ListView Grid.Row="1" Name="recentFileListView" ScrollViewer.HorizontalScrollBarVisibility="Hidden" SelectionChanged="recentFileListView_SelectionChanged">
-
-
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal">
                             <Image DockPanel.Dock="Left" Source="{Binding fileIcon, Converter={StaticResource converter}}"  Width="32" Height="32"/>
                             <TextBlock DockPanel.Dock="Left" Grid.Column="0" Text="{Binding fileName}" Margin="5,0,0,0" HorizontalAlignment="Stretch"  VerticalAlignment="Center" FontWeight="Bold"
-                                                Foreground="AntiqueWhite" TextWrapping="Wrap" TextTrimming="CharacterEllipsis" />
+                                                Foreground="AntiqueWhite" TextWrapping="Wrap" TextTrimming="CharacterEllipsis"  ToolTip="{Binding fileName}"/>
                         </StackPanel>
                     </DataTemplate>
                 </ListView.ItemTemplate>

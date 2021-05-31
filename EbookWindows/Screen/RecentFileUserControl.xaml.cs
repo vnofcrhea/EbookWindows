@@ -171,7 +171,7 @@ namespace EbookWindows.Screen
             //MessageBox.Show(index.ToString());
             viewingList.RemoveAt(index);
             recentFileList.RemoveAt(index);
-
+            
         }
 
         private void recentFileListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -218,4 +218,3 @@ namespace EbookWindows.Screen
 
     }
 }
-

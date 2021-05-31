@@ -208,7 +208,7 @@ namespace EbookWindows.Screen
                 epubReadingScreen.Visibility = Visibility.Collapsed;
                 pdfReadingScreen.Visibility = Visibility.Visible;
                 fileIcon = "Icon\\pdf.png";
-
+               
             }
             else if (fileExtension.Equals(".epub"))
             {

@@ -2,8 +2,12 @@
 using Apitron.PDF.Rasterizer.Configuration;
 using Apitron.PDF.Rasterizer.Navigation;
 using EbookWindows.ViewModels;
+//using Spire.Pdf;
+using Spire.Pdf.Bookmarks;
+using Spire.Pdf.General;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
@@ -27,7 +31,11 @@ namespace EbookWindows.Screen
     /// </summary>
     public partial class Pdf_ReadingScreen : UserControl
     {
-        FileStream file;
+        //private int currentPage { get; set; }
+        //private ObservableCollection<int> bookmarks { get; set; }
+        private int bottom = 0;
+
+        public FileStream file;
         private double zoomValue { get; set; }
 
         private delegate void SetImageSourceDelegate(byte[] source, IList<Link> links, int width, int height);
@@ -44,6 +52,8 @@ namespace EbookWindows.Screen
 
         private TimeSpan SpanTime;
 
+        //PdfDocument pdf = new PdfDocument();
+        //string tempFile;
 
         public Pdf_ReadingScreen()
         {
@@ -60,10 +70,12 @@ namespace EbookWindows.Screen
         /// <param name="filePath">the file path need to read</param>
         public void LoadData(string filePath) //Load data here
         {
+            //tempFile = filePath;
             file = new FileStream(filePath, FileMode.Open, FileAccess.Read);
             Document document = new Document(file);
             (this.document).Document = document;
-
+           // pdf.LoadFromFile(filePath);
+            //bookmarkListView.ItemsSource = pdf.Bookmarks;
         }
 
         private void DocumentOnPropertyChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
@@ -83,7 +95,7 @@ namespace EbookWindows.Screen
             IList<Link> links = currentPage.Links;
 
             SetImageSourceDelegate del = this.SetImageSource; //gán sự kiện vào hàm delegate
-            this.Dispatcher.Invoke(del, image, links, desiredWidth, desiredHeight); //thực hiện hàm
+            this.Dispatcher.Invoke(del, image, links, desiredWidth, desiredHeight); //thực hiện hàm SetImageSource
         }
 
         private void SetImageSource(byte[] image, IList<Link> links, int width, int height)
@@ -121,32 +133,41 @@ namespace EbookWindows.Screen
 
             this.UpdateImageZoom();
             this.UpdateViewLocation(this.destinationRectangle);
-
+            
+            //file.Close();
             ////Ý tưởng bookmark 1
             //Document doc = document.Document;
             //DocumentNavigator navigator = doc == null ? null : doc.Navigator;
             //navigator.Move(2, Origin.Begin);
         }
-        //private void OnBookmarkSelectionChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
-        //{
-        //    Bookmark newValue = (Bookmark)e.NewValue;
-        //    if (newValue != null)
-        //    {
-        //        document.Document.Navigator.GoToBookmark(newValue);
-        //        this.destinationRectangle = newValue.GetDestinationRectangle((int)(this.document.Page.Width * this.GlobalScale), (int)(this.document.Page.Height * this.GlobalScale), null);
-        //    }
-        //}
+        private void OnBookmarkSelectionChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        {
+            //Bookmark bookmark = new Bookmark();
+
+
+            Bookmark newValue = (Bookmark)e.NewValue;
+            Page currentPage = this.document.Page;
+            //document.Bookmark.Children.
+           
+            if (newValue != null)
+            {
+                //document.Document.Navigator.GoToPage(8);
+                document.Document.Navigator.GoToBookmark(newValue);
+                this.destinationRectangle = newValue.GetDestinationRectangle((int)(this.document.Page.Width * this.GlobalScale), (int)(this.document.Page.Height * this.GlobalScale), null);
+            }
+        }
 
 
         /// <summary>
-        /// Updates the view location.
+        /// Updates the view location when choose a bookmark
         /// </summary>
         /// <param name="destinationInfo">The destination info.</param>
         private void UpdateViewLocation(Apitron.PDF.Rasterizer.Rectangle destinationInfo)
         {
             if (destinationInfo == null)
             {
-                this.PageScroller.ScrollToTop();
+                //this.pageScroller.ScrollToTop();
+                this.PageScroller.ScrollToVerticalOffset(0.1);
                 return;
             }
             double value = zoomValue;
@@ -171,6 +192,11 @@ namespace EbookWindows.Screen
 
         }
 
+        /// <summary>
+        /// Click link in a page
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="routedEventArgs"></param>
         private void OnLinkClick(object sender, RoutedEventArgs routedEventArgs)
         {
             Link link = (Link)((Button)sender).DataContext;
@@ -179,24 +205,29 @@ namespace EbookWindows.Screen
             this.destinationRectangle = link.GetDestinationRectangle((int)(this.document.Page.Width * this.GlobalScale), (int)(this.document.Page.Height * this.GlobalScale), null);
         }
 
+        /// <summary>
+        /// On zoom 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void OnZoomChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-
             this.UpdateImageZoom(); //Khởi động chạy 2 lần: Thay đổi ở Minium và Value
         }
 
+        /// <summary>
+        /// Imagezoom was changed
+        /// </summary>
         private void UpdateImageZoom()
         {
 
             Canvas imageContainer = this.PageCanvas;
             if (imageContainer != null && zoomLabel.Content != null && this.document != null)
             {
-                double scale = zoomValue; //lấy giá trị xoom
+                double scale = zoomValue; //lấy giá trị zoom
                 imageContainer.LayoutTransform = new ScaleTransform(scale, scale);
             }
         }
-
-
 
 
         //Nhat develop for reading screen
@@ -311,15 +342,93 @@ namespace EbookWindows.Screen
             zoomValue = 0.8;
             zoomLabel.Content = $"{zoomValue * 100}%";
             PageImage.Source = null;
+            bottom = 0;
+            
             file.Close();
+<<<<<<< HEAD
+            //FileStream newSt = new FileStream(tempFile, FileMode.Open, FileAccess.Write);
+            //pdf.SaveToFile(filePath);
+            //pdf.SaveToStream(newSt);
+            //pdf.SaveToFile(tempFile);
+            //pdf.Close();
+            //newSt.Close();
+=======
 
+>>>>>>> 6451114989e0db3ec8ef79794680be938f0bab61
             WindowScreen win = (WindowScreen)Window.GetWindow(this);
             win.ReturnFromReadingScreen_Click(sender, e);
         }
 
         private void bookmarkBtn_Click(object sender, RoutedEventArgs e)
         {
+            int pageIndex = PageConboBox.SelectedIndex;
+            //MessageBox.Show(pageIndex.ToString());
+            //pdf.Bookmarks.Add(string.Format($"Page {pageIndex+1}"));
+            //PdfBookmark bookmark = pdf.Bookmarks.Insert(2, "New Chapter 3");
+
+            //Set the page and location of the bookmark
+            bookmarkListView.Items.Refresh();
+        }
+        private void bookmarkListBtn_Click(object sender, RoutedEventArgs e)
+        {
+            bookmarkBorder.Visibility = Visibility.Visible;           
+        }
+
+
+        private void closeBookmarkBtn_Click(object sender, RoutedEventArgs e)
+        {
+            bookmarkBorder.Visibility = Visibility.Collapsed;
+        }
+
+        private void bookmarkDeleteButtons_Click(object sender, RoutedEventArgs e)
+        {
+            //bookmarkListView.Items.Refresh();
+        }
+
+        private void bookmarkListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
 
         }
+
+
+        private void PageScroller_Changed(object sender, ScrollChangedEventArgs e)
+        {
+            if (PageImage.Source != null)
+            {
+                if (PageScroller.VerticalOffset == PageScroller.ScrollableHeight)
+                {
+                    if (bottom == 0)
+                    {
+                        bottom = 1;
+                        this.PageScroller.ScrollToVerticalOffset(PageScroller.ScrollableHeight - 0.1);
+                    }
+
+                    else
+                    {
+                        document.Document.Navigator.MoveForward();
+                        bottom = 0;
+                    }
+
+                    //MessageBox.Show("lan 2");
+                }
+                else if (PageScroller.VerticalOffset == 0)
+                {
+                    document.Document.Navigator.MoveBackward();
+                }
+            }
+
+
+        }
+
+       
+
+        //private void Arrow_KeyDown(object sender, KeyEventArgs e)
+        //{
+        //document.Document.Navigator.MoveForward();
+        //    if(e.Key == Key.Right)
+        //    {
+        //        document.Document.Navigator.MoveForward();
+        //    }
+        //}
     }
 }
