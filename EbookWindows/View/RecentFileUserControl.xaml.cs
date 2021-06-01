@@ -44,7 +44,7 @@ namespace EbookWindows.Screen
         /// <param name="e"></param>
         private void LoadData(object sender, RoutedEventArgs e)
         {
-            RecentFileDao recentFileDao = new RecentFileDao();
+            RecentFile_ViewModel recentFileDao = new RecentFile_ViewModel();
             recentFileList = recentFileDao.GetAll();
             MappingDataFromListToView(minItems);
             recentFileListView.ItemsSource = viewingList;
@@ -228,7 +228,7 @@ namespace EbookWindows.Screen
         //Write File
         public void SaveRecentFileList()
         {
-            RecentFileDao recentFileDao = new RecentFileDao();
+            RecentFile_ViewModel recentFileDao = new RecentFile_ViewModel();
             recentFileDao.WriteNewRecentFileData(recentFileList);
         }
 

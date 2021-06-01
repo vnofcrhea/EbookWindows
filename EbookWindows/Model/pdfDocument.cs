@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace EbookWindows.ViewModels
 {
-    public class pdfDocumentViewModel : INotifyPropertyChanged
+    public class pdfDocument : INotifyPropertyChanged
     {
         #region Fields
         public event PropertyChangedEventHandler PropertyChanged;
