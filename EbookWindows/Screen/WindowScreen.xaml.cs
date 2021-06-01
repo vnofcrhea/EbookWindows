@@ -256,6 +256,12 @@ namespace EbookWindows.Screen
         /// <param name="e"></param>
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
+            if(pdfReadingScreen.Visibility == Visibility)
+            {
+                pdfReadingScreen.SaveFilePdf();
+                int location = pdfReadingScreen.PageConboBox.SelectedIndex;
+                recentFileUserControl.UpdateLocationOfFile(location);
+            }
             recentFileUserControl.SaveRecentFileList();
         }
     }

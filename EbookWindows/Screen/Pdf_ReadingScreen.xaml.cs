@@ -2,13 +2,13 @@
 using Apitron.PDF.Rasterizer.Configuration;
 using Apitron.PDF.Rasterizer.Navigation;
 using EbookWindows.ViewModels;
-//using Spire.Pdf;
-//using Spire.Pdf.Bookmarks;
-//using Spire.Pdf.General;
+using Syncfusion.Pdf.Interactive;
+using Syncfusion.Pdf.Parsing;
 using System;
 using System.Collections.Generic;
-//using System.Collections.ObjectModel;
+ using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -31,8 +31,6 @@ namespace EbookWindows.Screen
     /// </summary>
     public partial class Pdf_ReadingScreen : UserControl
     {
-        //private int currentPage { get; set; }
-        //private ObservableCollection<int> bookmarks { get; set; }
         private int bottom = 0;
 
         public FileStream file;
@@ -52,9 +50,10 @@ namespace EbookWindows.Screen
 
         private TimeSpan SpanTime;
 
-        //PdfDocument pdf = new PdfDocument();
-        //string tempFile;
+        private PdfLoadedDocument pdfFile;
 
+        private bool changeFile  = false;
+        private int recentLocation;
         public Pdf_ReadingScreen()
         {
             zoomValue = 0.8;
@@ -70,16 +69,18 @@ namespace EbookWindows.Screen
         /// <param name="filePath">the file path need to read</param>
         public void LoadData(string filePath, int location) //Load data here
         {
-            //tempFile = filePath;
-            file = new FileStream(filePath, FileMode.Open, FileAccess.Read);
-            Document document = new Document(file);
-            (this.document).Document = document;
-            if(location != 0)
+            recentLocation = location;
+            try
             {
-                document.Navigator.GoToPage(location);
-            }
-           // pdf.LoadFromFile(filePath);
-            //bookmarkListView.ItemsSource = pdf.Bookmarks;
+                file = new FileStream(filePath, FileMode.Open, FileAccess.Read);
+                Document document = new Document(file);
+                (this.document).Document = document;
+            }catch(Exception e)
+            {
+                MessageBox.Show("This file cann't open! Please choose other file!");
+            }        
+            pdfFile = new PdfLoadedDocument(filePath);
+            bookmarkListView.ItemsSource = pdfFile.Bookmarks;
         }
 
         private void DocumentOnPropertyChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
@@ -92,12 +93,16 @@ namespace EbookWindows.Screen
         }
         private void UpdatePageView()
         {
+            if (recentLocation != 0)
+            {
+                document.Document.Navigator.GoToPage(recentLocation);
+                recentLocation = -1;
+            }
             Page currentPage = this.document.Page;
             int desiredWidth = (int)currentPage.Width * GlobalScale;
             int desiredHeight = (int)currentPage.Height * GlobalScale;
             byte[] image = currentPage.RenderAsBytes(desiredWidth, desiredHeight, new RenderingSettings());
             IList<Link> links = currentPage.Links;
-
             SetImageSourceDelegate del = this.SetImageSource; //gán sự kiện vào hàm delegate
             this.Dispatcher.Invoke(del, image, links, desiredWidth, desiredHeight); //thực hiện hàm SetImageSource
         }
@@ -137,28 +142,7 @@ namespace EbookWindows.Screen
 
             this.UpdateImageZoom();
             this.UpdateViewLocation(this.destinationRectangle);
-            
-            //file.Close();
-            ////Ý tưởng bookmark 1
-            //Document doc = document.Document;
-            //DocumentNavigator navigator = doc == null ? null : doc.Navigator;
-            //navigator.Move(2, Origin.Begin);
-        }
-        private void OnBookmarkSelectionChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
-        {
-            //Bookmark bookmark = new Bookmark();
-
-
-            Bookmark newValue = (Bookmark)e.NewValue;
-            Page currentPage = this.document.Page;
-            //document.Bookmark.Children.
-           
-            if (newValue != null)
-            {
-                //document.Document.Navigator.GoToPage(8);
-                document.Document.Navigator.GoToBookmark(newValue);
-                this.destinationRectangle = newValue.GetDestinationRectangle((int)(this.document.Page.Width * this.GlobalScale), (int)(this.document.Page.Height * this.GlobalScale), null);
-            }
+       
         }
 
 
@@ -233,8 +217,6 @@ namespace EbookWindows.Screen
             }
         }
 
-
-        //Nhat develop for reading screen
         private void StackPanel_MouseMove(object sender, MouseEventArgs e)
         {
             if (!dispatcherTimer.IsEnabled)
@@ -285,12 +267,6 @@ namespace EbookWindows.Screen
             }
         }
 
-        private void OnCopy(object sender, ExecutedRoutedEventArgs e)
-        {
-
-        }
-
-
         private void ZoomInBtn_Click(object sender, RoutedEventArgs e)
         {
             if (zoomValue < 2)
@@ -330,7 +306,6 @@ namespace EbookWindows.Screen
                     break;
                 case "First":
                     navigator.Move(0, Origin.Begin);
-                    //navigator.Move(2, Origin.Begin); => 3rd page
                     break;
                 case "Last":
                     navigator.Move(0, Origin.End);
@@ -341,38 +316,21 @@ namespace EbookWindows.Screen
             this.destinationRectangle = null;
         }
 
-        public void homeBtn_Click(object sender, RoutedEventArgs e)
-        {
-            WindowScreen home = (WindowScreen)Window.GetWindow(this);
-            zoomValue = 0.8;
-            zoomLabel.Content = $"{zoomValue * 100}%";
-            PageImage.Source = null;
-            bottom = 0;
-            int location = PageConboBox.SelectedIndex;
-            home.recentFileUserControl.UpdateLocationOfFile(location);
-            file.Close();
-
-            //FileStream newSt = new FileStream(tempFile, FileMode.Open, FileAccess.Write);
-            //pdf.SaveToFile(filePath);
-            //pdf.SaveToStream(newSt);S
-            //pdf.SaveToFile(tempFile);
-            //pdf.Close();
-            //newSt.Close();
-
-
-            home.ReturnFromReadingScreen_Click(sender, e);
-        }
-
+      
         private void bookmarkBtn_Click(object sender, RoutedEventArgs e)
         {
+            changeFile = true;
             int pageIndex = PageConboBox.SelectedIndex;
-            //MessageBox.Show(pageIndex.ToString());
-            //pdf.Bookmarks.Add(string.Format($"Page {pageIndex+1}"));
-            //PdfBookmark bookmark = pdf.Bookmarks.Insert(2, "New Chapter 3");
-
+            //Creates document bookmarks.
+            PdfBookmark bookmark = pdfFile.Bookmarks.Add($"Page {pageIndex + 1}");
+            // Sets the destination page.
+            bookmark.Destination = new PdfDestination(pdfFile.Pages[pageIndex]);
             //Set the page and location of the bookmark
+            bookmark.Destination.Location = new PointF(0, 0);
             bookmarkListView.Items.Refresh();
         }
+
+
         private void bookmarkListBtn_Click(object sender, RoutedEventArgs e)
         {
             bookmarkBorder.Visibility = Visibility.Visible;           
@@ -386,12 +344,42 @@ namespace EbookWindows.Screen
 
         private void bookmarkDeleteButtons_Click(object sender, RoutedEventArgs e)
         {
-            //bookmarkListView.Items.Refresh();
+            changeFile = true;
+            var item = (sender as FrameworkElement).DataContext;
+            int index = bookmarkListView.Items.IndexOf(item);
+            pdfFile.Bookmarks.RemoveAt(index);
+            bookmarkListView.Items.Refresh();
+        }
+
+        private int GetPageIndexFormTitle(string title)
+        {
+            int result = 0;
+            string[] stringList = title.Split(' ');
+            if(stringList.Count() == 2 && stringList[0].Equals("Page"))
+            {
+                Int32.TryParse(stringList[1], out result);
+                result--;
+            }
+            else
+            {
+                result = -1;
+            }
+            return result;
         }
 
         private void bookmarkListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
+        {  
+            int index = bookmarkListView.SelectedIndex;
+            if (index != -1)
+            {
+                int pageIndex = GetPageIndexFormTitle(pdfFile.Bookmarks[index].Title);
+                if(pageIndex == -1)
+                {
+                    pageIndex = pdfFile.Bookmarks[index].Destination.PageIndex;
+                }
+                document.Document.Navigator.GoToPage(pageIndex);
+                bookmarkListView.SelectedIndex = -1;
+            }           
         }
 
 
@@ -406,33 +394,47 @@ namespace EbookWindows.Screen
                         bottom = 1;
                         this.PageScroller.ScrollToVerticalOffset(PageScroller.ScrollableHeight - 0.1);
                     }
-
                     else
                     {
                         document.Document.Navigator.MoveForward();
                         bottom = 0;
                     }
-
-                    //MessageBox.Show("lan 2");
                 }
                 else if (PageScroller.VerticalOffset == 0)
                 {
                     document.Document.Navigator.MoveBackward();
                 }
             }
-
-
         }
 
-       
+        public void homeBtn_Click(object sender, RoutedEventArgs e)
+        {
+            WindowScreen home = (WindowScreen)Window.GetWindow(this);
+            zoomValue = 0.8;
+            zoomLabel.Content = $"{zoomValue * 100}%";
+            PageImage.Source = null;
+            bottom = 0;
+            bookmarkBorder.Visibility = Visibility.Collapsed;
+            int location = PageConboBox.SelectedIndex;
+            home.recentFileUserControl.UpdateLocationOfFile(location);
+            file.Close();
+            if (changeFile)
+            {
+                pdfFile.Save();
+                changeFile = false;
+            }
+            pdfFile.Close(true);
+            home.ReturnFromReadingScreen_Click(sender, e);
+        }
 
-        //private void Arrow_KeyDown(object sender, KeyEventArgs e)
-        //{
-        //document.Document.Navigator.MoveForward();
-        //    if(e.Key == Key.Right)
-        //    {
-        //        document.Document.Navigator.MoveForward();
-        //    }
-        //}
+        public void SaveFilePdf()
+        {
+            file.Close();
+            if (changeFile)
+            {
+                pdfFile.Save();
+                pdfFile.Close(true);
+            }
+        }
     }
 }
