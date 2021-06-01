@@ -40,7 +40,7 @@ namespace EbookWindows.ViewModels
         public BindingList<RecentFile> GetAll()
         {
             BindingList<RecentFile> list = new BindingList<RecentFile>();
-            var strFileName = App.path + @"\\data\\recentfile.txt";
+            var strFileName = App.Global.Directory_Folder + @"\\data\\recentfile.txt";
 
             if (!File.Exists(strFileName))
             {
@@ -89,7 +89,7 @@ namespace EbookWindows.ViewModels
 
         public bool WriteNewRecentFileData(BindingList<RecentFile> recentFileList)
         {
-            var strFileName = App.path + @"\\data\\recentfile.txt";
+            var strFileName = App.Global.Directory_Folder + @"\\data\\recentfile.txt";
             //if (File.Exists(strFileName))
             //{
             //    File.Delete(strFileName);
