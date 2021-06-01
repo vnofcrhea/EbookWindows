@@ -53,7 +53,7 @@
                             <Setter Property="Height" Value="{StaticResource ButtonIconSizeDefault}"/>
                         </Style>
                     </StackPanel.Resources>
-                                     
+
                     <Button x:Name="bookmarkBtn" Click="bookmarkBtn_Click">
                         <materialDesign:PackIcon Kind="BookmarkPlus"></materialDesign:PackIcon>
                     </Button>
@@ -63,7 +63,7 @@
                     <Button  Name="ZoomOutBtn"  Click="ZoomOutBtn_Click">
                         <materialDesign:PackIcon Kind="ZoomOutOutline"></materialDesign:PackIcon>
                     </Button>
-                   <Label Name="zoomLabel"  Width="40" Height="20" BorderBrush="{DynamicResource PrimaryHueMidBrush}" BorderThickness="0" Padding="0"
+                    <Label Name="zoomLabel"  Width="40" Height="20" BorderBrush="{DynamicResource PrimaryHueMidBrush}" BorderThickness="0" Padding="0"
                              VerticalContentAlignment="Center" HorizontalContentAlignment="Center"  Content="80%" Foreground="#FFFFFF">
                     </Label>
 
@@ -83,7 +83,7 @@
             </Button>
 
 
-           
+
 
             <!--Paging book toolbar-->
             <Border  Name="BottomPanelTool" Margin="0,0,0,15" HorizontalAlignment="Center" VerticalAlignment="Bottom" BorderThickness="1" BorderBrush="{DynamicResource PrimaryHueMidBrush}" CornerRadius="5">
