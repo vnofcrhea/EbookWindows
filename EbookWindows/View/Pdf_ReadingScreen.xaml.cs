@@ -38,7 +38,7 @@ namespace EbookWindows.Screen
 
         private delegate void SetImageSourceDelegate(byte[] source, IList<Link> links, int width, int height);
 
-        public pdfDocumentViewModel document = null;
+        public pdfDocument document = null;
 
         private Task task;
 
@@ -58,7 +58,7 @@ namespace EbookWindows.Screen
         {
             zoomValue = 0.8;
             InitializeComponent();
-            this.document = new pdfDocumentViewModel();
+            this.document = new pdfDocument();
             this.DataContext = this.document;
             this.document.PropertyChanged += DocumentOnPropertyChanged;
         }
