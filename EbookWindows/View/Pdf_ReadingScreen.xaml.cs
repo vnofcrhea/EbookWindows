@@ -1,12 +1,14 @@
 ﻿using Apitron.PDF.Rasterizer;
 using Apitron.PDF.Rasterizer.Configuration;
 using Apitron.PDF.Rasterizer.Navigation;
+using Apitron.PDF.Rasterizer.Security;
+using EbookWindows.View;
 using EbookWindows.ViewModels;
 using Syncfusion.Pdf.Interactive;
 using Syncfusion.Pdf.Parsing;
 using System;
 using System.Collections.Generic;
- using System.Collections.ObjectModel;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Drawing;
 using System.IO;
@@ -52,8 +54,9 @@ namespace EbookWindows.Screen
 
         private PdfLoadedDocument pdfFile;
 
-        private bool changeFile  = false;
+        private bool changeFile = false;
         private int recentLocation;
+        private string filePath;
         public Pdf_ReadingScreen()
         {
             zoomValue = 0.8;
@@ -67,21 +70,64 @@ namespace EbookWindows.Screen
         /// Load data with a file path
         /// </summary>
         /// <param name="filePath">the file path need to read</param>
-        public void LoadData(string filePath, int location) //Load data here
+        public bool LoadData(string filePath, int location) //Load data here
         {
+            bool hasPassword = false;
+            var passwordScreen = new PasswordScreen();
+
+            this.filePath = filePath;
             recentLocation = location;
+            file = new FileStream(filePath, FileMode.Open, FileAccess.Read);
+            
+            try
+            {
+                //A file doesn't has password
+                Document document = new Document(file);
+                (this.document).Document = document;
+                pdfFile = new PdfLoadedDocument(filePath);
+                bookmarkListView.ItemsSource = pdfFile.Bookmarks;
+            }
+            catch (Exception e)
+            {
+                file.Close();
+                hasPassword = true;
+            }
+            if (hasPassword)
+            {
+                //A file has password
+                passwordScreen.EnterPasswordEvent += checkPassword;
+                passwordScreen.ShowDialog();
+
+            }
+            if(document.Document == null)
+            {
+                return false; 
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// Check: Is password string valid?
+        /// </summary>
+        /// <param name="passwordStr">Password</param>
+        /// <returns>true: valid; false: invalid</returns>
+        private bool checkPassword(string passwordStr)
+        {
             try
             {
                 file = new FileStream(filePath, FileMode.Open, FileAccess.Read);
-                Document document = new Document(file);
+                Document document = new Document(file, passwordStr);
                 (this.document).Document = document;
-            }catch(Exception e)
+                pdfFile = new PdfLoadedDocument(filePath, passwordStr);
+                bookmarkListView.ItemsSource = pdfFile.Bookmarks;
+            }
+            catch (Exception e)
             {
-                MessageBox.Show("This file cann't open! Please choose other file!");
-            }        
-            pdfFile = new PdfLoadedDocument(filePath);
-            bookmarkListView.ItemsSource = pdfFile.Bookmarks;
-        }
+                MessageBox.Show("Invalid password. Please enter password again", "", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return false;
+            }
+            return true;
+        } 
 
         private void DocumentOnPropertyChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
         {
@@ -142,7 +188,7 @@ namespace EbookWindows.Screen
 
             this.UpdateImageZoom();
             this.UpdateViewLocation(this.destinationRectangle);
-       
+
         }
 
 
@@ -154,7 +200,7 @@ namespace EbookWindows.Screen
         {
             if (destinationInfo == null)
             {
-                //this.pageScroller.ScrollToTop();
+                //this.PageScroller.ScrollToTop();
                 this.PageScroller.ScrollToVerticalOffset(0.1);
                 return;
             }
@@ -269,22 +315,31 @@ namespace EbookWindows.Screen
 
         private void ZoomInBtn_Click(object sender, RoutedEventArgs e)
         {
-            if (zoomValue < 2)
+            ZoomOutBtn.IsEnabled = true;
+            zoomValue += 0.1;
+            if (zoomValue > 2)
             {
-                zoomValue += 0.1;
-                this.UpdateImageZoom();
-                zoomLabel.Content = $"{zoomValue * 100}%";
+                ZoomInBtn.IsEnabled = false;
+                
+              
             }
+
+            this.UpdateImageZoom();
+            zoomLabel.Content = $"{zoomValue * 100}%";
         }
 
         private void ZoomOutBtn_Click(object sender, RoutedEventArgs e)
         {
-            if (zoomValue > 0.2)
+            ZoomInBtn.IsEnabled = true;
+            zoomValue -= 0.1;
+            if (zoomValue < 0.2)
             {
-                zoomValue -= 0.1;
-                this.UpdateImageZoom();
-                zoomLabel.Content = $"{zoomValue * 100}%";
+                
+                ZoomOutBtn.IsEnabled = false;
             }
+
+            this.UpdateImageZoom();
+            zoomLabel.Content = $"{zoomValue * 100}%";
         }
 
         private void OnNavigationButtonClick(object sender, RoutedEventArgs e)
@@ -316,7 +371,7 @@ namespace EbookWindows.Screen
             this.destinationRectangle = null;
         }
 
-      
+
         private void bookmarkBtn_Click(object sender, RoutedEventArgs e)
         {
             changeFile = true;
@@ -333,7 +388,7 @@ namespace EbookWindows.Screen
 
         private void bookmarkListBtn_Click(object sender, RoutedEventArgs e)
         {
-            bookmarkBorder.Visibility = Visibility.Visible;           
+            bookmarkBorder.Visibility = Visibility.Visible;
         }
 
 
@@ -355,7 +410,7 @@ namespace EbookWindows.Screen
         {
             int result = 0;
             string[] stringList = title.Split(' ');
-            if(stringList.Count() == 2 && stringList[0].Equals("Page"))
+            if (stringList.Count() == 2 && stringList[0].Equals("Page"))
             {
                 Int32.TryParse(stringList[1], out result);
                 result--;
@@ -368,18 +423,18 @@ namespace EbookWindows.Screen
         }
 
         private void bookmarkListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {  
+        {
             int index = bookmarkListView.SelectedIndex;
             if (index != -1)
             {
                 int pageIndex = GetPageIndexFormTitle(pdfFile.Bookmarks[index].Title);
-                if(pageIndex == -1)
+                if (pageIndex == -1)
                 {
                     pageIndex = pdfFile.Bookmarks[index].Destination.PageIndex;
                 }
                 document.Document.Navigator.GoToPage(pageIndex);
                 bookmarkListView.SelectedIndex = -1;
-            }           
+            }
         }
 
 
@@ -394,7 +449,7 @@ namespace EbookWindows.Screen
                         bottom = 1;
                         this.PageScroller.ScrollToVerticalOffset(PageScroller.ScrollableHeight - 0.1);
                     }
-                    else
+                    else if(PageScroller.ScrollableHeight != 0)
                     {
                         document.Document.Navigator.MoveForward();
                         bottom = 0;
@@ -423,7 +478,11 @@ namespace EbookWindows.Screen
                 pdfFile.Save();
                 changeFile = false;
             }
-            pdfFile.Close(true);
+            if(pdfFile != null)
+            {
+                pdfFile.Close(true);
+            }
+         
             home.ReturnFromReadingScreen_Click(sender, e);
         }
 
@@ -436,5 +495,47 @@ namespace EbookWindows.Screen
                 pdfFile.Close(true);
             }
         }
+
+        private void keyDown_Test(object sender, KeyEventArgs e)
+        {
+            int index = PageConboBox.SelectedIndex;
+            if (e.Key == Key.Right)
+            {
+                PageConboBox.SelectedIndex = index + 1;
+            } else if(e.Key == Key.Left){
+                PageConboBox.SelectedIndex = index - 1;
+            }
+            
+        }
+
+        private void toolBar_MouseEnter(object sender, MouseEventArgs e)
+        {
+            BottomStackPanel.Visibility = Visibility.Visible;
+            TopStackPanel.Visibility = Visibility.Visible;
+            dispatcherTimer.Stop();
+        }
+
+        private void toolBar_MouseLeave(object sender, MouseEventArgs e)
+        {
+            BottomStackPanel.Visibility = Visibility.Hidden;
+            TopStackPanel.Visibility = Visibility.Hidden;
+            dispatcherTimer.Stop();
+        }
+
+        //private void OkBtn_Click(object sender, RoutedEventArgs e)
+        //{
+
+        //}
+
+        //private void CancleBtn_Click(object sender, RoutedEventArgs e)
+        //{
+
+        //}
+
+        //private void CloseDialogBtn(object sender, RoutedEventArgs e)
+        //{
+           
+        //    PasswordDialog.Visibility = Visibility.Hidden;
+        //}
     }
 }

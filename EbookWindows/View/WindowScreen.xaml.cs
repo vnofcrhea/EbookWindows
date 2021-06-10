@@ -201,32 +201,43 @@ namespace EbookWindows.Screen
         /// <param name="index">-1: if press browser button; index: index in recent file ListView</param>
         public void filePathChanged(string filePath, int index)
         {
-            string fileIcon ="";
-            string fileName = Path.GetFileName(filePath);
+            
             string fileExtension = Path.GetExtension(filePath);
             if (fileExtension.Equals(".pdf"))
             {
                 int location = recentFileUserControl.GetRecentLocationOfFile(filePath);
-                pdfReadingScreen.LoadData(filePath, location);
-                MainGrid.Visibility = Visibility.Collapsed;
-                epubReadingScreen.Visibility = Visibility.Collapsed;
-                pdfReadingScreen.Visibility = Visibility.Visible;
-                fileIcon = "Icon\\pdf.png";
-               
-            }
-            else if (fileExtension.Equals(".epub"))
+                if(pdfReadingScreen.LoadData(filePath, location))
+                {
+                    MainGrid.Visibility = Visibility.Collapsed;
+                    epubReadingScreen.Visibility = Visibility.Collapsed;
+                    pdfReadingScreen.Visibility = Visibility.Visible;
+                    AddRecentFileList(index, filePath, "Icon\\pdf.png");
+                }     
+            } else if (fileExtension.Equals(".epub"))
             {
                 epubReadingScreen.ReadFile(filePath);
                 MainGrid.Visibility = Visibility.Collapsed;
                 pdfReadingScreen.Visibility = Visibility.Collapsed;
                 epubReadingScreen.Visibility = Visibility.Visible;
-                fileIcon = "Icon\\epub.png"; ;
-            }
-            else
+                AddRecentFileList(index, filePath, "Icon\\epub.png");
+            }else
             {
                 //nothing
             }
-            if(index < 0) //index = -1
+
+          
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="index"> if press browser button; index: index in recent file ListView</param></param>
+        /// <param name="filePath"></param>
+        /// <param name="fileIcon">Name of icon file</param>
+        private void AddRecentFileList(int index,string filePath, string fileIcon)
+        {
+            string fileName = Path.GetFileName(filePath);
+            
+            if (index < 0) //index = -1
             {
                 recentFileUserControl.BrowserANewFile(fileName, filePath, fileIcon);
             }
@@ -234,7 +245,6 @@ namespace EbookWindows.Screen
             {
                 recentFileUserControl.openAFileInRecentFileList(index);
             }
-          
         }
 
         public void addMoreBookBtn_Click(object sender, RoutedEventArgs e)
