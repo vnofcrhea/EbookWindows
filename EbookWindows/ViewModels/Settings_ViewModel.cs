@@ -15,7 +15,7 @@ namespace EbookWindows.ViewModels
 {
     public class Settings_ViewModel
     {
-        private Settings _settings;
+        private Settings _settings = new Settings();
         private readonly PaletteHelper _paletteHelper = new PaletteHelper();
         public Settings_ViewModel()
         {
@@ -31,16 +31,16 @@ namespace EbookWindows.ViewModels
                 }
                 else
                 {
-                    BaseTheme = BaseTheme.Dark;
-                    PrimaryColor = Color.FromRgb(0, 200, 255);
-                    SecondaryColor = Color.FromRgb(50, 205, 50);
+                    _settings.BaseTheme = BaseTheme.Dark;
+                    _settings.PrimaryColor = Color.FromRgb(0, 200, 255);
+                    _settings.SecondaryColor = Color.FromRgb(50, 205, 50);
                 }
             }
             catch
             {
-                BaseTheme = BaseTheme.Dark;
-                PrimaryColor = Color.FromRgb(0, 200, 255);
-                SecondaryColor = Color.FromRgb(50, 205, 50);
+                _settings.BaseTheme = BaseTheme.Dark;
+                _settings.PrimaryColor = Color.FromRgb(0, 200, 255);
+                _settings.SecondaryColor = Color.FromRgb(50, 205, 50);
             }
         }
         public Settings Settings
