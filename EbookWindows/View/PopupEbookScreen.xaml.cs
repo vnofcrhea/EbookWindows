@@ -87,22 +87,6 @@ namespace EbookWindows.Screen
             if (dialogResult.Value)
             {
                 string filePath = openFileDialog.FileName;
-                //string fileName = Path.GetFileName(filePath);
-                //string fileExtension = Path.GetExtension(filePath);
-                //string fileIcon = "";
-                //if (fileExtension.Equals(".pdf"))
-                //{
-                //    fileIcon = "Icon\\pdf.png";
-                //}
-                //else if (fileExtension.Equals(".epub"))
-                //{
-                //    fileIcon = "Icon\\epub.png";
-                //}
-                //else
-                //{
-                //    //nothing
-                //}
-                //RecentFile recentFile = new RecentFile(filePath, fileName, fileIcon);
                 BrowserEvent?.Invoke(filePath,-1);
                 this.Close();
 
