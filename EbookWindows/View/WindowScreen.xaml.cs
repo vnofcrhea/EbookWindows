@@ -2,6 +2,7 @@
 using EbookWindows.ViewModels;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.Win32;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -39,6 +40,7 @@ namespace EbookWindows.Screen
         {
             InitializeComponent();
             this.MaxHeight = SystemParameters.MaximizedPrimaryScreenHeight;
+            App.ApplyTheme();
             LoadTreeViewList();
             //TreeView_BookList.Items[]
             //lbTodoList.ItemsSource = items;
@@ -108,6 +110,11 @@ namespace EbookWindows.Screen
         {
 
         }
+        public void OpenDetailScreen()
+        {
+            comicReadingScreen.Visibility = Visibility.Collapsed;
+            detailScreen.Visibility = Visibility.Visible;
+        }
         public async void OpenDetailScreen(Book_Short x)
         {
             StartLoading();
@@ -116,6 +123,7 @@ namespace EbookWindows.Screen
             detailScreen.Visibility = Visibility.Visible;
             EndLoading();
         }
+        
         public async void OpenDetailScreen(string url)
         {
             StartLoading();
@@ -266,6 +274,9 @@ namespace EbookWindows.Screen
                 recentFileUserControl.UpdateLocationOfFile(location);
             }
             recentFileUserControl.SaveRecentFileList();
+            //Saving Setting before close
+            
+            App.Global.Settings_ViewModel.SaveSetting();
         }
 
         private void LeftHeader_Click(object sender, RoutedEventArgs e)
@@ -288,6 +299,29 @@ namespace EbookWindows.Screen
             ChildTree.Items.AddRange(App.Global.Book_Short_ViewModel.Book_Short.ToList());
             App.Global.Book_TreeView.Add(ChildTree);
             TreeView_BookList.ItemsSource = App.Global.Book_TreeView;
+        }
+
+        private void Settings_Click(object sender, RoutedEventArgs e)
+        {
+            SettingsGrid.Visibility = Visibility.Visible;
+        }
+        public void SettingClose()
+        {
+            SettingsGrid.Visibility = Visibility.Collapsed;
+        }
+
+        private void Book_Click(object sender, RoutedPropertyChangedEventArgs<object> e)
+        {
+            if (!((sender as TreeView).SelectedItem is Book_Short item))
+                return;
+            else
+            {
+                OpenDetailScreen(item);
+                //var x = (sender as TreeView).ItemContainerGenerator.ContainerFromIndex
+                
+                var x = (((sender as TreeView).ItemContainerGenerator.ContainerFromIndex(0) as TreeViewItem).ItemContainerGenerator.ContainerFromItem((sender as TreeView).SelectedItem) as TreeViewItem);
+                x.IsSelected = false;
+            }
         }
     }
 }

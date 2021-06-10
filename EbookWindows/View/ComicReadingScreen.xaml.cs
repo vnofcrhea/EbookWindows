@@ -33,13 +33,23 @@ namespace EbookWindows.Screen
         public ComicReadingScreen()
         {
             InitializeComponent();
-            DarkModeChecker.IsChecked = App.isDarkMode();
+            DarkModeToggleButton.IsChecked = new PaletteHelper().GetTheme().GetBaseTheme() == BaseTheme.Dark;
+        }
+        private static void ModifyTheme(bool isDarkTheme)
+        {
+            var paletteHelper = new PaletteHelper();
+            var theme = paletteHelper.GetTheme();
+
+            theme.SetBaseTheme(isDarkTheme ? Theme.Dark : Theme.Light);
+            paletteHelper.SetTheme(theme);
+            App.Global.Settings_ViewModel.BaseTheme = isDarkTheme ? BaseTheme.Dark : BaseTheme.Light;
         }
         #region Execute
         public void LoadData()
         {
             this.Dispatcher.Invoke(() =>
             {
+                DarkModeToggleButton.IsChecked = new PaletteHelper().GetTheme().GetBaseTheme() == BaseTheme.Dark;
                 App.Global.Chapter_ViewModel.Load_ChapterList();
                 Load_DataContext(); // Binding DataContext
                 Chapter_List.SelectedValue = App.Global.Chapter_ViewModel.Current_Chapter.link;
@@ -228,16 +238,18 @@ namespace EbookWindows.Screen
         {
             Content_Box.FontFamily = new FontFamily(((sender as ComboBox).SelectedValue as ComboBoxItem).Content.ToString());
         }
+       
 
-        private void DarkMode_Enable(object sender, RoutedEventArgs e)
-        {
-            App.ChangeBaseTheme(BaseTheme.Dark);
-        }
-
-        private void DarkMode_Disable(object sender, RoutedEventArgs e)
-        {
-            App.ChangeBaseTheme(BaseTheme.Light);
-        }
         #endregion
+
+
+        private void BackToDetail_Click(object sender, RoutedEventArgs e)
+        {
+            WindowScreen win = (WindowScreen)Window.GetWindow(this);
+            win.OpenDetailScreen();
+        }
+
+        private void DarkModeChecker_Click(object sender, RoutedEventArgs e)
+         => ModifyTheme(DarkModeToggleButton.IsChecked == true);
     }
 }

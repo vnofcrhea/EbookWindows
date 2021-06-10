@@ -19,11 +19,12 @@ namespace EbookWindows
         public bool IsChapterDowwnloaded { get; set; }
         public Book_ViewModel Book_ViewModel { get; set; }
         public Chapter_ViewModel Chapter_ViewModel { get; set; }
+        public Settings_ViewModel Settings_ViewModel { get; set; }
         public string Directory_Folder { get; set; }
         public List<Book_Short_TreeView> Book_TreeView { get; set; }
         public Global()
         {
-            API_URL_Primary = "https://flask-web-scraping.herokuapp.com";
+            API_URL_Primary = "https://ebook-main-server.herokuapp.com";
             Book_Directory = null;
             List_Book_Short = new List<Book_Short>();
             Directory_Folder =  System.IO.Directory.GetParent(System.Reflection.Assembly.GetExecutingAssembly().Location).ToString();

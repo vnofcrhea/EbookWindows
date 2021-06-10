@@ -55,11 +55,8 @@
                             <Setter Property="Height" Value="{StaticResource ButtonIconSizeDefault}"/>
                         </Style>
                     </StackPanel.Resources>
-                    <Button>
-                        <materialDesign:PackIcon Kind="ArrowBack"></materialDesign:PackIcon>
-                    </Button>
-                    <Button>
-                        <materialDesign:PackIcon Kind="Home"></materialDesign:PackIcon>
+                    <Button Click="BackToDetail_Click">
+                        <materialDesign:PackIcon Kind="ArrowBack" ></materialDesign:PackIcon>
                     </Button>
                     <materialDesign:PopupBox  StaysOpen="True" IsEnabled="{Binding IsChecked, ElementName=PopupEnabled}" Foreground="{DynamicResource PrimaryHueMidBrush}">
                         <Grid Width="300" Margin="8,8,8,8">
@@ -85,7 +82,7 @@
                                 <Slider Margin ="8,-32,8,8" Value="26" Minimum="10" Maximum="40" Style="{StaticResource MaterialDesignDiscreteSlider}" ValueChanged="Slider_ValueChanged"/>
                                 <StackPanel Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Left" Margin="8,8,8,8">
                                     <TextBlock Text="Dark Mode" FontSize="10" Foreground="{DynamicResource MaterialDesignTextAreaBorder}"></TextBlock>
-                                    <CheckBox Name="DarkModeChecker" Margin="8,0,0,0"  Style="{StaticResource MaterialDesignSwitchToggleButton}" Checked="DarkMode_Enable" Unchecked="DarkMode_Disable" />
+                                    <ToggleButton Name="DarkModeToggleButton" Margin="8,0,0,0"  Style="{StaticResource MaterialDesignSwitchToggleButton}" Click="DarkModeChecker_Click" />
                                 </StackPanel>
                                 <StackPanel Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Right" >
                                     <Button Content="Close" Command="{x:Static materialDesign:PopupBox.ClosePopupCommand}" />

@@ -110,10 +110,12 @@
     <Compile Include="Model\Book.cs" />
     <Compile Include="Model\Book_Short.cs" />
     <Compile Include="Model\Chapter.cs" />
+    <Compile Include="Model\Settings.cs" />
     <Compile Include="ViewModels\Book_Short_ViewModel.cs" />
     <Compile Include="ViewModels\Book_ViewModel.cs" />
     <Compile Include="ViewModels\Chapter_ViewModel.cs" />
     <Compile Include="ViewModels\RecentFile_ViewModel.cs" />
+    <Compile Include="ViewModels\Settings_ViewModel.cs" />
     <Compile Include="View\PopupEbookScreen.xaml.cs">
       <DependentUpon>PopupEbookScreen.xaml</DependentUpon>
     </Compile>
@@ -131,6 +133,9 @@
     </Compile>
     <Compile Include="View\RecentFileUserControl.xaml.cs">
       <DependentUpon>RecentFileUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\SettingsScreen.xaml.cs">
+      <DependentUpon>SettingsScreen.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Shelf.xaml.cs">
       <DependentUpon>Shelf.xaml</DependentUpon>
@@ -176,6 +181,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\RecentFileUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\SettingsScreen.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

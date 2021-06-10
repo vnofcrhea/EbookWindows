@@ -353,9 +353,9 @@ namespace EbookWindows.Screen
         //        }
         //    }
         //}
-        private void DownloadContent_Click(object sender, RoutedEventArgs e)
+        private async void DownloadContent_Click(object sender, RoutedEventArgs e)
         {
-            App.Global.Book_ViewModel.Download_Content();
+            await Task.Run(()=>App.Global.Book_ViewModel.Download_Content());
         }
 
         private void NextPage_Click(object sender, RoutedEventArgs e)

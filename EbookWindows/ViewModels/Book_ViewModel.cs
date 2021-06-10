@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace EbookWindows.ViewModels
@@ -40,9 +41,20 @@ namespace EbookWindows.ViewModels
             {
                 Directory.CreateDirectory(path_data);
             }
-            Parallel.ForEach(_Book.chapter_link, new ParallelOptions { MaxDegreeOfParallelism = -1 }, Download_Content_OneChaper);
+            Parallel.ForEach(_Book.chapter_link, item =>
+            {
+
+                var priviousePrio = Thread.CurrentThread.Priority;
+                // Set your desired priority
+                Thread.CurrentThread.Priority = ThreadPriority.Lowest;
+
+                Download_Content_OneChaper(item);
+
+                //Reset priviouse priority of the TPL Thread
+                Thread.CurrentThread.Priority = priviousePrio;
+            });
             List<Task> TaskList = new List<Task>();
-            Console.WriteLine("EndInit");
+            //Console.WriteLine("EndInit");
         }
 
         public void AddToLibrary()

@@ -15,18 +15,16 @@ namespace EbookWindows
     public partial class App : Application
     {
         public static Global Global { get; set; } = new Global(); //Dynamic Global Data Use for all Windows,UserControl
-        public static void ChangeBaseTheme(BaseTheme x)
-        {
-                (App.Current.Resources.MergedDictionaries[0] as BundledTheme).BaseTheme = x;
-          
-        }
+
         public App()
         {
+            Global.Settings_ViewModel = new Settings_ViewModel();
+            //ApplyTheme();
             Global.Book_Short_ViewModel.LoadListBookShort();
         }
         public static bool isDarkMode()
         {
-            if ((App.Current.Resources.MergedDictionaries[0] as BundledTheme).BaseTheme == BaseTheme.Dark)
+            if ((App.Current.Resources.MergedDictionaries[0] as CustomColorTheme).BaseTheme == BaseTheme.Dark)
             {
                 return true;
             }
@@ -35,5 +33,16 @@ namespace EbookWindows
                 return false;
             }
         }
+
+        public static void ChangeBaseTheme(BaseTheme x)
+        {
+            (App.Current.Resources.MergedDictionaries[0] as CustomColorTheme).BaseTheme = x;
+            //(App.Current.Resources.MergedDictionaries[0] as CustomColorTheme).PrimaryColor = System.Windows.Media.Color.FromRgb(00,200,255);
+        }
+        public static void ApplyTheme()
+        {
+            App.Global.Settings_ViewModel.ApplySetting();
+        }
     }
+    
 }
