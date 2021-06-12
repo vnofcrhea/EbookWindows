@@ -244,6 +244,10 @@
                   Visibility="Collapsed">
                 <local:SettingsScreen x:Name="SettingsScreen"></local:SettingsScreen>
             </Grid>
+            <Grid Grid.Row="1" Background="#AF000000" Name="AboutGrid"
+                  Visibility="Collapsed">
+                <local:About x:Name="AboutScreen"></local:About>
+            </Grid>
         </Grid>
     </Border>
 </Window>

@@ -73,13 +73,15 @@ namespace EbookWindows.Screen
         public bool LoadData(string filePath, int location) //Load data here
         {
             bool hasPassword = false;
-            
+            this.document = new pdfDocument();
+            this.document.PropertyChanged += DocumentOnPropertyChanged;
             this.filePath = filePath;
             recentLocation = location;
             file = new FileStream(filePath, FileMode.Open, FileAccess.Read);
 
             try
             {
+
                 //A file doesn't has password
                 Document document = new Document(file);
                 (this.document).Document = document;
@@ -489,14 +491,12 @@ namespace EbookWindows.Screen
 
         public void SaveFilePdf()
         {
-            //file.Dispose();
-            //file.Close();
-            //if (changeFile)
-            //{
-            //    pdfFile.Save();
-            //}
-            //pdfFile.Close(true);
-            //pdfFile.Dispose();
+            file.Close();
+            if (changeFile)
+            {
+                pdfFile.Save();
+            }
+            pdfFile.Close(true);
         }
 
         private void keyDown_Test(object sender, KeyEventArgs e)

@@ -64,20 +64,16 @@ namespace EbookWindows.Screen
             //filepath is not exist in recentFileList
             if (index == -1)
             {
-                RecentFile temp = new RecentFile(fileName, filePath, fileIcon);
-                if (viewingList.Count() == minItems && viewBtn.Content.Equals(viewMore))
+                //viewingList.Insert(0, temp);
+                App.Global.RecentFile_ViewModel.Recent_File.Insert(0, new RecentFile(fileName, filePath, fileIcon));
+                if (viewBtn.Content.Equals(viewMore))
                 {
-                    viewingList.RemoveAt(minItems - 1);
+                    MappingDataFromListToView(minItems);
                 }
-                else if (viewingList.Count() == maxItems && viewBtn.Content.Equals(viewLess))
+                else if (viewBtn.Content.Equals(viewLess))
                 {
-                    viewingList.RemoveAt(maxItems - 1);
+                    MappingDataFromListToView(maxItems);
                 }
-                else
-                { //do nothing
-                }
-                viewingList.Insert(0, temp);
-                App.Global.RecentFile_ViewModel.Recent_File.Insert(0, temp);
                 return true;
             }
             //filepath is exist in recentFileList
@@ -107,10 +103,16 @@ namespace EbookWindows.Screen
         /// <returns></returns>
         public bool openAFileInRecentFileList(int index)
         {
-            viewingList.Insert(0, viewingList[index]);
-            viewingList.RemoveAt(index + 1);
             App.Global.RecentFile_ViewModel.Recent_File.Insert(0, App.Global.RecentFile_ViewModel.Recent_File[index]);
             App.Global.RecentFile_ViewModel.Recent_File.RemoveAt(index + 1);
+            if (viewBtn.Content.Equals(viewMore))
+            {
+                MappingDataFromListToView(minItems);
+            }
+            else if (viewBtn.Content.Equals(viewLess))
+            {
+                MappingDataFromListToView(maxItems);
+            }
             return true;
         }
 
@@ -120,7 +122,7 @@ namespace EbookWindows.Screen
             int index = IsFilePathExist(filePath);
             if (index != -1) 
             {
-               // Int32.TryParse(recentFileList[index].recentLocation, out location);
+               location = App.Global.RecentFile_ViewModel.Recent_File[index].recentLocation;
             }
             return location;
         }

@@ -207,12 +207,13 @@ namespace EbookWindows.Screen
             if (fileExtension.Equals(".pdf"))
             {
                 int location = recentFileUserControl.GetRecentLocationOfFile(filePath);
-                if(pdfReadingScreen.LoadData(filePath, location))
+                AddRecentFileList(index, filePath, "Icon\\pdf.png");
+                if (pdfReadingScreen.LoadData(filePath, location))
                 {
                     MainGrid.Visibility = Visibility.Collapsed;
                     epubReadingScreen.Visibility = Visibility.Collapsed;
                     pdfReadingScreen.Visibility = Visibility.Visible;
-                    AddRecentFileList(index, filePath, "Icon\\pdf.png");
+                   
                 }     
             } else if (fileExtension.Equals(".epub"))
             {
@@ -349,9 +350,12 @@ namespace EbookWindows.Screen
 
         private void About_Click(object sender, RoutedEventArgs e)
         {
-
+            AboutGrid.Visibility = Visibility.Visible;
         }
-
+        public void AboutClose()
+        {
+            AboutGrid.Visibility = Visibility.Collapsed;
+        }
         private void Book_Click(object sender, SelectionChangedEventArgs e)
         {
             if (!((sender as ListView).SelectedItem is Book_Short item))
@@ -363,8 +367,7 @@ namespace EbookWindows.Screen
                 OpenDetailScreen(item);
                 //var x = (sender as TreeView).ItemContainerGenerator.ContainerFromIndex
 
-                var x = (((sender as TreeView).ItemContainerGenerator.ContainerFromIndex(0) as TreeViewItem).ItemContainerGenerator.ContainerFromItem((sender as TreeView).SelectedItem) as TreeViewItem);
-                x.IsSelected = false;
+                
                 if (pdfReadingScreen.Visibility == Visibility.Visible)
                 {
                     pdfReadingScreen.homeBtn_Click(sender, e);
@@ -384,6 +387,7 @@ namespace EbookWindows.Screen
                 {
                     //do nothing
                 }
+                (sender as ListView).SelectedIndex = -1;
             }
         }
     }
