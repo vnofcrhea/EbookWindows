@@ -270,24 +270,30 @@ namespace EbookWindows.Screen
         /// <param name="e"></param>
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            if(pdfReadingScreen.Visibility == Visibility)
+            if (pdfReadingScreen.Visibility == Visibility.Visible)
             {
                 pdfReadingScreen.SaveFilePdf();
-                int location = pdfReadingScreen.PageConboBox.SelectedIndex;
-                recentFileUserControl.UpdateLocationOfFile(location);
+                //int location = pdfReadingScreen.PageConboBox.SelectedIndex;
+                //recentFileUserControl.UpdateLocationOfFile(location);
             }
-            recentFileUserControl.SaveRecentFileList();
+
             //Saving Setting before close
-            
+            App.Global.RecentFile_ViewModel.Save_File();
             App.Global.Settings_ViewModel.SaveSetting();
         }
 
         private void LeftHeader_Click(object sender, RoutedEventArgs e)
         {
-            if (LeftHeaderColumn.Width.Value == 0)
+            if (LeftHeaderColumn.Width.Value == 50)
+            {
+                TreeView_BookList.Visibility = Visibility.Visible;
                 LeftHeaderColumn.Width = new GridLength(250, GridUnitType.Pixel);
+            }
             else
-                LeftHeaderColumn.Width = new GridLength(0, GridUnitType.Pixel);
+            {
+                TreeView_BookList.Visibility = Visibility.Collapsed;
+                LeftHeaderColumn.Width = new GridLength(50, GridUnitType.Pixel);
+            }
         }
 
         private void SolidColorBrush_ColorChanged(object sender, RoutedPropertyChangedEventArgs<Color> e)
@@ -367,6 +373,11 @@ namespace EbookWindows.Screen
                 RowHeaderSize.Height = new GridLength(0);
             }
             App.Global.isFullScreen = !App.Global.isFullScreen;
+        }
+
+        private void About_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

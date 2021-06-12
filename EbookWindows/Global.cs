@@ -23,6 +23,7 @@ namespace EbookWindows
         public Settings_ViewModel Settings_ViewModel { get; set; }
         public string Directory_Folder { get; set; }
         public List<Book_Short_TreeView> Book_TreeView { get; set; }
+        public RecentFile_ViewModel RecentFile_ViewModel { get; set; }
         public Global()
         {
             API_URL_Primary = "https://ebook-main-server.herokuapp.com";
@@ -32,6 +33,7 @@ namespace EbookWindows
             Book_Short_ViewModel = new Book_Short_ViewModel();
             Book_ViewModel = new Book_ViewModel();
             Chapter_ViewModel = new Chapter_ViewModel();
+            
             Book_TreeView = new List<Book_Short_TreeView>();
             isFullScreen = false;
         }

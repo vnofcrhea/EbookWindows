@@ -95,7 +95,7 @@
                     <Button Click="ZoomOut_Click" x:Name="ZoomOut_Button">
                         <materialDesign:PackIcon Kind="ZoomOutOutline"></materialDesign:PackIcon>
                     </Button>
-                    <TextBox Name="zoomTextbox" Width="40" Height="20" BorderBrush="{DynamicResource PrimaryHueMidBrush}" BorderThickness="0" Padding="0" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Foreground="{StaticResource MaterialDesignBody}">
+                    <TextBox Name="zoomTextbox" Width="40" Height="20" BorderBrush="{DynamicResource PrimaryHueMidBrush}" BorderThickness="0" Padding="0" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Foreground="{DynamicResource MaterialDesignBody}">
                         100%</TextBox>
 
                     <Button Click="ZoomIn_Click" x:Name="ZoomIn_Button">

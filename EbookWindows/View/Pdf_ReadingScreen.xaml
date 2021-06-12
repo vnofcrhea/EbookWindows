@@ -79,7 +79,7 @@
 
 
             <!-- Nút ẩn thanh công cụ để đọc cho dễ hơn.-->
-            <Button HorizontalAlignment="Right" VerticalAlignment="Top" Margin="5"  Style="{StaticResource MaterialDesignFlatButton}" Click="ShowHideToolButton_Click">
+            <Button HorizontalAlignment="Right" VerticalAlignment="Top" Margin="5,5,25,5"  Style="{StaticResource MaterialDesignFlatButton}" Click="ShowHideToolButton_Click">
                 <materialDesign:PackIcon Kind="Eye" ></materialDesign:PackIcon>
             </Button>
 
@@ -107,6 +107,7 @@
                     <ComboBox Name="PageConboBox" materialDesign:ComboBoxAssist.ClassicMode="True" BorderThickness="0"
                               HorizontalContentAlignment="Center"                  
                               Width="100" Padding="5" BorderBrush="{DynamicResource PrimaryHueMidBrush}"
+                              SelectionChanged="PageComboBox_SelectionChanged"
                               ItemsSource="{Binding Pages}" SelectedItem="{Binding Page, Mode=TwoWay}" Foreground="#FFFFFF">
                         <ComboBox.ItemTemplate>
                             <DataTemplate>

@@ -78,7 +78,7 @@ namespace EbookWindows.Screen
             this.filePath = filePath;
             recentLocation = location;
             file = new FileStream(filePath, FileMode.Open, FileAccess.Read);
-            
+
             try
             {
                 //A file doesn't has password
@@ -99,9 +99,9 @@ namespace EbookWindows.Screen
                 passwordScreen.ShowDialog();
 
             }
-            if(document.Document == null)
+            if (document.Document == null)
             {
-                return false; 
+                return false;
             }
             return true;
         }
@@ -113,6 +113,7 @@ namespace EbookWindows.Screen
         /// <returns>true: valid; false: invalid</returns>
         private bool checkPassword(string passwordStr)
         {
+            
             try
             {
                 file = new FileStream(filePath, FileMode.Open, FileAccess.Read);
@@ -368,6 +369,7 @@ namespace EbookWindows.Screen
                 default:
                     return;
             }
+            
             this.destinationRectangle = null;
         }
 
@@ -420,6 +422,7 @@ namespace EbookWindows.Screen
                 result = -1;
             }
             return result;
+            
         }
 
         private void bookmarkListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -470,8 +473,6 @@ namespace EbookWindows.Screen
             PageImage.Source = null;
             bottom = 0;
             bookmarkBorder.Visibility = Visibility.Collapsed;
-            int location = PageConboBox.SelectedIndex;
-            home.recentFileUserControl.UpdateLocationOfFile(location);
             file.Close();
             if (changeFile)
             {
@@ -488,12 +489,14 @@ namespace EbookWindows.Screen
 
         public void SaveFilePdf()
         {
-            file.Close();
-            if (changeFile)
-            {
-                pdfFile.Save();
-                pdfFile.Close(true);
-            }
+            //file.Dispose();
+            //file.Close();
+            //if (changeFile)
+            //{
+            //    pdfFile.Save();
+            //}
+            //pdfFile.Close(true);
+            //pdfFile.Dispose();
         }
 
         private void keyDown_Test(object sender, KeyEventArgs e)
@@ -522,6 +525,12 @@ namespace EbookWindows.Screen
             dispatcherTimer.Stop();
         }
 
+        private void PageComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var index = (sender as ComboBox).SelectedIndex;
+            App.Global.RecentFile_ViewModel.Recent_File[0].recentLocation = index;
+        }
+
         //private void OkBtn_Click(object sender, RoutedEventArgs e)
         //{
 
@@ -534,7 +543,7 @@ namespace EbookWindows.Screen
 
         //private void CloseDialogBtn(object sender, RoutedEventArgs e)
         //{
-           
+
         //    PasswordDialog.Visibility = Visibility.Hidden;
         //}
     }

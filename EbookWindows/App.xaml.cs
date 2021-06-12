@@ -19,6 +19,7 @@ namespace EbookWindows
         public App()
         {
             Global.Settings_ViewModel = new Settings_ViewModel();
+            Global.RecentFile_ViewModel = new RecentFile_ViewModel();
             //ApplyTheme();
             Global.Book_Short_ViewModel.LoadListBookShort();
         }

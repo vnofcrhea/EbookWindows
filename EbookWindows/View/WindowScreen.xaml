@@ -103,36 +103,32 @@
                     <ColumnDefinition x:Name="LeftHeaderColumn" Width="250"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                <Button Panel.ZIndex="5" Width="10" Height="30" Grid.Column="0" HorizontalAlignment="Right" Margin="0,0,-10,0" Style="{StaticResource MaterialDesignOutlinedButton}" Click="LeftHeader_Click">
-                    <Button.Template>
-                        <ControlTemplate>
-                            <Border CornerRadius="0" Background="Transparent" BorderThickness="0.5" BorderBrush="#AFAFAF">
-                            </Border>
-                        </ControlTemplate>
-                    </Button.Template>
-                </Button>
-                <Border Name="LeftHeader" BorderBrush="#AFAFAF" BorderThickness="0,0,0,0">
+                <!--<Button Panel.ZIndex="5" Width="20" Height="25"  BorderThickness="0,1,1,1" BorderBrush="Transparent" Padding="0" HorizontalContentAlignment="Left" Grid.Column="0" HorizontalAlignment="Right" Margin="0,0,-20,0" Style="{StaticResource MaterialDesignOutlinedButton}" Click="LeftHeader_Click">
+                    <materialDesign:PackIcon Width="20" Height="20"  Kind="ChevronDoubleLeft" Padding="0" Foreground="{DynamicResource MaterialHueMidBrush}"></materialDesign:PackIcon>
+                </Button>-->
+                <Border Name="LeftHeader" BorderBrush="#AFAFAF"  BorderThickness="0,0,0,0">
                     <Border.Background>
                         <SolidColorBrush Color="#3F000000" Opacity="1" ></SolidColorBrush>
                     </Border.Background>
                     <Grid>
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="45"></RowDefinition>
-                            <RowDefinition Height="45"></RowDefinition>
+                            <RowDefinition Height="50"></RowDefinition>
+                            <RowDefinition Height="50"></RowDefinition>
                             <RowDefinition Height="*"></RowDefinition>
-                            <RowDefinition Height="70"></RowDefinition>
+                            <RowDefinition Height="50"></RowDefinition>
+                            <RowDefinition Height="50"></RowDefinition>
                         </Grid.RowDefinitions>
-                            <Grid Grid.Row="0" Margin="5" >
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="40"/>
-                            </Grid.ColumnDefinitions>
-                            <Button Click="ReturnHome_Click" Grid.Column="0" Style="{StaticResource MaterialDesignFlatButton}" HorizontalContentAlignment="Left" Margin="2">HOME</Button>
-                            <Button Grid.Column="1" Padding="0" Style="{StaticResource MaterialDesignFlatButton}" Width="32" Height="32">
-                                <materialDesign:PackIcon Kind="ViewGrid" Width="32" Height="32" ></materialDesign:PackIcon>
-                            </Button>
-                        </Grid>
-                        <Button  Grid.Row="1" Margin="5" Style="{StaticResource MaterialDesignFlatButton}" HorizontalContentAlignment="Left" >ALL LIST</Button>
+                        <Button Click="ReturnHome_Click" materialDesign:ButtonAssist.CornerRadius="0" Grid.Row="1" Padding="12" Height="50" Style="{StaticResource MaterialDesignFlatButton}" HorizontalContentAlignment="Left">
+                            <VirtualizingStackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                <materialDesign:PackIcon Kind="Home" VerticalAlignment="Center" Width="24" Height="24"></materialDesign:PackIcon>
+                                <TextBlock VerticalAlignment="Center" Margin="12,0">Home</TextBlock>
+                            </VirtualizingStackPanel>
+                        </Button>
+
+                        <Button  Name="btnExpandLeftHeader" materialDesign:ButtonAssist.CornerRadius="0" Grid.Row="0" Padding="12" Width="50" Height="50" HorizontalAlignment="Left" Style="{StaticResource MaterialDesignFlatButton}" Click="LeftHeader_Click">
+                            <materialDesign:PackIcon Kind="Menu" Width="24" Height="24" ></materialDesign:PackIcon>
+                        </Button>
+                        <!--<Button  Grid.Row="1" Margin="5" Style="{StaticResource MaterialDesignFlatButton}" HorizontalContentAlignment="Left" >ALL LIST</Button>-->
                         <Grid Grid.Row="2" VerticalAlignment="Stretch">
                             <TreeView Style="{StaticResource MaterialDesignTreeView}" Name="TreeView_BookList" Grid.RowSpan="1" FontSize="10" Padding="0" Margin="0" ScrollViewer.HorizontalScrollBarVisibility="Disabled" SelectedItemChanged="Book_Click">
                                 <TreeView.ItemContainerStyle>
@@ -150,33 +146,23 @@
                                 </TreeView.ItemContainerStyle>
                                 <TreeView.ItemTemplate>
                                     <HierarchicalDataTemplate ItemsSource="{Binding Items}">
-                                        <TextBlock Margin="0,0,0,0" Text="{Binding Title}"  TextTrimming="CharacterEllipsis"  Foreground="{DynamicResource PrimaryHueMidBrush}"/>
+                                        <TextBlock Margin="0,0,0,0" Text="{Binding Title}"  TextTrimming="CharacterEllipsis"  Foreground="{DynamicResource MaterialDesignBody}"/>
                                     </HierarchicalDataTemplate>
                                 </TreeView.ItemTemplate>
                             </TreeView>
                         </Grid>
-
-
-                        <VirtualizingStackPanel Grid.Row="3" Margin="5">
-                            <Button  Style="{StaticResource MaterialDesignFlatButton}" VerticalAlignment="Bottom" HorizontalContentAlignment="Left" Click="Settings_Click">
-                           
-                                <VirtualizingStackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                    <materialDesign:PackIcon Kind="Settings" VerticalAlignment="Center"></materialDesign:PackIcon>
-                                    <TextBlock VerticalAlignment="Center" Margin="10,0">Settings</TextBlock>
-                                </VirtualizingStackPanel>
-                                
-                            
-                            </Button>
-                            <Button  Style="{StaticResource MaterialDesignFlatButton}" VerticalAlignment="Bottom" HorizontalContentAlignment="Left" >
-
-                                
-                                <VirtualizingStackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                    <materialDesign:PackIcon Kind="About" VerticalAlignment="Center"></materialDesign:PackIcon>
-                                    <TextBlock VerticalAlignment="Center" Margin="10,0">About</TextBlock>
-                                </VirtualizingStackPanel>
-
-                            </Button>
-                        </VirtualizingStackPanel>
+                        <Button Grid.Row="3" Height="50" materialDesign:ButtonAssist.CornerRadius="0"  Padding="14"  Style="{StaticResource MaterialDesignFlatButton}" VerticalAlignment="Bottom" HorizontalContentAlignment="Left" Click="Settings_Click">
+                            <VirtualizingStackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                <materialDesign:PackIcon Kind="Settings" VerticalAlignment="Center" VerticalContentAlignment="Center" HorizontalAlignment="Center" Width="20" Height="20"></materialDesign:PackIcon>
+                                <TextBlock VerticalAlignment="Center" Margin="12,0">Settings</TextBlock>
+                            </VirtualizingStackPanel>
+                        </Button>
+                        <Button Grid.Row="4" Height="50" materialDesign:ButtonAssist.CornerRadius="0"  Padding="14"  Style="{StaticResource MaterialDesignFlatButton}" VerticalAlignment="Bottom" HorizontalContentAlignment="Left" Click="About_Click">
+                            <VirtualizingStackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                <materialDesign:PackIcon Kind="About" VerticalAlignment="Center" Width="20" Height="20"></materialDesign:PackIcon>
+                                <TextBlock VerticalAlignment="Center" Margin="12,0" >About</TextBlock>
+                            </VirtualizingStackPanel>
+                        </Button>
                         <!--<ListBox Name="lbTodoList" HorizontalContentAlignment="Stretch">
                                 <ListBox.ContextMenu>
                                     <ContextMenu>

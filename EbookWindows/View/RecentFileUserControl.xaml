@@ -42,8 +42,8 @@
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal">
                             <Image DockPanel.Dock="Left" Source="{Binding fileIcon, Converter={StaticResource converter}}"  Width="32" Height="32"/>
-                            <TextBlock DockPanel.Dock="Left" Grid.Column="0" Text="{Binding fileName}" Margin="5,0,0,0" HorizontalAlignment="Stretch"  VerticalAlignment="Center" FontWeight="Bold"
-                                                Foreground="{DynamicResource MaterialDesignPaper}" TextWrapping="Wrap" TextTrimming="CharacterEllipsis"  ToolTip="{Binding fileName}"/>
+                            <TextBlock DockPanel.Dock="Left" Grid.Column="0" Style="{DynamicResource MaterialDesignBody1TextBlock}" Text="{Binding fileName}" Margin="5,0,0,0" HorizontalAlignment="Stretch"  VerticalAlignment="Center" FontWeight="Bold"
+                                                 TextWrapping="Wrap" TextTrimming="CharacterEllipsis"  ToolTip="{Binding fileName}"/>
                         </StackPanel>
                     </DataTemplate>
                 </ListView.ItemTemplate>

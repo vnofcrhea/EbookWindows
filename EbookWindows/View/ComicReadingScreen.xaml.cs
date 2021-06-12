@@ -185,11 +185,10 @@ namespace EbookWindows.Screen
                 x.IsEnabled = false;
             else { x.IsEnabled = true; }
         }
-
         private void ZoomIn_Click(object sender, RoutedEventArgs e)
         {
             var x = (sender as Button);
-            Scaling_Rate += 0.25;
+            Scaling_Rate += 0.1;
             ZoomOut_Button.IsEnabled = true;
             if (Scaling_Rate == 2)
             {
@@ -203,14 +202,12 @@ namespace EbookWindows.Screen
             Content_Box_Scaling.ScaleY = Scaling_Rate;
             zoomTextbox.Text = (Scaling_Rate * 100).ToString() + '%';
         }
-
-
         private void ZoomOut_Click(object sender, RoutedEventArgs e)
         {
             var x = (sender as Button);
-            Scaling_Rate -= 0.25;
+            Scaling_Rate -= 0.1;
             ZoomIn_Button.IsEnabled = true;
-            if (Scaling_Rate == 0.25)
+            if (Scaling_Rate == 0.3)
             {
                 x.IsEnabled = false;
             }
