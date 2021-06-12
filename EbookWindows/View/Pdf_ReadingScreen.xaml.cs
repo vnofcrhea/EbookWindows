@@ -73,8 +73,7 @@ namespace EbookWindows.Screen
         public bool LoadData(string filePath, int location) //Load data here
         {
             bool hasPassword = false;
-            var passwordScreen = new PasswordScreen();
-
+            
             this.filePath = filePath;
             recentLocation = location;
             file = new FileStream(filePath, FileMode.Open, FileAccess.Read);
@@ -95,6 +94,7 @@ namespace EbookWindows.Screen
             if (hasPassword)
             {
                 //A file has password
+                var passwordScreen = new PasswordScreen();
                 passwordScreen.EnterPasswordEvent += checkPassword;
                 passwordScreen.ShowDialog();
 
