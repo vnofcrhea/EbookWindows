@@ -129,27 +129,27 @@
                             <materialDesign:PackIcon Kind="Menu" Width="24" Height="24" ></materialDesign:PackIcon>
                         </Button>
                         <!--<Button  Grid.Row="1" Margin="5" Style="{StaticResource MaterialDesignFlatButton}" HorizontalContentAlignment="Left" >ALL LIST</Button>-->
-                        <Grid Grid.Row="2" VerticalAlignment="Stretch">
-                            <TreeView Style="{StaticResource MaterialDesignTreeView}" Name="TreeView_BookList" Grid.RowSpan="1" FontSize="10" Padding="0" Margin="0" ScrollViewer.HorizontalScrollBarVisibility="Disabled" SelectedItemChanged="Book_Click">
-                                <TreeView.ItemContainerStyle>
-                                    <Style TargetType="{x:Type TreeViewItem}" BasedOn="{StaticResource MaterialDesignTreeViewItem}" >
-                                        <Setter Property="IsExpanded" Value="True"/>
-                                        <Setter Property="Margin" Value="0"/>
-                                        <Setter Property="Padding" Value="5"/>
-                                        <Style.Triggers>
-                                            <Trigger Property="HasItems" Value="False">
-                                                <Setter Property="Margin" Value="-47,0,0,0"></Setter>
-                                            </Trigger>
-                                        </Style.Triggers>
-                                        
-                                    </Style>
-                                </TreeView.ItemContainerStyle>
-                                <TreeView.ItemTemplate>
-                                    <HierarchicalDataTemplate ItemsSource="{Binding Items}">
-                                        <TextBlock Margin="0,0,0,0" Text="{Binding Title}"  TextTrimming="CharacterEllipsis"  Foreground="{DynamicResource MaterialDesignBody}"/>
-                                    </HierarchicalDataTemplate>
-                                </TreeView.ItemTemplate>
-                            </TreeView>
+                        <Grid Name="BookListGrid" Grid.Row="2" VerticalAlignment="Stretch">
+                            <StackPanel>
+                                <TextBlock Style="{StaticResource MaterialDesignButtonTextBlock}" Margin="15,5,0,5" FontSize="12">Book Online</TextBlock>
+                                <ListView Style="{StaticResource MaterialDesignListView}" Name="TreeView_BookList" Grid.RowSpan="1" FontSize="10" Padding="0" Margin="0" ScrollViewer.HorizontalScrollBarVisibility="Disabled" SelectionChanged="Book_Click">
+                                    <ListView.ItemContainerStyle>
+                                        <Style TargetType="{x:Type ListViewItem}" BasedOn="{StaticResource MaterialDesignListBoxItem}" >
+                                            <Setter Property="Margin" Value="0"/>
+                                            <Setter Property="Padding" Value="5"/>
+                                            <Style.Triggers>
+                                            </Style.Triggers>
+
+                                        </Style>
+                                    </ListView.ItemContainerStyle>
+                                    <ListView.ItemTemplate>
+                                        <HierarchicalDataTemplate ItemsSource="{Binding Items}">
+                                            <TextBlock Margin="0,0,0,0" Text="{Binding Title}"  TextTrimming="CharacterEllipsis"  Foreground="{DynamicResource MaterialDesignBody}"/>
+                                        </HierarchicalDataTemplate>
+                                    </ListView.ItemTemplate>
+                                </ListView>
+                            </StackPanel>
+
                         </Grid>
                         <Button Grid.Row="3" Height="50" materialDesign:ButtonAssist.CornerRadius="0"  Padding="14"  Style="{StaticResource MaterialDesignFlatButton}" VerticalAlignment="Bottom" HorizontalContentAlignment="Left" Click="Settings_Click">
                             <VirtualizingStackPanel Orientation="Horizontal" VerticalAlignment="Center">

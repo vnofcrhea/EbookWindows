@@ -286,12 +286,12 @@ namespace EbookWindows.Screen
         {
             if (LeftHeaderColumn.Width.Value == 50)
             {
-                TreeView_BookList.Visibility = Visibility.Visible;
+                BookListGrid.Visibility = Visibility.Visible;
                 LeftHeaderColumn.Width = new GridLength(250, GridUnitType.Pixel);
             }
             else
             {
-                TreeView_BookList.Visibility = Visibility.Collapsed;
+                BookListGrid.Visibility = Visibility.Collapsed;
                 LeftHeaderColumn.Width = new GridLength(50, GridUnitType.Pixel);
             }
         }
@@ -308,11 +308,11 @@ namespace EbookWindows.Screen
                 this.Dispatcher.Invoke(() =>
             {
                 App.Global.Book_TreeView.Clear();
-                Book_Short_TreeView ChildTree = new Book_Short_TreeView() { Title = "BOOK_CONTENTS" };
-                ChildTree.Items.AddRange(App.Global.Book_Short_ViewModel.Book_Short);
-                App.Global.Book_TreeView.Add(ChildTree);
-                TreeView_BookList.ItemsSource = null;
-                TreeView_BookList.ItemsSource = App.Global.Book_TreeView;
+                //Book_Short_TreeView ChildTree = new Book_Short_TreeView() { Title = "BOOK_CONTENTS" };
+                //ChildTree.Items.AddRange(App.Global.Book_Short_ViewModel.Book_Short);
+                //App.Global.Book_TreeView.Add(ChildTree);
+                TreeView_BookList.ItemsSource = App.Global.Book_Short_ViewModel.Book_Short;
+                TreeView_BookList.Items.Refresh();
             });
             });
             
@@ -330,13 +330,39 @@ namespace EbookWindows.Screen
 
         private void Book_Click(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
-            if (!((sender as TreeView).SelectedItem is Book_Short item))
+            
+        }
+        public void ModifyFullscreenMode() // Wait fix
+        {
+            if (App.Global.isFullScreen)
+            {
+                this.MaxHeight = SystemParameters.MaximizedPrimaryScreenHeight;
+                RowHeaderSize.Height = new GridLength(30);
+            }
+            else
+            {
+                this.MaxHeight = double.PositiveInfinity;
+                RowHeaderSize.Height = new GridLength(0);
+            }
+            App.Global.isFullScreen = !App.Global.isFullScreen;
+        }
+
+        private void About_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Book_Click(object sender, SelectionChangedEventArgs e)
+        {
+            if (!((sender as ListView).SelectedItem is Book_Short item))
+                return;
+            else if ((sender as ListView).SelectedIndex < 0)
                 return;
             else
             {
                 OpenDetailScreen(item);
                 //var x = (sender as TreeView).ItemContainerGenerator.ContainerFromIndex
-                
+
                 var x = (((sender as TreeView).ItemContainerGenerator.ContainerFromIndex(0) as TreeViewItem).ItemContainerGenerator.ContainerFromItem((sender as TreeView).SelectedItem) as TreeViewItem);
                 x.IsSelected = false;
                 if (pdfReadingScreen.Visibility == Visibility.Visible)
@@ -359,25 +385,6 @@ namespace EbookWindows.Screen
                     //do nothing
                 }
             }
-        }
-        public void ModifyFullscreenMode() // Wait fix
-        {
-            if (App.Global.isFullScreen)
-            {
-                this.MaxHeight = SystemParameters.MaximizedPrimaryScreenHeight;
-                RowHeaderSize.Height = new GridLength(30);
-            }
-            else
-            {
-                this.MaxHeight = double.PositiveInfinity;
-                RowHeaderSize.Height = new GridLength(0);
-            }
-            App.Global.isFullScreen = !App.Global.isFullScreen;
-        }
-
-        private void About_Click(object sender, RoutedEventArgs e)
-        {
-
         }
     }
 }
