@@ -36,6 +36,7 @@ namespace EbookWindows.Screen
         public void LoadBook_ShortPanel()
         {
             this.Dispatcher.Invoke(() => {
+                this.DataContext = null;
                 this.DataContext = App.Global.Book_Short_ViewModel;
             });
         }

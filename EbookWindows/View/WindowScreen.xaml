@@ -10,8 +10,8 @@
         xmlns:material="clr-namespace:EbookWindows.Material"
         mc:Ignorable="d"
         Style="{StaticResource MaterialDesignWindow1}"
-        Title="Window1" Height="1000" Width="1500"  ResizeMode="CanResizeWithGrip"
-        WindowStyle="SingleBorderWindow"
+        Title="Window1" ResizeMode="CanResizeWithGrip"
+        WindowStyle="None"
         WindowState="Maximized"
         x:Name="MainWindowScreen"
         BorderThickness="0"
@@ -22,7 +22,7 @@
         <WindowChrome     
             CaptionHeight="1"  
             CornerRadius ="0"
-            ResizeBorderThickness="4"         
+            ResizeBorderThickness="2"         
             GlassFrameThickness="0">
         </WindowChrome>
     </WindowChrome.WindowChrome>
@@ -54,7 +54,7 @@
                     <!-- Add to avoid border disappearing when window is maximised -->
                     <DataTrigger Binding="{Binding WindowState, RelativeSource={RelativeSource AncestorType=Window}}" 
                                  Value="Maximized">
-                        <Setter Property="Margin" Value="8"/>
+                        <Setter Property="Margin" Value="7"/>
                     </DataTrigger>
                     <DataTrigger Binding="{Binding WindowState, RelativeSource={RelativeSource AncestorType=Window}}" 
                                  Value="Normal">
@@ -66,12 +66,12 @@
 
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="30"/>
+                <RowDefinition Name="RowHeaderSize" Height="30"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            <Border Grid.Row="0" Background="#3F000000">
+            <Border Grid.Row="0" Background="#3F000000" Name="HeaderApplication" Margin="0,0,-1,0" >
                 <Grid Grid.Row="0" MouseMove="DragStart" >
-                    <Label>EbookWindows</Label>
+                    <TextBlock VerticalAlignment="Center" Padding="5,0">EbookWindows</TextBlock>
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Right" Grid.RowSpan="2" Grid.Row="0">
                         <StackPanel.Resources>
                             <Style TargetType="{x:Type Button}" BasedOn="{StaticResource MaterialDesignFlatButton}">
@@ -83,9 +83,9 @@
                                 <Setter Property="Height" Value="30"/>
                             </Style>
                         </StackPanel.Resources>
-                        <Button Width="100">
+                        <!--<Button Width="100">
                             Login
-                        </Button>
+                        </Button>-->
                         <Button Click="Minimize">
                             <materialDesign:PackIcon Kind="WindowMinimize"  />
                         </Button>
@@ -98,7 +98,7 @@
                     </StackPanel>
                 </Grid>
             </Border>
-            <Grid Grid.Row="1" >
+            <Grid Name="MainPanel" Grid.Row="1">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition x:Name="LeftHeaderColumn" Width="250"/>
                     <ColumnDefinition Width="*"/>
@@ -120,7 +120,7 @@
                             <RowDefinition Height="45"></RowDefinition>
                             <RowDefinition Height="45"></RowDefinition>
                             <RowDefinition Height="*"></RowDefinition>
-                            <RowDefinition Height="45"></RowDefinition>
+                            <RowDefinition Height="70"></RowDefinition>
                         </Grid.RowDefinitions>
                             <Grid Grid.Row="0" Margin="5" >
                             <Grid.ColumnDefinitions>
@@ -156,12 +156,27 @@
                             </TreeView>
                         </Grid>
 
-                        <Button Grid.Row="3" Margin="5" Style="{StaticResource MaterialDesignFlatButton}" VerticalAlignment="Bottom" HorizontalContentAlignment="Left" Click="Settings_Click">
-                            <VirtualizingStackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                <materialDesign:PackIcon Kind="Settings" VerticalAlignment="Center"></materialDesign:PackIcon>
-                                <TextBlock VerticalAlignment="Center" Margin="10,0">Settings</TextBlock>
-                            </VirtualizingStackPanel>
-                        </Button>
+
+                        <VirtualizingStackPanel Grid.Row="3" Margin="5">
+                            <Button  Style="{StaticResource MaterialDesignFlatButton}" VerticalAlignment="Bottom" HorizontalContentAlignment="Left" Click="Settings_Click">
+                           
+                                <VirtualizingStackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                    <materialDesign:PackIcon Kind="Settings" VerticalAlignment="Center"></materialDesign:PackIcon>
+                                    <TextBlock VerticalAlignment="Center" Margin="10,0">Settings</TextBlock>
+                                </VirtualizingStackPanel>
+                                
+                            
+                            </Button>
+                            <Button  Style="{StaticResource MaterialDesignFlatButton}" VerticalAlignment="Bottom" HorizontalContentAlignment="Left" >
+
+                                
+                                <VirtualizingStackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                    <materialDesign:PackIcon Kind="About" VerticalAlignment="Center"></materialDesign:PackIcon>
+                                    <TextBlock VerticalAlignment="Center" Margin="10,0">About</TextBlock>
+                                </VirtualizingStackPanel>
+
+                            </Button>
+                        </VirtualizingStackPanel>
                         <!--<ListBox Name="lbTodoList" HorizontalContentAlignment="Stretch">
                                 <ListBox.ContextMenu>
                                     <ContextMenu>
@@ -221,13 +236,13 @@
                 <local:Pdf_ReadingScreen Grid.Column="1" x:Name="pdfReadingScreen" Visibility="Collapsed"></local:Pdf_ReadingScreen>
                 <!--#endregion-->
 
-                <Grid Grid.Column="1" HorizontalAlignment="Right" Width="40" Visibility="Hidden">
-                    <!--Mờ viền trái, chưa fix được-->
+                <!--<Grid Grid.Column="1" HorizontalAlignment="Right" Width="40" Visibility="Hidden">
+                    --><!--Mờ viền trái, chưa fix được--><!--
                     <Grid.Background>
                         <LinearGradientBrush StartPoint="0,0" EndPoint="1,0" GradientStops="{StaticResource BlueBackgroundStops}" Opacity="0.5"/>
                     </Grid.Background>
 
-                </Grid>
+                </Grid>-->
             </Grid>
             <Grid Grid.Row="1" Background="#AF000000" Name="LoadingGrid"
                   Visibility="Collapsed">
@@ -243,7 +258,6 @@
                   Visibility="Collapsed">
                 <local:SettingsScreen x:Name="SettingsScreen"></local:SettingsScreen>
             </Grid>
-
         </Grid>
     </Border>
 </Window>

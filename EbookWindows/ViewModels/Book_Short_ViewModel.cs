@@ -11,12 +11,12 @@ namespace EbookWindows.ViewModels
 {
     public class Book_Short_ViewModel
     {
-        private IList<Book_Short> _List_Book_Short;
+        private List<Book_Short> _List_Book_Short;
         public Book_Short_ViewModel()
         {
             _List_Book_Short = new List<Book_Short>();
         }
-        public IList<Book_Short> Book_Short
+        public List<Book_Short> Book_Short
         {
             get { return _List_Book_Short; }
             set { _List_Book_Short = value; }
@@ -46,6 +46,7 @@ namespace EbookWindows.ViewModels
                         JsonSerializer serializer = new JsonSerializer();
                         Book root = (Book)serializer.Deserialize(file, typeof(Book));
                         _List_Book_Short.Add(new Book_Short() { Title = root.book_name, img_dir = item1 + "\\img.jpg", book_dir = item1 });
+
                     }
                 }
             }

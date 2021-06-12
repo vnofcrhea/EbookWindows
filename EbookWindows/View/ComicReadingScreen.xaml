@@ -9,7 +9,9 @@
         xmlns:local="clr-namespace:EbookWindows"
         mc:Ignorable="d"
              MinHeight="300"
-        MouseMove="StackPanel_MouseMove">
+        MouseMove="StackPanel_MouseMove"
+        PreviewKeyDown="UserControl_KeyDown"  
+             >
     <!--<Window.CommandBindings>
         <CommandBinding Command="Copy" Executed="OnCopy"/>
     </Window.CommandBindings>-->
@@ -102,8 +104,8 @@
                     <Button>
                         <materialDesign:PackIcon Kind="Forward"></materialDesign:PackIcon>
                     </Button>
-                    <Button Margin="0" >
-                        <materialDesign:PackIcon Kind="FullscreenExit" ></materialDesign:PackIcon>
+                    <Button Margin="0" Click="FullScreen_Click" >
+                        <materialDesign:PackIcon Name="btnKindFullScreen" Kind="FullscreenExit" ></materialDesign:PackIcon>
                     </Button>
                 </StackPanel>
             </Border>

@@ -8,8 +8,9 @@ using System.Threading.Tasks;
 
 namespace EbookWindows
 {
-    public partial class Global
+    public class Global
     {
+        public bool isFullScreen { get; set; }
         public string API_URL_Primary { get; set; }
         public string Book_Directory { get; set; }
         public List<Book_Short> List_Book_Short { get; set; }
@@ -32,6 +33,7 @@ namespace EbookWindows
             Book_ViewModel = new Book_ViewModel();
             Chapter_ViewModel = new Chapter_ViewModel();
             Book_TreeView = new List<Book_Short_TreeView>();
+            isFullScreen = false;
         }
     }
 }

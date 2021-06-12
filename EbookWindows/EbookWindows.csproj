@@ -106,7 +106,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Global.cs" />
-    <Compile Include="Material\AlignableWrapPanel .cs" />
+    <Compile Include="Material\AlignableWrapPanel.cs" />
     <Compile Include="Model\Book.cs" />
     <Compile Include="Model\Book_Short.cs" />
     <Compile Include="Model\Chapter.cs" />

@@ -55,8 +55,8 @@ namespace EbookWindows.Screen
                 Chapter_List.SelectedValue = App.Global.Chapter_ViewModel.Current_Chapter.link;
                 WindowScreen win = (WindowScreen)Window.GetWindow(this);
                 Content_Box.MaxWidth = (win.ActualWidth - win.LeftHeader.ActualWidth);
+                
             });
-            
         }
         public void Load_DataContext() //Load/Reload DataContext
         {
@@ -251,5 +251,26 @@ namespace EbookWindows.Screen
 
         private void DarkModeChecker_Click(object sender, RoutedEventArgs e)
          => ModifyTheme(DarkModeToggleButton.IsChecked == true);
+
+        private void UserControl_KeyDown(object sender, KeyEventArgs e)
+        {
+            switch (e.Key)
+            {
+                case Key.Down:
+                    scrollContent_Box.ScrollToVerticalOffset(scrollContent_Box.VerticalOffset +20);
+                    break;
+                case Key.Up:
+                    scrollContent_Box.ScrollToVerticalOffset(scrollContent_Box.VerticalOffset - 20);
+                    break;
+            }
+        }
+        private void ModifyFullScreenMode()
+        {
+            ((WindowScreen)Window.GetWindow(this)).ModifyFullscreenMode();
+            btnKindFullScreen.Kind = App.Global.isFullScreen ? MaterialDesignThemes.Wpf.PackIconKind.FullscreenExit : MaterialDesignThemes.Wpf.PackIconKind.Fullscreen;
+        }
+
+        private void FullScreen_Click(object sender, RoutedEventArgs e)
+        => ModifyFullScreenMode();
     }
 }

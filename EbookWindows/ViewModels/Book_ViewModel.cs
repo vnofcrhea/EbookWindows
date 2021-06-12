@@ -149,6 +149,24 @@ namespace EbookWindows.ViewModels
             get { return _Book.chapter_link; }
             set { _Book.chapter_link = value; }
         }
+
+        public void RemoveOutOfLibrary()
+        {
+            try
+            {
+                //Directory.Delete(App.Global.Book_Directory); //xóa thư mục.
+                //App.Global.Book_Short_ViewModel.Book_Short.RemoveAt(0);
+
+                App.Global.Book_Short_ViewModel.Book_Short.RemoveAll(e => e.book_dir == App.Global.Book_Directory );
+                App.Global.Book_TreeView[0].Items.RemoveAll(e => e.book_dir == App.Global.Book_Directory);
+            }
+            catch
+            {
+                // do nothing
+            }
+            
+        }
         #endregion
+
     }
 }

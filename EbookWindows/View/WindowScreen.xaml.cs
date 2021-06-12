@@ -140,9 +140,9 @@ namespace EbookWindows.Screen
             detailScreen.Visibility = Visibility.Collapsed;
             comicReadingScreen.Visibility = Visibility.Visible;
         }
-        public void LoadShelf()
+        public async void LoadShelf()
         {
-            BookTextShelf.LoadBook_ShortPanel();
+            await Task.Run(()=> BookTextShelf.LoadBook_ShortPanel());
         }
         /// <summary>
         /// return home screen when press homebutton
@@ -151,8 +151,6 @@ namespace EbookWindows.Screen
         /// <param name="e"></param>
         private void ReturnHome_Click(object sender, RoutedEventArgs e)
         {
-            if(MainGrid.Visibility != Visibility.Visible)
-            {
                 MainGrid.Visibility = Visibility.Visible;
                 if (detailScreen.Visibility == Visibility.Visible)
                 {
@@ -179,11 +177,6 @@ namespace EbookWindows.Screen
                 {
                     //do nothing
                 }
-            }
-            else
-            {
-                //do nothing
-            }
 
 
         }
@@ -292,13 +285,22 @@ namespace EbookWindows.Screen
 
         }
 
-        public void LoadTreeViewList()
+        public async void LoadTreeViewList()
         {
-            App.Global.Book_TreeView.Clear();
-            Book_Short_TreeView ChildTree = new Book_Short_TreeView() { Title = "BOOK_CONTENTS" };
-            ChildTree.Items.AddRange(App.Global.Book_Short_ViewModel.Book_Short.ToList());
-            App.Global.Book_TreeView.Add(ChildTree);
-            TreeView_BookList.ItemsSource = App.Global.Book_TreeView;
+            await Task.Run(() =>
+            {
+                this.Dispatcher.Invoke(() =>
+            {
+                App.Global.Book_TreeView.Clear();
+                Book_Short_TreeView ChildTree = new Book_Short_TreeView() { Title = "BOOK_CONTENTS" };
+                ChildTree.Items.AddRange(App.Global.Book_Short_ViewModel.Book_Short);
+                App.Global.Book_TreeView.Add(ChildTree);
+                TreeView_BookList.ItemsSource = null;
+                TreeView_BookList.ItemsSource = App.Global.Book_TreeView;
+            });
+            });
+            
+            
         }
 
         private void Settings_Click(object sender, RoutedEventArgs e)
@@ -321,7 +323,40 @@ namespace EbookWindows.Screen
                 
                 var x = (((sender as TreeView).ItemContainerGenerator.ContainerFromIndex(0) as TreeViewItem).ItemContainerGenerator.ContainerFromItem((sender as TreeView).SelectedItem) as TreeViewItem);
                 x.IsSelected = false;
+                if (pdfReadingScreen.Visibility == Visibility.Visible)
+                {
+                    pdfReadingScreen.homeBtn_Click(sender, e);
+                    return;
+                }
+                else if (epubReadingScreen.Visibility == Visibility.Visible)
+                {
+                    epubReadingScreen.Visibility = Visibility.Collapsed;
+                    return;
+                }
+                else if (comicReadingScreen.Visibility == Visibility.Visible)
+                {
+                    comicReadingScreen.Visibility = Visibility.Collapsed;
+                    return;
+                }
+                else
+                {
+                    //do nothing
+                }
             }
+        }
+        public void ModifyFullscreenMode() // Wait fix
+        {
+            if (App.Global.isFullScreen)
+            {
+                this.MaxHeight = SystemParameters.MaximizedPrimaryScreenHeight;
+                RowHeaderSize.Height = new GridLength(30);
+            }
+            else
+            {
+                this.MaxHeight = double.PositiveInfinity;
+                RowHeaderSize.Height = new GridLength(0);
+            }
+            App.Global.isFullScreen = !App.Global.isFullScreen;
         }
     }
 }
