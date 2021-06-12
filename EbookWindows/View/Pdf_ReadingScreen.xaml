@@ -8,7 +8,7 @@
             xmlns:materialDesignConverters="clr-namespace:MaterialDesignThemes.Wpf.Converters;assembly=MaterialDesignThemes.Wpf"       
             xmlns:local="clr-namespace:EbookWindows.Screen"         
             mc:Ignorable="d" 
-  
+
             d:DesignHeight="450" d:DesignWidth="800" >
     <UserControl.Resources>
         <ResourceDictionary>
@@ -25,11 +25,11 @@
             <materialDesignConverters:BooleanToVisibilityConverter x:Key="InvertedBooleanToVisibilityConverter" TrueValue="Collapsed" FalseValue="Visible" />
         </ResourceDictionary>
     </UserControl.Resources>
-    <Grid Name="MainGrid">
+    <Grid Name="MainGrid" >
         <Grid Margin="0">
             <!--Content of book-->
-            <ScrollViewer Name="PageScroller"  ScrollViewer.CanContentScroll="True"   ScrollChanged="PageScroller_Changed"             
-                       ScrollViewer.HorizontalScrollBarVisibility="Auto"
+            <ScrollViewer Name="PageScroller"  ScrollViewer.CanContentScroll="True"  ScrollChanged="PageScroller_Changed"             
+                       ScrollViewer.HorizontalScrollBarVisibility="auto"
                        ScrollViewer.VerticalScrollBarVisibility="Visible">
                 <Canvas Name="PageCanvas" VerticalAlignment="Center" HorizontalAlignment="Center">
                     <Canvas.RenderTransform>
@@ -41,8 +41,9 @@
 
 
             <!--Customize toolbar-->
-            <Border  Name="TopPanelTool" Margin="0,5,0,0" HorizontalAlignment="Center" VerticalAlignment="Top" BorderThickness="1" BorderBrush="{DynamicResource PrimaryHueMidBrush}" CornerRadius="5">
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Background="#FF343232">
+            <Border  Name="TopPanelTool" Margin="0,5,0,0"  HorizontalAlignment="Center" BorderBrush="Transparent" VerticalAlignment="Top" BorderThickness="1"  CornerRadius="5"
+                      MouseEnter="toolBar_MouseEnter" MouseLeave="toolBar_MouseLeave">
+                <StackPanel x:Name="TopStackPanel" Orientation="Horizontal" HorizontalAlignment="Center" Background="#FF343232">
                     <StackPanel.Resources>
                         <Style TargetType="{x:Type Button}" BasedOn="{StaticResource MaterialDesignFlatButton}">
                             <Setter Property="Margin" Value="0,0,0,0"/>
@@ -82,12 +83,10 @@
                 <materialDesign:PackIcon Kind="Eye" ></materialDesign:PackIcon>
             </Button>
 
-
-
-
             <!--Paging book toolbar-->
-            <Border  Name="BottomPanelTool" Margin="0,0,0,15" HorizontalAlignment="Center" VerticalAlignment="Bottom" BorderThickness="1" BorderBrush="{DynamicResource PrimaryHueMidBrush}" CornerRadius="5">
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Background="#FF343232">
+            <Border  Name="BottomPanelTool" Margin="0,0,0,15" HorizontalAlignment="Center"  BorderBrush="Transparent" VerticalAlignment="Bottom" BorderThickness="1"  CornerRadius="5"
+                     MouseEnter="toolBar_MouseEnter" MouseLeave="toolBar_MouseLeave">
+                <StackPanel x:Name="BottomStackPanel" Orientation="Horizontal" HorizontalAlignment="Center" Background="#FF343232">
                     <StackPanel.Resources>
                         <Style TargetType="{x:Type Button}" BasedOn="{StaticResource MaterialDesignFlatButton}">
                             <Setter Property="Margin" Value="0,0,0,0"/>
@@ -106,7 +105,7 @@
                     </Button>
 
                     <ComboBox Name="PageConboBox" materialDesign:ComboBoxAssist.ClassicMode="True" BorderThickness="0"
-                              HorizontalContentAlignment="Center"                        
+                              HorizontalContentAlignment="Center"                  
                               Width="100" Padding="5" BorderBrush="{DynamicResource PrimaryHueMidBrush}"
                               ItemsSource="{Binding Pages}" SelectedItem="{Binding Page, Mode=TwoWay}" Foreground="#FFFFFF">
                         <ComboBox.ItemTemplate>
@@ -129,6 +128,8 @@
                     </Button>
                 </StackPanel>
             </Border>
+
+
             <!--bookmarks-->
             <Border HorizontalAlignment="Right" BorderThickness="1" x:Name="bookmarkBorder"
                     BorderBrush="{DynamicResource PrimaryHueMidBrush}" Visibility="Collapsed"
@@ -168,10 +169,8 @@
                                     </Grid>
                                 </DataTemplate>
                             </ListView.ItemTemplate>
-
                         </ListView>
                     </Grid>
-
                 </Grid>
             </Border>
         </Grid>

@@ -115,6 +115,9 @@
     <Compile Include="ViewModels\Book_ViewModel.cs" />
     <Compile Include="ViewModels\Chapter_ViewModel.cs" />
     <Compile Include="ViewModels\RecentFile_ViewModel.cs" />
+    <Compile Include="View\PasswordScreen.xaml.cs">
+      <DependentUpon>PasswordScreen.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ViewModels\Settings_ViewModel.cs" />
     <Compile Include="View\PopupEbookScreen.xaml.cs">
       <DependentUpon>PopupEbookScreen.xaml</DependentUpon>
@@ -146,6 +149,10 @@
     <Compile Include="ViewModels\Converter.cs" />
     <Compile Include="ViewModels\myEpubReader.cs" />
     <Compile Include="Model\pdfDocument.cs" />
+    <Page Include="View\PasswordScreen.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\PopupEbookScreen.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
