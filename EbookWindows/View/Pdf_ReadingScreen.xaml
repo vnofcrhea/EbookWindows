@@ -107,7 +107,6 @@
                     <ComboBox Name="PageConboBox" materialDesign:ComboBoxAssist.ClassicMode="True" BorderThickness="0"
                               HorizontalContentAlignment="Center"                  
                               Width="100" Padding="5" BorderBrush="{DynamicResource PrimaryHueMidBrush}"
-                              SelectionChanged="PageComboBox_SelectionChanged"
                               ItemsSource="{Binding Pages}" SelectedItem="{Binding Page, Mode=TwoWay}" Foreground="#FFFFFF">
                         <ComboBox.ItemTemplate>
                             <DataTemplate>

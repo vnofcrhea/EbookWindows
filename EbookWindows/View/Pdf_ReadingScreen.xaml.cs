@@ -74,6 +74,7 @@ namespace EbookWindows.Screen
         {
             bool hasPassword = false;
             this.document = new pdfDocument();
+            //this.DataContext = this.document;
             this.document.PropertyChanged += DocumentOnPropertyChanged;
             this.filePath = filePath;
             recentLocation = location;
@@ -113,11 +114,16 @@ namespace EbookWindows.Screen
         private void checkBookmark()
         {
             //int amount = pdfFile.Bookmarks.Count;
-            for(int i = 0; i< pdfFile.Bookmarks.Count; i++)
+            for(int i = 0; i< pdfFile.Bookmarks.Count; )
             {
                 if (pdfFile.Bookmarks[i].Destination == null)
                 {
                     pdfFile.Bookmarks.RemoveAt(i);
+
+                }
+                else
+                {
+                    i++;
                 }
                 
             }
@@ -451,7 +457,7 @@ namespace EbookWindows.Screen
                 int pageIndex = GetPageIndexFormTitle(pdfFile.Bookmarks[index].Title);
                 if (pageIndex == -1)
                 {
-                    pageIndex = pdfFile.Bookmarks[index].Destination.PageIndex;
+                    //pageIndex = pdfFile.Bookmarks[index].Destination.PageIndex;
                 }
                 document.Document.Navigator.GoToPage(pageIndex);
                 bookmarkListView.SelectedIndex = -1;
