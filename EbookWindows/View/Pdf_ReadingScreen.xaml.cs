@@ -86,6 +86,7 @@ namespace EbookWindows.Screen
                 Document document = new Document(file);
                 (this.document).Document = document;
                 pdfFile = new PdfLoadedDocument(filePath);
+                //checkBookmark();
                 bookmarkListView.ItemsSource = pdfFile.Bookmarks;
             }
             catch (Exception e)
@@ -108,6 +109,17 @@ namespace EbookWindows.Screen
             return true;
         }
 
+        private void checkBookmark()
+        {
+            foreach(PdfBookmark bookmark in pdfFile.Bookmarks)
+            {
+                if(bookmark.Destination == null)
+                {
+                    
+                }
+            }
+        }
+
         /// <summary>
         /// Check: Is password string valid?
         /// </summary>
@@ -122,6 +134,7 @@ namespace EbookWindows.Screen
                 Document document = new Document(file, passwordStr);
                 (this.document).Document = document;
                 pdfFile = new PdfLoadedDocument(filePath, passwordStr);
+                //checkBookmark();
                 bookmarkListView.ItemsSource = pdfFile.Bookmarks;
             }
             catch (Exception e)

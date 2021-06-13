@@ -15,7 +15,17 @@
             <Button Style="{StaticResource MaterialDesignFlatButton}" Padding="0" HorizontalAlignment="Right" Margin="4" Click="CloseSetting_Click">
                 <materialDesign:PackIcon Kind="Close" Width="30" Height="30"></materialDesign:PackIcon>
             </Button>
-            <TextBlock Style="{StaticResource MaterialDesignHeadline6TextBlock}" Margin="8,8,8,16" Text="Abouts" />
+            <TextBlock  Style="{DynamicResource MaterialDesignBody1TextBlock}" Margin="8,8,8,16" TextWrapping="WrapWithOverflow"
+                       >
+                Features:<LineBreak/>
+                Support reading epub, pdf book files<LineBreak/>
+                Support reading and storing books from the following free online reading websites: <LineBreak/>
+                <TabPanel></TabPanel>
+                 <Hyperlink Foreground="{DynamicResource PrimaryHueMidBrush}" FontSize="15" NavigateUri="https://truyen.tangthuvien.vn/" RequestNavigate="Hyperlink_RequestNavigate">
+                     Tàng Thư Viện
+                 </Hyperlink>
+                <LineBreak/>continue to update...
+            </TextBlock>
             
             
         </StackPanel>
