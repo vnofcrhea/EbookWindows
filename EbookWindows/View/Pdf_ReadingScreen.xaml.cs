@@ -74,7 +74,7 @@ namespace EbookWindows.Screen
         {
             bool hasPassword = false;
             this.document = new pdfDocument();
-            //this.DataContext = this.document;
+            this.DataContext = this.document;
             this.document.PropertyChanged += DocumentOnPropertyChanged;
             this.filePath = filePath;
             recentLocation = location;
@@ -88,7 +88,8 @@ namespace EbookWindows.Screen
                 (this.document).Document = document;
                 pdfFile = new PdfLoadedDocument(filePath);              
                 bookmarkListView.ItemsSource = pdfFile.Bookmarks;
-               
+                //this.DataContext = this.document;
+
             }
             catch (Exception e)
             {
@@ -108,6 +109,7 @@ namespace EbookWindows.Screen
                 return false;
             }
             checkBookmark();
+           // this.DataContext = this.document;
             return true;
         }
 
