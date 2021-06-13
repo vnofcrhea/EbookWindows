@@ -85,9 +85,9 @@ namespace EbookWindows.Screen
                 //A file doesn't has password
                 Document document = new Document(file);
                 (this.document).Document = document;
-                pdfFile = new PdfLoadedDocument(filePath);
-                //checkBookmark();
+                pdfFile = new PdfLoadedDocument(filePath);              
                 bookmarkListView.ItemsSource = pdfFile.Bookmarks;
+               
             }
             catch (Exception e)
             {
@@ -106,17 +106,20 @@ namespace EbookWindows.Screen
             {
                 return false;
             }
+            checkBookmark();
             return true;
         }
 
         private void checkBookmark()
         {
-            foreach(PdfBookmark bookmark in pdfFile.Bookmarks)
+            //int amount = pdfFile.Bookmarks.Count;
+            for(int i = 0; i< pdfFile.Bookmarks.Count; i++)
             {
-                if(bookmark.Destination == null)
+                if (pdfFile.Bookmarks[i].Destination == null)
                 {
-                    
+                    pdfFile.Bookmarks.RemoveAt(i);
                 }
+                
             }
         }
 
