@@ -521,12 +521,12 @@ namespace EbookWindows.Screen
 
         private void keyDown_Test(object sender, KeyEventArgs e)
         {
-            int index = PageConboBox.SelectedIndex;
+            //int index = PageConboBox.SelectedIndex;
             if (e.Key == Key.Right)
             {
-                PageConboBox.SelectedIndex = index + 1;
+                document.Document.Navigator.MoveForward();
             } else if(e.Key == Key.Left){
-                PageConboBox.SelectedIndex = index - 1;
+                document.Document.Navigator.MoveBackward();
             }
             
         }
@@ -551,20 +551,6 @@ namespace EbookWindows.Screen
             App.Global.RecentFile_ViewModel.Recent_File[0].recentLocation = index;
         }
 
-        //private void OkBtn_Click(object sender, RoutedEventArgs e)
-        //{
-
-        //}
-
-        //private void CancleBtn_Click(object sender, RoutedEventArgs e)
-        //{
-
-        //}
-
-        //private void CloseDialogBtn(object sender, RoutedEventArgs e)
-        //{
-
-        //    PasswordDialog.Visibility = Visibility.Hidden;
-        //}
+        
     }
 }
