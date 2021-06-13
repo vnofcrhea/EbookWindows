@@ -82,14 +82,11 @@ namespace EbookWindows.Screen
 
             try
             {
-
                 //A file doesn't has password
                 Document document = new Document(file);
                 (this.document).Document = document;
                 pdfFile = new PdfLoadedDocument(filePath);              
-                bookmarkListView.ItemsSource = pdfFile.Bookmarks;
-                //this.DataContext = this.document;
-
+                bookmarkListView.ItemsSource = pdfFile.Bookmarks;     
             }
             catch (Exception e)
             {
@@ -109,13 +106,12 @@ namespace EbookWindows.Screen
                 return false;
             }
             checkBookmark();
-           // this.DataContext = this.document;
             return true;
         }
 
         private void checkBookmark()
         {
-            //int amount = pdfFile.Bookmarks.Count;
+          
             for(int i = 0; i< pdfFile.Bookmarks.Count; )
             {
                 if (pdfFile.Bookmarks[i].Destination == null)
@@ -457,10 +453,10 @@ namespace EbookWindows.Screen
             if (index != -1)
             {
                 int pageIndex = GetPageIndexFormTitle(pdfFile.Bookmarks[index].Title);
-                if (pageIndex == -1)
-                {
-                    //pageIndex = pdfFile.Bookmarks[index].Destination.PageIndex;
-                }
+                //if (pageIndex == -1)
+                //{
+                //    pageIndex = pdfFile.Bookmarks[index].Destination.PageIndex;
+                //}
                 document.Document.Navigator.GoToPage(pageIndex);
                 bookmarkListView.SelectedIndex = -1;
             }

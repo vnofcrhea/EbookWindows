@@ -9,13 +9,38 @@
         xmlns:local="clr-namespace:EbookWindows.Screen"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"  VerticalAlignment="Center" HorizontalAlignment="Center">
-    <Grid Name="MainGrid" Background="{DynamicResource MaterialDesignPaper}">
+    <Grid Margin="0">
+        <Border VerticalAlignment="Bottom" BorderThickness="1" Margin="0"
+                 BorderBrush="{DynamicResource PrimaryHueMidBrush}" CornerRadius="4">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="30"/>
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
+                <Border  Grid.Row="0" Margin="0" BorderBrush="{DynamicResource PrimaryHueMidBrush}" CornerRadius="0"
+                          BorderThickness="0,0,0,1">
+                    <Grid Grid.Row="0" MouseMove="DragStart">
+                        <Label FontWeight="Bold">About</Label>
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Right" Grid.RowSpan="2" Grid.Row="0">
+                            <StackPanel.Resources>
+                                <Style TargetType="{x:Type Button}" BasedOn="{StaticResource MaterialDesignFlatButton}">
+                                    <Setter Property="Margin" Value="0,0,0,0"/>
+                                    <Setter Property="Padding" Value="0"/>
+                                    <Setter Property="VerticalContentAlignment" Value="Center"/>
+                                    <Setter Property="BorderThickness" Value="0"></Setter>
+                                    <Setter Property="Width" Value="40"/>
+                                    <Setter Property="Height" Value="30"/>
+                                </Style>
+                            </StackPanel.Resources>
+                            <Button Click="Close" >
+                                <materialDesign:PackIcon Kind="WindowClose" />
+                            </Button>
+                        </StackPanel>
 
-        <StackPanel>
-            <Button Style="{StaticResource MaterialDesignFlatButton}" Padding="0" HorizontalAlignment="Right" Margin="4" Click="CloseSetting_Click">
-                <materialDesign:PackIcon Kind="Close" Width="30" Height="30"></materialDesign:PackIcon>
-            </Button>
-            <TextBlock  Style="{DynamicResource MaterialDesignBody1TextBlock}" Margin="8,8,8,16" TextWrapping="WrapWithOverflow"
+                    </Grid>
+                </Border>
+                <Grid Grid.Row="1">
+                    <TextBlock  Style="{DynamicResource MaterialDesignBody1TextBlock}" Margin="8,8,8,16" TextWrapping="WrapWithOverflow"
                        >
                 Features:<LineBreak/>
                 Support reading epub, pdf book files<LineBreak/>
@@ -25,9 +50,10 @@
                      Tàng Thư Viện
                  </Hyperlink>
                 <LineBreak/>continue to update...
-            </TextBlock>
-            
-            
-        </StackPanel>
+                    </TextBlock>
+                </Grid>
+            </Grid>
+
+        </Border>
     </Grid>
 </UserControl>

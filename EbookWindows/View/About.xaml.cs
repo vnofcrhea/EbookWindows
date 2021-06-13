@@ -26,11 +26,6 @@ namespace EbookWindows.Screen
             InitializeComponent();
         }
 
-        private void CloseSetting_Click(object sender, RoutedEventArgs e)
-        {
-            (App.Current.MainWindow as WindowScreen).AboutClose();
-        }
-
         private void Hyperlink_RequestNavigate(object sender, RequestNavigateEventArgs e)
         {
             //MessageBox.Show("Mở browser đê");
@@ -38,6 +33,16 @@ namespace EbookWindows.Screen
             // see https://docs.microsoft.com/dotnet/api/system.diagnostics.processstartinfo.useshellexecute#property-value
             Process.Start(new ProcessStartInfo(e.Uri.AbsoluteUri));
             e.Handled = true;
+        }
+
+        private void DragStart(object sender, MouseEventArgs e)
+        {
+
+        }
+
+        private void Close(object sender, RoutedEventArgs e)
+        {
+            (App.Current.MainWindow as WindowScreen).AboutClose();
         }
     }
 }
