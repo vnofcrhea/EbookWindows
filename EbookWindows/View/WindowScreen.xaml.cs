@@ -127,9 +127,17 @@ namespace EbookWindows.Screen
         public async void OpenDetailScreen(string url)
         {
             StartLoading();
-            await Task.Run(() => detailScreen.LoadData(url));
-            MainGrid.Visibility = Visibility.Collapsed;
-            detailScreen.Visibility = Visibility.Visible;
+            var x= await Task.Run(() => detailScreen.LoadData(url));
+            if (x)
+            {
+
+                MainGrid.Visibility = Visibility.Collapsed;
+                detailScreen.Visibility = Visibility.Visible;
+            }    
+            else
+            {
+                MessageBox.Show("Đường đẫn không hợp lệ hoặc không hỗ trợ.");
+            }    
             EndLoading();
         }
 

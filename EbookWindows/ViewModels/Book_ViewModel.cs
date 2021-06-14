@@ -91,13 +91,18 @@ namespace EbookWindows.ViewModels
                 Save_Bookmark();
             }
         }
-        public void LoadData(string url) //Load data online here
+        public bool LoadData(string url) //Load data online here
         {
             _Bookmark_Chapters_Index.Clear();
             try
             {
-                var json = new WebClient().DownloadString(App.Global.API_URL_Primary + "/api/books?url=" + url);
-                _Book = JsonConvert.DeserializeObject<Book>(json);
+                using (var web = new WebClient())
+                {
+                    var json = web.DownloadString(App.Global.API_URL_Primary + "/api/books?url=" + url);
+                    if (json == "Error: Invalid books source.")
+                        return false;
+                    _Book = JsonConvert.DeserializeObject<Book>(json);
+                }
                 if (_Book.season_name.Count == 0)
                 {
                     _Book.season_name.Add("Quyển 1");
@@ -107,8 +112,9 @@ namespace EbookWindows.ViewModels
             }
             catch
             {
-
+                return false;
             }
+            return true;
         }
 
         public void Download_Content()

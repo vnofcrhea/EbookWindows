@@ -63,9 +63,10 @@ namespace EbookWindows.Screen
         }
         #region Loading Data Online 
 
-        public void LoadData(string url) //Load data online here
+        public bool LoadData(string url) //Load data online here
         {
-            App.Global.Book_ViewModel.LoadData(url);
+            if(!App.Global.Book_ViewModel.LoadData(url))
+                return false;
             #region //Xác định số trang
             page_numbers = App.Global.Book_ViewModel.bookTotalChapter / chapter_limit + 1;
             page_index = 1;
@@ -85,7 +86,7 @@ namespace EbookWindows.Screen
                 LoadPaging(page_index);
                 PagePanelReload();
             });
-
+            return true;
         }
 
 
