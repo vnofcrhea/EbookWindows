@@ -19,4 +19,9 @@ namespace EbookWindows.Model
         public List<string> season_name { get; set; }
         public List<int> season_index { get; set; }
     }
+    public class Bookmark_Chapter
+    {
+        public int chapter_index;
+        public double vertical_offset;
+    }
 }

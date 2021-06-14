@@ -29,7 +29,6 @@ namespace EbookWindows.Screen
         private TimeSpan SpanTime;
         public bool isOnline = true;
         public double Scaling_Rate = 1;
-
         public ComicReadingScreen()
         {
             InitializeComponent();
@@ -269,5 +268,10 @@ namespace EbookWindows.Screen
 
         private void FullScreen_Click(object sender, RoutedEventArgs e)
         => ModifyFullScreenMode();
+
+        private void scrollContent_Box_ScrollChanged(object sender, ScrollChangedEventArgs e)
+        {
+                
+        }
     }
 }

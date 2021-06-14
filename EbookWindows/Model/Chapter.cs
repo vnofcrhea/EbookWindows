@@ -17,6 +17,7 @@ namespace EbookWindows.Model
 
         public string Title { get; set; }
         public string link { get; set; }
+        public bool isReaded { get; set; }
         public ObservableCollection<Chapter> Items { get; set; }
     }    // Root myDeserializedClass = JsonConvert.DeserializeObject<Root>(myJsonResponse); 
 }

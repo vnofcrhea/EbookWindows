@@ -15,9 +15,7 @@ namespace EbookWindows
         public string Book_Directory { get; set; }
         public List<Book_Short> List_Book_Short { get; set; }
         public Book_Short_ViewModel Book_Short_ViewModel { get; set; }
-        public bool IsBookDownloaded { get; set; }
-        public bool IsBookContentDownloaded { get; set; }
-        public bool IsChapterDowwnloaded { get; set; }
+        
         public Book_ViewModel Book_ViewModel { get; set; }
         public Chapter_ViewModel Chapter_ViewModel { get; set; }
         public Settings_ViewModel Settings_ViewModel { get; set; }

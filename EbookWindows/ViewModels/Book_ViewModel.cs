@@ -14,24 +14,101 @@ namespace EbookWindows.ViewModels
     public class Book_ViewModel
     {
         private Book _Book;
+        private List<int> _Bookmark_Chapters_Index = new List<int>();
+        private bool _IsBookDownloaded = false;
+        private bool _IsBookContentDownloaded;
+        private bool _IsChapterDownloaded;
         public Book_ViewModel()
         {
             _Book = new Book();
         }
+        public List<int> Bookmark_Chapters
+        {
+            get { return _Bookmark_Chapters_Index; }
+            set { _Bookmark_Chapters_Index = value; }
+        }
         public void LoadData(Book_Short item) //Load data offine here
         {
             App.Global.Book_Directory = item.book_dir;
-            using (StreamReader file = File.OpenText(item.book_dir + "\\detail.json"))
+            try
             {
-                JsonSerializer serializer = new JsonSerializer();
-                _Book = (Book)serializer.Deserialize(file, typeof(Book));
+                using (StreamReader file = File.OpenText(item.book_dir + "\\detail.json"))
+                {
+                    JsonSerializer serializer = new JsonSerializer();
+                    _Book = (Book)serializer.Deserialize(file, typeof(Book));
+                    if(_Book.season_name.Count ==0)
+                    {
+                        _Book.season_name.Add("Quyển 1");
+                        _Book.season_index.Add(0);
+                    }    
+                    _IsBookDownloaded = true;
+                }
+                
+            }
+            catch
+            {
+
+            }
+            try
+            {
+                using (StreamReader file = File.OpenText(item.book_dir + "\\Bookmarks.json"))
+                {
+                    JsonSerializer serializer = new JsonSerializer();
+                    _Bookmark_Chapters_Index = (List<int>)serializer.Deserialize(file, typeof(List<int>));
+                }
+            }
+            catch
+            {
+
             }
         }
-
+        public void Save_Bookmark()
+        {
+            if (!_IsBookDownloaded)
+                return;
+            var path_data = App.Global.Book_Directory;
+            #region create path. 
+            if (!Directory.Exists(path_data))
+            {
+                Directory.CreateDirectory(path_data);
+            }
+            #endregion
+            File.WriteAllText(path_data + "\\" + "Bookmarks.json", JsonConvert.SerializeObject(_Bookmark_Chapters_Index));
+        }
+        public void Update_ChapterOpened(Chapter chapter)
+        {
+            if (!_IsBookDownloaded)
+                return;
+            var index = _Book.chapter_link.FindIndex(e => e == chapter.link);
+            var i = _Bookmark_Chapters_Index.FindIndex(e => e == index);
+            if (i > 0)//cointains
+            {
+                return;
+            }
+            else
+            {
+                _Bookmark_Chapters_Index.Add(index);
+                Save_Bookmark();
+            }
+        }
         public void LoadData(string url) //Load data online here
         {
-            var json = new WebClient().DownloadString(App.Global.API_URL_Primary + "/api/books?url=" + url);
-            _Book = JsonConvert.DeserializeObject<Book>(json);
+            _Bookmark_Chapters_Index.Clear();
+            try
+            {
+                var json = new WebClient().DownloadString(App.Global.API_URL_Primary + "/api/books?url=" + url);
+                _Book = JsonConvert.DeserializeObject<Book>(json);
+                if (_Book.season_name.Count == 0)
+                {
+                    _Book.season_name.Add("Quyển 1");
+                    _Book.season_index.Add(0);
+                }
+                _IsBookDownloaded = false;
+            }
+            catch
+            {
+
+            }
         }
 
         public void Download_Content()

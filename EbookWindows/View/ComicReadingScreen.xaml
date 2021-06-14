@@ -33,7 +33,7 @@
     <Grid Name="MainGrid">
         <Grid Margin="0">
             <!--#region Vùng nội dung-->
-            <ScrollViewer x:Name="scrollContent_Box"  Margin="0,0,0,42" HorizontalScrollBarVisibility="Auto">   
+            <ScrollViewer x:Name="scrollContent_Box"  Margin="0,0,0,42" HorizontalScrollBarVisibility="Auto" SizeChanged="ScrollViewer_SizeChanged" ScrollChanged="scrollContent_Box_ScrollChanged">   
             <TextBox Margin="0,0,0,-2"  x:Name="Content_Box" TextWrapping="WrapWithOverflow" VerticalAlignment="Top"  HorizontalAlignment="Center" FontFamily="Times New Roman" IsReadOnly="True" TextChanged="Content_Box_TextChanged" AcceptsTab="False" Width="Auto"
               Padding="30,20,30,20" 
                      BorderThickness="0.2,0"

@@ -111,7 +111,7 @@ namespace EbookWindows.Screen
                             {
                                 for (int i = index_start; i < App.Global.Book_ViewModel.season_index[count + 1]; i++)
                                 {
-                                    childItem1.Items.Add(new Chapter { Title = App.Global.Book_ViewModel.chapter_name[i], link = App.Global.Book_ViewModel.chapter_link[i] });
+                                    childItem1.Items.Add(new Chapter { Title = App.Global.Book_ViewModel.chapter_name[i], link = App.Global.Book_ViewModel.chapter_link[i],isReaded = App.Global.Book_ViewModel.Bookmark_Chapters.Contains(i) });
                                     check_count++;
                                     if (check_count >= chapter_limit)
                                         break;
@@ -121,7 +121,7 @@ namespace EbookWindows.Screen
                             {
                                 for (int i = index_start; i < App.Global.Book_ViewModel.chapter_name.Count; i++)
                                 {
-                                    childItem1.Items.Add(new Chapter { Title = App.Global.Book_ViewModel.chapter_name[i], link = App.Global.Book_ViewModel.chapter_link[i] });
+                                    childItem1.Items.Add(new Chapter { Title = App.Global.Book_ViewModel.chapter_name[i], link = App.Global.Book_ViewModel.chapter_link[i], isReaded = App.Global.Book_ViewModel.Bookmark_Chapters.Contains(i) });
                                     check_count++;
                                     if (check_count >= chapter_limit)
                                         break;
@@ -141,7 +141,7 @@ namespace EbookWindows.Screen
                         Chapter childItem1 = new Chapter() { Title = item };
                         for (int i = index_start; i < App.Global.Book_ViewModel.chapter_name.Count; i++)
                         {
-                            childItem1.Items.Add(new Chapter { Title = App.Global.Book_ViewModel.chapter_name[i], link = App.Global.Book_ViewModel.chapter_link[i] });
+                            childItem1.Items.Add(new Chapter { Title = App.Global.Book_ViewModel.chapter_name[i], link = App.Global.Book_ViewModel.chapter_link[i], isReaded = App.Global.Book_ViewModel.Bookmark_Chapters.Contains(i) });
                             check_count++;
                             if (check_count >= chapter_limit)
                                 break;
@@ -158,7 +158,7 @@ namespace EbookWindows.Screen
                 {
                     for (int i = App.Global.Book_ViewModel.season_index[count]; i < App.Global.Book_ViewModel.season_index[count + 1]; i++)
                     {
-                        childItem.Items.Add(new Chapter { Title = App.Global.Book_ViewModel.chapter_name[i], link = App.Global.Book_ViewModel.chapter_link[i] });
+                        childItem.Items.Add(new Chapter { Title = App.Global.Book_ViewModel.chapter_name[i], link = App.Global.Book_ViewModel.chapter_link[i], isReaded = App.Global.Book_ViewModel.Bookmark_Chapters.Contains(i) });
                         check_count++;
                         if (check_count >= chapter_limit)
                             break;
@@ -168,7 +168,7 @@ namespace EbookWindows.Screen
                 {
                     for (int i = App.Global.Book_ViewModel.season_index[count]; i < App.Global.Book_ViewModel.chapter_name.Count; i++)
                     {
-                        childItem.Items.Add(new Chapter { Title = App.Global.Book_ViewModel.chapter_name[i], link = App.Global.Book_ViewModel.chapter_link[i] });
+                        childItem.Items.Add(new Chapter { Title = App.Global.Book_ViewModel.chapter_name[i], link = App.Global.Book_ViewModel.chapter_link[i], isReaded = App.Global.Book_ViewModel.Bookmark_Chapters.Contains(i) });
 
                         check_count++;
                         if (check_count >= chapter_limit)
@@ -256,6 +256,12 @@ namespace EbookWindows.Screen
             else
             {
                 App.Global.Chapter_ViewModel.Current_Chapter = item;
+                if (!item.isReaded)
+                {
+                    ((sender as TreeView).SelectedItem as Chapter).isReaded = true;
+                    (sender as TreeView).Items.Refresh();
+                    App.Global.Book_ViewModel.Update_ChapterOpened(item);
+                }
                 WindowScreen win = (WindowScreen)Window.GetWindow(this);
                 win.OpenComicReadingScreen();
             }
@@ -297,7 +303,7 @@ namespace EbookWindows.Screen
             try
             {
                 bookImg.Source = null;
-                if (Directory.Exists(App.Global.Book_Directory)) ;
+                if (Directory.Exists(App.Global.Book_Directory));
                 Directory.Delete(App.Global.Book_Directory, true);
             }
             catch (Exception i)
@@ -311,37 +317,30 @@ namespace EbookWindows.Screen
         {
             await Task.Run(() => App.Global.Book_ViewModel.Download_Content());
         }
-
         private void NextPage_Click(object sender, RoutedEventArgs e)
         {
             page_index++;
             LoadPaging(page_index);
             PagePanelReload();
         }
-
         private void LastPage_Click(object sender, RoutedEventArgs e)
         {
             page_index = page_numbers;
             LoadPaging(page_index);
             PagePanelReload();
         }
-
         private void PreviousPage_Click(object sender, RoutedEventArgs e)
         {
             page_index--;
             LoadPaging(page_index);
             PagePanelReload();
         }
-
         private void FirstPage_Click(object sender, RoutedEventArgs e)
         {
             page_index = 1;
             LoadPaging(page_index);
             PagePanelReload();
         }
-
-
-
         private void ReadFirstChapter_Click(object sender, RoutedEventArgs e)
         {
             App.Global.Chapter_ViewModel.Current_Chapter = new Chapter() { link = App.Global.Book_ViewModel.Book.chapter_link[0] };

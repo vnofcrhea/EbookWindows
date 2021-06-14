@@ -9,9 +9,9 @@
         xmlns:local="clr-namespace:EbookWindows.Screen"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"  VerticalAlignment="Center" HorizontalAlignment="Center">
-    <Grid Margin="0">
+    <Grid Margin="0" Background="{DynamicResource MaterialDesignPaper}">
         <Border VerticalAlignment="Bottom" BorderThickness="1" Margin="0"
-                 BorderBrush="{DynamicResource PrimaryHueMidBrush}" CornerRadius="4">
+                 BorderBrush="{DynamicResource PrimaryHueMidBrush}" CornerRadius="0">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="30"/>

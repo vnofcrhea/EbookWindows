@@ -120,11 +120,17 @@
                 <TreeView.ItemContainerStyle>
                     <Style TargetType="{x:Type TreeViewItem}" BasedOn="{StaticResource MaterialDesignTreeViewItem}">
                         <Setter Property="IsExpanded" Value="True"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsReaded}" Value="True">
+                                <Setter Property="Foreground" Value="{StaticResource MaterialDesignShadowBrush}"></Setter>
+                            </DataTrigger>
+                        </Style.Triggers>
                     </Style>
                 </TreeView.ItemContainerStyle>
                 <TreeView.ItemTemplate>
                     <HierarchicalDataTemplate DataType="{x:Type models:Chapter}" ItemsSource="{Binding Items}">
-                        <TextBlock Text="{Binding Title}" />
+                        <TextBlock Text="{Binding Title}">
+                        </TextBlock>
                     </HierarchicalDataTemplate>
                 </TreeView.ItemTemplate>
             </TreeView>
