@@ -12,9 +12,7 @@
              xmlns:materialDesignConverters="clr-namespace:MaterialDesignThemes.Wpf.Converters;assembly=MaterialDesignThemes.Wpf"
              
              xmlns:cefSharpCore="clr-namespace:CefSharp;assembly=CefSharp.Core"
-             xmlns:cefSharpWpf="clr-namespace:CefSharp.Wpf;assembly=CefSharp.Wpf"
-
-    >
+             xmlns:cefSharpWpf="clr-namespace:CefSharp.Wpf;assembly=CefSharp.Wpf">
 
     <UserControl.Resources>
         <ResourceDictionary>
@@ -68,7 +66,7 @@
                                 <RowDefinition Height="*" />
                             </Grid.RowDefinitions>
                             <TextBlock Grid.Column="0" Grid.Row="0" Style="{StaticResource MaterialDesignHeadline6TextBlock}" Margin="0,8,8,16" Text="OPTIONS" />
-                            <materialDesign:PackIcon Kind="Information" Grid.Column="1" Grid.Row="0" VerticalAlignment="Center">
+                            <materialDesign:PackIcon Kind="Information" Grid.Column="1" Grid.Row="0" VerticalAlignment="Center" ToolTipService.BetweenShowDelay="0">
                                 <materialDesign:PackIcon.ToolTip>
                                     <TextBlock Style="{StaticResource MaterialDesignCaptionTextBlock}" Text="Some options may not work in some epub file">
 
@@ -84,8 +82,8 @@
                                     <Label Content="Background" Style="{DynamicResource MaterialDesignLabel}"/>
                                     <Grid>
                                         <StackPanel Orientation="Horizontal">
-                                            <Button Style="{DynamicResource MaterialDesignFlatButton}" Width="30" Background="Black" Click="changeBackgroundButton_Click" Margin="0,0,5,0"></Button>
-                                            <Button Style="{DynamicResource MaterialDesignFlatButton}" Width="30" Background="White" Click="changeBackgroundButton_Click" Margin="0,0,5,0"></Button>
+                                            <Button Style="{DynamicResource MaterialDesignFlatButton}" Width="30" Background="#303030" Click="changeBackgroundButton_Click" Margin="0,0,5,0"></Button>
+                                            <Button Style="{DynamicResource MaterialDesignFlatButton}" Width="30" Background="#f6f4ec" Click="changeBackgroundButton_Click" Margin="0,0,5,0"></Button>
                                             <Button Style="{DynamicResource MaterialDesignFlatButton}" Width="30" Background="#e6f0e6" Click="changeBackgroundButton_Click" Margin="0,0,5,0"></Button>
                                             <Button Style="{DynamicResource MaterialDesignFlatButton}" Width="30" Background="#e3f5fa" Click="changeBackgroundButton_Click" Margin="0,0,5,0"></Button>
                                             <Button Style="{DynamicResource MaterialDesignFlatButton}" Width="30" Background="#f6f4ec" Click="changeBackgroundButton_Click" Margin="0,0,5,0"></Button>
@@ -135,7 +133,7 @@
                 </StackPanel>
             </Border>
             <!-- Hide tool bar button.-->
-            <Button  HorizontalAlignment="Right" VerticalAlignment="Top" Style="{StaticResource MaterialDesignFlatButton}" Click="ShowHideToolButton_Click">
+            <Button  Margin ="0,10,25,0" HorizontalAlignment="Right" VerticalAlignment="Top" Style="{StaticResource MaterialDesignFlatButton}" Click="ShowHideToolButton_Click">
                 <materialDesign:PackIcon Kind="Eye" ></materialDesign:PackIcon>
             </Button>
             <!-- Chapters buttons.-->
@@ -148,6 +146,7 @@
                             <Setter Property="VerticalContentAlignment" Value="Center"/>
                             <Setter Property="BorderThickness" Value="0"></Setter>
                             <Setter Property="Width" Value="{StaticResource ButtonIconSizeDefault}"></Setter>
+                            <Setter Property="Width" Value="{StaticResource ButtonIconSizeDefault}"></Setter>
                             <Setter Property="Height" Value="{StaticResource ButtonIconSizeDefault}"></Setter>
                         </Style>
                     </StackPanel.Resources>
@@ -159,7 +158,7 @@
                     </Button>
 
                     <ComboBox x:Name="TableContentComboBox" ItemsSource="{Binding Value}" SelectedValuePath="Key" DisplayMemberPath="Value"
-                              Foreground="AliceBlue" materialDesign:ComboBoxAssist.ClassicMode="True" 
+                              Foreground="{DynamicResource MaterialDesignBody}" materialDesign:ComboBoxAssist.ClassicMode="True" 
                               BorderThickness="0" Width="100" Padding="5" BorderBrush="{DynamicResource PrimaryHueMidBrush}" 
                               SelectionChanged="ComboBox_SelectionChanged">
 
@@ -174,9 +173,9 @@
                 </StackPanel>
             </Border>
             <!-- Bookmark list.-->
-            <Border HorizontalAlignment="Right" BorderThickness="1" x:Name="bookmarkBorder"
-                    BorderBrush="{DynamicResource PrimaryHueMidBrush}" Visibility="Collapsed"
-                    CornerRadius="5" Background="{DynamicResource MaterialDesignPaper}">
+            <Border HorizontalAlignment="Right"  x:Name="bookmarkBorder"
+                    BorderBrush="{DynamicResource MaterialDesignShadowBrush}" BorderThickness="0.5" Visibility="Collapsed"
+                    CornerRadius="0" Background="{DynamicResource MaterialDesignPaper}">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="auto"></RowDefinition>

@@ -45,7 +45,7 @@ namespace EbookWindows.Screen
 
         private Task task;
 
-        private int GlobalScale = 1;
+        private int GlobalScale { get; set; }  = 2 ;
 
         private Rectangle destinationRectangle;
 
@@ -60,8 +60,10 @@ namespace EbookWindows.Screen
         private string filePath;
         public Pdf_ReadingScreen()
         {
-            zoomValue = 1;
+            zoomValue = 0.8;
+            
             InitializeComponent();
+            zoomLabel.Content = $"{zoomValue * 100}%";
             this.document = new pdfDocument();
             this.DataContext = this.document;
             this.document.PropertyChanged += DocumentOnPropertyChanged;
@@ -473,18 +475,19 @@ namespace EbookWindows.Screen
                 bookmarkListView.SelectedIndex = -1;
             }
         }
-
-
+        private int top = 0;
         private void PageScroller_Changed(object sender, ScrollChangedEventArgs e)
         {
             if (PageImage.Source != null)
             {
                 if (PageScroller.VerticalOffset == PageScroller.ScrollableHeight)
                 {
-                    if (bottom == 0)
+                    top = 0;
+                    if (bottom < 3)
                     {
-                        bottom = 1;
-                        this.PageScroller.ScrollToVerticalOffset(PageScroller.ScrollableHeight - 0.1);
+                        bottom++;
+                        this.PageScroller.ScrollToVerticalOffset(PageScroller.ScrollableHeight - 0.01);
+                        return;
                     }
                     else if(PageScroller.ScrollableHeight != 0)
                     {
@@ -494,7 +497,16 @@ namespace EbookWindows.Screen
                 }
                 else if (PageScroller.VerticalOffset == 0)
                 {
+                    bottom = 0;
+                    if (top < 3)
+                    {
+                        top++;
+                        this.PageScroller.ScrollToVerticalOffset(0.01);
+                        return;
+                    }    
                     document.Document.Navigator.MoveBackward();
+                    top = 0;
+                    
                 }
             }
         }
@@ -543,19 +555,19 @@ namespace EbookWindows.Screen
             
         }
 
-        private void toolBar_MouseEnter(object sender, MouseEventArgs e)
-        {
-            BottomStackPanel.Visibility = Visibility.Visible;
-            TopStackPanel.Visibility = Visibility.Visible;
-            dispatcherTimer.Stop();
-        }
+        //private void toolBar_MouseEnter(object sender, MouseEventArgs e)
+        //{
+        //    BottomStackPanel.Visibility = Visibility.Visible;
+        //    TopStackPanel.Visibility = Visibility.Visible;
+        //    dispatcherTimer.Stop();
+        //}
 
-        private void toolBar_MouseLeave(object sender, MouseEventArgs e)
-        {
-            BottomStackPanel.Visibility = Visibility.Hidden;
-            TopStackPanel.Visibility = Visibility.Hidden;
-            dispatcherTimer.Stop();
-        }
+        //private void toolBar_MouseLeave(object sender, MouseEventArgs e)
+        //{
+        //    BottomStackPanel.Visibility = Visibility.Hidden;
+        //    TopStackPanel.Visibility = Visibility.Hidden;
+        //    dispatcherTimer.Stop();
+        //}
 
         private void PageComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {

@@ -45,7 +45,6 @@
                 <GradientStop Color="{Binding Source={StaticResource MaterialDesignPaper},Path=Color}" Offset="0.8" />
             </GradientStopCollection>
         </ResourceDictionary>
-
     </Window.Resources>
     <Border BorderThickness="0" BorderBrush="{StaticResource PrimaryHueDarkBrush}" >
         <Border.Style>
@@ -63,7 +62,6 @@
                 </Style.Triggers>
             </Style>
         </Border.Style>
-
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Name="RowHeaderSize" Height="30"/>
@@ -71,7 +69,8 @@
             </Grid.RowDefinitions>
             <Border Grid.Row="0" Background="#3F000000" Name="HeaderApplication" Margin="0,0,-1,0" >
                 <Grid Grid.Row="0" MouseMove="DragStart" >
-                    <TextBlock VerticalAlignment="Center" Padding="5,0">EbookWindows</TextBlock>
+                    <Image Margin="5,0" VerticalAlignment="Center" HorizontalAlignment="Left" Source="/Icon/logo_reader_plus.ico" Width="24" />
+                    <TextBlock VerticalAlignment="Center" Margin="30,0" Padding="5,0">READER+</TextBlock>
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Right" Grid.RowSpan="2" Grid.Row="0">
                         <StackPanel.Resources>
                             <Style TargetType="{x:Type Button}" BasedOn="{StaticResource MaterialDesignFlatButton}">
@@ -124,7 +123,6 @@
                                 <TextBlock VerticalAlignment="Center" Margin="12,0">Home</TextBlock>
                             </VirtualizingStackPanel>
                         </Button>
-
                         <Button  Name="btnExpandLeftHeader" materialDesign:ButtonAssist.CornerRadius="0" Grid.Row="0" Padding="12" Width="50" Height="50" HorizontalAlignment="Left" Style="{StaticResource MaterialDesignFlatButton}" Click="LeftHeader_Click">
                             <materialDesign:PackIcon Kind="Menu" Width="24" Height="24" ></materialDesign:PackIcon>
                         </Button>
@@ -149,7 +147,6 @@
                                     </ListView.ItemTemplate>
                                 </ListView>
                             </StackPanel>
-
                         </Grid>
                         <Button Grid.Row="3" Height="50" materialDesign:ButtonAssist.CornerRadius="0"  Padding="14"  Style="{StaticResource MaterialDesignFlatButton}" VerticalAlignment="Bottom" HorizontalContentAlignment="Left" Click="Settings_Click">
                             <VirtualizingStackPanel Orientation="Horizontal" VerticalAlignment="Center">
@@ -223,7 +220,9 @@
                 <!--#endregion-->
 
                 <!--<Grid Grid.Column="1" HorizontalAlignment="Right" Width="40" Visibility="Hidden">
-                    --><!--Mờ viền trái, chưa fix được--><!--
+                    -->
+                <!--Mờ viền trái, chưa fix được-->
+                <!--
                     <Grid.Background>
                         <LinearGradientBrush StartPoint="0,0" EndPoint="1,0" GradientStops="{StaticResource BlueBackgroundStops}" Opacity="0.5"/>
                     </Grid.Background>

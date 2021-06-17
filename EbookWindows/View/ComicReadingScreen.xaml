@@ -75,10 +75,10 @@
                                 <TextBlock Style="{StaticResource MaterialDesignHeadline6TextBlock}" Margin="8,8,8,16" Text="OPTIONS" />
 
                                 <ComboBox materialDesign:HintAssist.IsFloating="True" materialDesign:HintAssist.Hint="Font Family" MaxDropDownHeight="200" Margin="8" SelectionChanged="Font_Changed">
-                                    <ComboBoxItem Content="Times New Roman" IsSelected="True"/>
-                                    <ComboBoxItem Content="Roboto" />
-                                    <ComboBoxItem Content="Arial" />
-                                    <ComboBoxItem Content="Tahoma" />
+                                    <ComboBoxItem Content="Times New Roman" IsSelected="True" FontFamily="Times New Roman"/>
+                                    <ComboBoxItem Content="Roboto" FontFamily="Roboto" />
+                                    <ComboBoxItem Content="Arial" FontFamily="Arial" />
+                                    <ComboBoxItem Content="Tahoma" FontFamily="Tahoma" />
                                 </ComboBox>
                                 <TextBlock Text="Font Size" Margin="8,8,8,8" FontSize="10" Foreground="{DynamicResource MaterialDesignTextAreaBorder}"></TextBlock>
                                 <Slider Margin ="8,-32,8,8" Value="26" Minimum="10" Maximum="50" Style="{StaticResource MaterialDesignDiscreteSlider}" ValueChanged="Slider_ValueChanged"/>
