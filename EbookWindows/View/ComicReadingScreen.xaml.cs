@@ -29,24 +29,32 @@ namespace EbookWindows.Screen
         private TimeSpan SpanTime;
         public bool isOnline = true;
         public double Scaling_Rate = 1;
-
         public ComicReadingScreen()
         {
             InitializeComponent();
-            DarkModeChecker.IsChecked = App.isDarkMode();
+            //DarkModeToggleButton.IsChecked = new PaletteHelper().GetTheme().GetBaseTheme() == BaseTheme.Dark;
+        }
+        private static void ModifyTheme(bool isDarkTheme)
+        {
+            var paletteHelper = new PaletteHelper();
+            var theme = paletteHelper.GetTheme();
+
+            theme.SetBaseTheme(isDarkTheme ? Theme.Dark : Theme.Light);
+            paletteHelper.SetTheme(theme);
+            App.Global.Settings_ViewModel.BaseTheme = isDarkTheme ? BaseTheme.Dark : BaseTheme.Light;
         }
         #region Execute
         public void LoadData()
         {
             this.Dispatcher.Invoke(() =>
             {
+                //DarkModeToggleButton.IsChecked = new PaletteHelper().GetTheme().GetBaseTheme() == BaseTheme.Dark;
                 App.Global.Chapter_ViewModel.Load_ChapterList();
                 Load_DataContext(); // Binding DataContext
                 Chapter_List.SelectedValue = App.Global.Chapter_ViewModel.Current_Chapter.link;
                 WindowScreen win = (WindowScreen)Window.GetWindow(this);
                 Content_Box.MaxWidth = (win.ActualWidth - win.LeftHeader.ActualWidth);
             });
-            
         }
         public void Load_DataContext() //Load/Reload DataContext
         {
@@ -59,9 +67,11 @@ namespace EbookWindows.Screen
         {
             App.Global.Chapter_ViewModel.Current_Chapter = chapter;
             App.Global.Chapter_ViewModel.Load_Content();
+            if (App.Global.Book_ViewModel.IsBookDownloaded)
+                App.Global.Book_ViewModel.Update_ChapterOpened(chapter);
             this.Dispatcher.Invoke(() =>
             {
-                Content_Box.Text = App.Global.Chapter_ViewModel.Current_Chapter_Content.content;
+                Content_Box.Text = App.Global.Chapter_ViewModel.Current_Chapter_Content.content.Replace("\r\n\r\n", "\r\n");
                 scrollContent_Box.ScrollToVerticalOffset(0);
             });
         }
@@ -175,11 +185,10 @@ namespace EbookWindows.Screen
                 x.IsEnabled = false;
             else { x.IsEnabled = true; }
         }
-
         private void ZoomIn_Click(object sender, RoutedEventArgs e)
         {
             var x = (sender as Button);
-            Scaling_Rate += 0.25;
+            Scaling_Rate += 0.1;
             ZoomOut_Button.IsEnabled = true;
             if (Scaling_Rate == 2)
             {
@@ -193,14 +202,12 @@ namespace EbookWindows.Screen
             Content_Box_Scaling.ScaleY = Scaling_Rate;
             zoomTextbox.Text = (Scaling_Rate * 100).ToString() + '%';
         }
-
-
         private void ZoomOut_Click(object sender, RoutedEventArgs e)
         {
             var x = (sender as Button);
-            Scaling_Rate -= 0.25;
+            Scaling_Rate -= 0.1;
             ZoomIn_Button.IsEnabled = true;
-            if (Scaling_Rate == 0.25)
+            if (Scaling_Rate == 0.3)
             {
                 x.IsEnabled = false;
             }
@@ -221,23 +228,65 @@ namespace EbookWindows.Screen
 
         private void Slider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            Content_Box.FontSize = (sender as Slider).Value;
+            var new_size = (sender as Slider).Value;
+            var old_spacing = (double)Content_Box.GetValue(TextBlock.LineHeightProperty) - Content_Box.FontSize;
+            var binding = new Binding()
+            {
+                Source = old_spacing + new_size
+            };
+            Content_Box.SetBinding(TextBlock.LineHeightProperty, binding);
+            Content_Box.FontSize = new_size;
         }
 
         private void Font_Changed(object sender, SelectionChangedEventArgs e)
         {
             Content_Box.FontFamily = new FontFamily(((sender as ComboBox).SelectedValue as ComboBoxItem).Content.ToString());
         }
-
-        private void DarkMode_Enable(object sender, RoutedEventArgs e)
+        private void LineScaping_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            App.ChangeBaseTheme(BaseTheme.Dark);
+            var binding = new Binding();
+            binding.Source =  (sender as Slider).Value + Content_Box.FontSize;
+            Content_Box.SetBinding(TextBlock.LineHeightProperty, binding);
         }
 
-        private void DarkMode_Disable(object sender, RoutedEventArgs e)
-        {
-            App.ChangeBaseTheme(BaseTheme.Light);
-        }
         #endregion
+
+
+        private void BackToDetail_Click(object sender, RoutedEventArgs e)
+        {
+            WindowScreen win = (WindowScreen)Window.GetWindow(this);
+            win.OpenDetailScreen();
+        }
+
+        //private void DarkModeChecker_Click(object sender, RoutedEventArgs e)
+        // => ModifyTheme(DarkModeToggleButton.IsChecked == true);
+
+        private void UserControl_KeyDown(object sender, KeyEventArgs e)
+        {
+            switch (e.Key)
+            {
+                case Key.Down:
+                    scrollContent_Box.ScrollToVerticalOffset(scrollContent_Box.VerticalOffset +20);
+                    break;
+                case Key.Up:
+                    scrollContent_Box.ScrollToVerticalOffset(scrollContent_Box.VerticalOffset - 20);
+                    break;
+            }
+        }
+        private void ModifyFullScreenMode()
+        {
+            ((WindowScreen)Window.GetWindow(this)).ModifyFullscreenMode();
+            btnKindFullScreen.Kind = App.Global.isFullScreen ? MaterialDesignThemes.Wpf.PackIconKind.FullscreenExit : MaterialDesignThemes.Wpf.PackIconKind.Fullscreen;
+        }
+
+        private void FullScreen_Click(object sender, RoutedEventArgs e)
+        => ModifyFullScreenMode();
+
+        private void scrollContent_Box_ScrollChanged(object sender, ScrollChangedEventArgs e)
+        {
+                
+        }
+
+        
     }
 }

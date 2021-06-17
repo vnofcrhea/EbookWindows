@@ -9,22 +9,26 @@ using System.Windows;
 
 namespace EbookWindows.ViewModels
 {
-    class RecentFile
+    
+    public class RecentFile
     {
         public string fileName { get; set; }
         public string filePath { get; set; }
-        public string fileIcon { get; set; }
-        public string recentLocation { get; set; }
-        public RecentFile() { }
+        public string fileIcon { get; set; } 
+        public int recentLocation { get; set; }
+        public RecentFile() 
+        {
+
+        }
         public RecentFile(string fileName, string filePath, string fileIcon)
         {
             this.fileName = fileName;
             this.filePath = filePath;
             this.fileIcon = fileIcon;
-            this.recentLocation = "0";
+            this.recentLocation = 0;
         }
 
-        public RecentFile(string fileName, string filePath, string fileIcon, string recentLocal)
+        public RecentFile(string fileName, string filePath, string fileIcon, int recentLocal)
         {
             this.fileName = fileName;
             this.filePath = filePath;

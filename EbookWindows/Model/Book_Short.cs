@@ -11,7 +11,7 @@ namespace EbookWindows.Model
 {
     public class Book_Short
     {
-        
+
         public string Title { get; set; }
         public string img_dir { get; set; }
         public string book_dir { get; set; }
@@ -26,6 +26,7 @@ namespace EbookWindows.Model
         public string Title { get; set; }
         public string book_dir { get; set; }
         public List<Book_Short> Items { get; set; }
+        
 
     }
 }

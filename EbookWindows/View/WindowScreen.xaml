@@ -10,8 +10,8 @@
         xmlns:material="clr-namespace:EbookWindows.Material"
         mc:Ignorable="d"
         Style="{StaticResource MaterialDesignWindow1}"
-        Title="Window1" Height="1000" Width="1500"  ResizeMode="CanResizeWithGrip"
-        WindowStyle="SingleBorderWindow"
+        Title="Window1" ResizeMode="CanResizeWithGrip"
+        WindowStyle="None"
         WindowState="Maximized"
         x:Name="MainWindowScreen"
         BorderThickness="0"
@@ -22,7 +22,7 @@
         <WindowChrome     
             CaptionHeight="1"  
             CornerRadius ="0"
-            ResizeBorderThickness="4"         
+            ResizeBorderThickness="2"         
             GlassFrameThickness="0">
         </WindowChrome>
     </WindowChrome.WindowChrome>
@@ -54,7 +54,7 @@
                     <!-- Add to avoid border disappearing when window is maximised -->
                     <DataTrigger Binding="{Binding WindowState, RelativeSource={RelativeSource AncestorType=Window}}" 
                                  Value="Maximized">
-                        <Setter Property="Margin" Value="8"/>
+                        <Setter Property="Margin" Value="7"/>
                     </DataTrigger>
                     <DataTrigger Binding="{Binding WindowState, RelativeSource={RelativeSource AncestorType=Window}}" 
                                  Value="Normal">
@@ -66,12 +66,12 @@
 
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="30"/>
+                <RowDefinition Name="RowHeaderSize" Height="30"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            <Border Grid.Row="0" Background="#3F000000">
+            <Border Grid.Row="0" Background="#3F000000" Name="HeaderApplication" Margin="0,0,-1,0" >
                 <Grid Grid.Row="0" MouseMove="DragStart" >
-                    <Label>EbookWindows</Label>
+                    <TextBlock VerticalAlignment="Center" Padding="5,0">EbookWindows</TextBlock>
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Right" Grid.RowSpan="2" Grid.Row="0">
                         <StackPanel.Resources>
                             <Style TargetType="{x:Type Button}" BasedOn="{StaticResource MaterialDesignFlatButton}">
@@ -83,9 +83,9 @@
                                 <Setter Property="Height" Value="30"/>
                             </Style>
                         </StackPanel.Resources>
-                        <Button Width="100">
+                        <!--<Button Width="100">
                             Login
-                        </Button>
+                        </Button>-->
                         <Button Click="Minimize">
                             <materialDesign:PackIcon Kind="WindowMinimize"  />
                         </Button>
@@ -98,70 +98,69 @@
                     </StackPanel>
                 </Grid>
             </Border>
-            <Grid Grid.Row="1" >
+            <Grid Name="MainPanel" Grid.Row="1">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition x:Name="LeftHeaderColumn" Width="250"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                <Button Panel.ZIndex="5" Width="10" Height="30" Grid.Column="0" HorizontalAlignment="Right" Margin="0,0,-10,0" Style="{StaticResource MaterialDesignOutlinedButton}" Click="LeftHeader_Click">
-                    <Button.Template>
-                        <ControlTemplate>
-                            <Border CornerRadius="0" Background="Transparent" BorderThickness="0.5" BorderBrush="#AFAFAF">
-                            </Border>
-                        </ControlTemplate>
-                    </Button.Template>
-                </Button>
-                <Border Name="LeftHeader" BorderBrush="#AFAFAF" BorderThickness="0,0,0,0">
+                <!--<Button Panel.ZIndex="5" Width="20" Height="25"  BorderThickness="0,1,1,1" BorderBrush="Transparent" Padding="0" HorizontalContentAlignment="Left" Grid.Column="0" HorizontalAlignment="Right" Margin="0,0,-20,0" Style="{StaticResource MaterialDesignOutlinedButton}" Click="LeftHeader_Click">
+                    <materialDesign:PackIcon Width="20" Height="20"  Kind="ChevronDoubleLeft" Padding="0" Foreground="{DynamicResource MaterialHueMidBrush}"></materialDesign:PackIcon>
+                </Button>-->
+                <Border Name="LeftHeader" BorderBrush="#AFAFAF"  BorderThickness="0,0,0,0">
                     <Border.Background>
                         <SolidColorBrush Color="#3F000000" Opacity="1" ></SolidColorBrush>
                     </Border.Background>
                     <Grid>
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="45"></RowDefinition>
-                            <RowDefinition Height="45"></RowDefinition>
+                            <RowDefinition Height="50"></RowDefinition>
+                            <RowDefinition Height="50"></RowDefinition>
                             <RowDefinition Height="*"></RowDefinition>
-                            <RowDefinition Height="45"></RowDefinition>
+                            <RowDefinition Height="50"></RowDefinition>
+                            <RowDefinition Height="50"></RowDefinition>
                         </Grid.RowDefinitions>
-                            <Grid Grid.Row="0" Margin="5" >
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="40"/>
-                            </Grid.ColumnDefinitions>
-                            <Button Click="ReturnHome_Click" Grid.Column="0" Style="{StaticResource MaterialDesignFlatButton}" HorizontalContentAlignment="Left" Margin="2">HOME</Button>
-                            <Button Grid.Column="1" Padding="0" Style="{StaticResource MaterialDesignFlatButton}" Width="32" Height="32">
-                                <materialDesign:PackIcon Kind="ViewGrid" Width="32" Height="32" ></materialDesign:PackIcon>
-                            </Button>
-                        </Grid>
-                        <Button  Grid.Row="1" Margin="5" Style="{StaticResource MaterialDesignFlatButton}" HorizontalContentAlignment="Left" >ALL LIST</Button>
-                        <Grid Grid.Row="2" VerticalAlignment="Stretch">
-                            <TreeView Style="{StaticResource MaterialDesignTreeView}" Name="TreeView_BookList" Grid.RowSpan="1" FontSize="10" Padding="0" Margin="0" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
-                           
-                                <TreeView.ItemContainerStyle>
-                                    <Style TargetType="{x:Type TreeViewItem}" BasedOn="{StaticResource MaterialDesignTreeViewItem}" >
-                                        <Setter Property="IsExpanded" Value="True"/>
-                                        <Setter Property="Margin" Value="0"/>
-                                        <Setter Property="Padding" Value="5"/>
-                                        <Style.Triggers>
-                                            <Trigger Property="HasItems" Value="False">
-                                                <Setter Property="Margin" Value="-47,0,0,0"></Setter>
-                                            </Trigger>
-                                            
-                                        </Style.Triggers>
-                                        
-                                    </Style>
-                                </TreeView.ItemContainerStyle>
-                                <TreeView.ItemTemplate>
-                                    <HierarchicalDataTemplate ItemsSource="{Binding Items}">
-                                        <TextBlock Margin="0,0,0,0" Text="{Binding Title}"  TextTrimming="CharacterEllipsis"  Foreground="{DynamicResource PrimaryHueMidBrush}"/>
-                                    </HierarchicalDataTemplate>
-                                </TreeView.ItemTemplate>
-                            </TreeView>
-                        </Grid>
-
-                        <Button Grid.Row="3" Margin="5" Style="{StaticResource MaterialDesignFlatButton}" VerticalAlignment="Bottom" HorizontalContentAlignment="Left">
+                        <Button Click="ReturnHome_Click" materialDesign:ButtonAssist.CornerRadius="0" Grid.Row="1" Padding="12" Height="50" Style="{StaticResource MaterialDesignFlatButton}" HorizontalContentAlignment="Left">
                             <VirtualizingStackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                <materialDesign:PackIcon Kind="Settings" VerticalAlignment="Center"></materialDesign:PackIcon>
-                                <TextBlock VerticalAlignment="Center" Margin="10,0">Settings</TextBlock>
+                                <materialDesign:PackIcon Kind="Home" VerticalAlignment="Center" Width="24" Height="24"></materialDesign:PackIcon>
+                                <TextBlock VerticalAlignment="Center" Margin="12,0">Home</TextBlock>
+                            </VirtualizingStackPanel>
+                        </Button>
+
+                        <Button  Name="btnExpandLeftHeader" materialDesign:ButtonAssist.CornerRadius="0" Grid.Row="0" Padding="12" Width="50" Height="50" HorizontalAlignment="Left" Style="{StaticResource MaterialDesignFlatButton}" Click="LeftHeader_Click">
+                            <materialDesign:PackIcon Kind="Menu" Width="24" Height="24" ></materialDesign:PackIcon>
+                        </Button>
+                        <!--<Button  Grid.Row="1" Margin="5" Style="{StaticResource MaterialDesignFlatButton}" HorizontalContentAlignment="Left" >ALL LIST</Button>-->
+                        <Grid Name="BookListGrid" Grid.Row="2" VerticalAlignment="Stretch">
+                            <StackPanel>
+                                <TextBlock Style="{StaticResource MaterialDesignButtonTextBlock}" Margin="15,5,0,5" FontSize="12">Book Online</TextBlock>
+                                <ListView Style="{StaticResource MaterialDesignListView}" Name="TreeView_BookList" Grid.RowSpan="1" FontSize="10" Padding="0" Margin="0" ScrollViewer.HorizontalScrollBarVisibility="Disabled" SelectionChanged="Book_Click">
+                                    <ListView.ItemContainerStyle>
+                                        <Style TargetType="{x:Type ListViewItem}" BasedOn="{StaticResource MaterialDesignListBoxItem}" >
+                                            <Setter Property="Margin" Value="0"/>
+                                            <Setter Property="Padding" Value="5"/>
+                                            <Style.Triggers>
+                                            </Style.Triggers>
+
+                                        </Style>
+                                    </ListView.ItemContainerStyle>
+                                    <ListView.ItemTemplate>
+                                        <HierarchicalDataTemplate ItemsSource="{Binding Items}">
+                                            <TextBlock Margin="0,0,0,0" Text="{Binding Title}"  TextTrimming="CharacterEllipsis"  Foreground="{DynamicResource MaterialDesignBody}"/>
+                                        </HierarchicalDataTemplate>
+                                    </ListView.ItemTemplate>
+                                </ListView>
+                            </StackPanel>
+
+                        </Grid>
+                        <Button Grid.Row="3" Height="50" materialDesign:ButtonAssist.CornerRadius="0"  Padding="14"  Style="{StaticResource MaterialDesignFlatButton}" VerticalAlignment="Bottom" HorizontalContentAlignment="Left" Click="Settings_Click">
+                            <VirtualizingStackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                <materialDesign:PackIcon Kind="Settings" VerticalAlignment="Center" VerticalContentAlignment="Center" HorizontalAlignment="Center" Width="20" Height="20"></materialDesign:PackIcon>
+                                <TextBlock VerticalAlignment="Center" Margin="12,0">Settings</TextBlock>
+                            </VirtualizingStackPanel>
+                        </Button>
+                        <Button Grid.Row="4" Height="50" materialDesign:ButtonAssist.CornerRadius="0"  Padding="14"  Style="{StaticResource MaterialDesignFlatButton}" VerticalAlignment="Bottom" HorizontalContentAlignment="Left" Click="About_Click">
+                            <VirtualizingStackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                <materialDesign:PackIcon Kind="About" VerticalAlignment="Center" Width="20" Height="20"></materialDesign:PackIcon>
+                                <TextBlock VerticalAlignment="Center" Margin="12,0" >About</TextBlock>
                             </VirtualizingStackPanel>
                         </Button>
                         <!--<ListBox Name="lbTodoList" HorizontalContentAlignment="Stretch">
@@ -198,9 +197,9 @@
                                 <TextBlock VerticalAlignment="Center">Add More Book</TextBlock>
                             </StackPanel>
                         </Button>
-                        <TextBox x:Name="DemoItemsSearchBox"
+                        <!--<TextBox x:Name="DemoItemsSearchBox"
                         Text="{Binding SearchKeyword, UpdateSourceTrigger=PropertyChanged}" DockPanel.Dock="Top" Margin="5,10,50,10" Width="300" Height="30" Padding="4" materialDesign:HintAssist.Hint="Search" materialDesign:HintAssist.IsFloating="True" materialDesign:TextFieldAssist.HasClearButton="True" materialDesign:TextFieldAssist.HasOutlinedTextField="True" materialDesign:TextFieldAssist.DecorationVisibility="Collapsed" materialDesign:TextFieldAssist.TextFieldCornerRadius="4"
-                                         HorizontalAlignment="Right"/>
+                                         HorizontalAlignment="Right"/>-->
                     </Grid>
                     <Grid Grid.Row="1">
                         <Grid.ColumnDefinitions>
@@ -223,13 +222,13 @@
                 <local:Pdf_ReadingScreen Grid.Column="1" x:Name="pdfReadingScreen" Visibility="Collapsed"></local:Pdf_ReadingScreen>
                 <!--#endregion-->
 
-                <Grid Grid.Column="1" HorizontalAlignment="Right" Width="40" Visibility="Hidden">
-                    <!--Mờ viền trái, chưa fix được-->
+                <!--<Grid Grid.Column="1" HorizontalAlignment="Right" Width="40" Visibility="Hidden">
+                    --><!--Mờ viền trái, chưa fix được--><!--
                     <Grid.Background>
                         <LinearGradientBrush StartPoint="0,0" EndPoint="1,0" GradientStops="{StaticResource BlueBackgroundStops}" Opacity="0.5"/>
                     </Grid.Background>
 
-                </Grid>
+                </Grid>-->
             </Grid>
             <Grid Grid.Row="1" Background="#AF000000" Name="LoadingGrid"
                   Visibility="Collapsed">
@@ -241,7 +240,14 @@
                     <TextBlock HorizontalAlignment="Center">Loading...</TextBlock>
                 </StackPanel>
             </Grid>
-
+            <Grid Grid.Row="1" Background="#AF000000" Name="SettingsGrid"
+                  Visibility="Collapsed">
+                <local:SettingsScreen x:Name="SettingsScreen"></local:SettingsScreen>
+            </Grid>
+            <Grid Grid.Row="1" Background="#AF000000" Name="AboutGrid"
+                  Visibility="Collapsed">
+                <local:About x:Name="AboutScreen"></local:About>
+            </Grid>
         </Grid>
     </Border>
 </Window>

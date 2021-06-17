@@ -2,6 +2,7 @@
 using EbookWindows.ViewModels;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.Win32;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -39,6 +40,7 @@ namespace EbookWindows.Screen
         {
             InitializeComponent();
             this.MaxHeight = SystemParameters.MaximizedPrimaryScreenHeight;
+            App.ApplyTheme();
             LoadTreeViewList();
             //TreeView_BookList.Items[]
             //lbTodoList.ItemsSource = items;
@@ -108,20 +110,42 @@ namespace EbookWindows.Screen
         {
 
         }
+        public void OpenDetailScreen()
+        {
+            detailScreen.LoadPaging(detailScreen.page_index);
+            comicReadingScreen.Visibility = Visibility.Collapsed;
+            detailScreen.Visibility = Visibility.Visible;
+        }
         public async void OpenDetailScreen(Book_Short x)
         {
             StartLoading();
-            await Task.Run(()=>detailScreen.LoadData(x));
-            MainGrid.Visibility = Visibility.Collapsed;
-            detailScreen.Visibility = Visibility.Visible;
+            var xa = await Task.Run(()=> detailScreen.LoadData(x));
+            if (xa)
+            {
+                MainGrid.Visibility = Visibility.Collapsed;
+                detailScreen.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                MessageBox.Show("Có lỗi xảy ra khi đọc file, vui lòng thử lại.");
+            }
+
             EndLoading();
         }
+        
         public async void OpenDetailScreen(string url)
         {
             StartLoading();
-            await Task.Run(() => detailScreen.LoadData(url));
-            MainGrid.Visibility = Visibility.Collapsed;
-            detailScreen.Visibility = Visibility.Visible;
+            var x= await Task.Run(() => detailScreen.LoadData(url));
+            if (x)
+            {
+                MainGrid.Visibility = Visibility.Collapsed;
+                detailScreen.Visibility = Visibility.Visible;
+            }    
+            else
+            {
+                MessageBox.Show("Đường đẫn không hợp lệ hoặc không hỗ trợ.");
+            }    
             EndLoading();
         }
 
@@ -132,9 +156,9 @@ namespace EbookWindows.Screen
             detailScreen.Visibility = Visibility.Collapsed;
             comicReadingScreen.Visibility = Visibility.Visible;
         }
-        public void LoadShelf()
+        public async void LoadShelf()
         {
-            BookTextShelf.LoadBook_ShortPanel();
+            await Task.Run(()=> BookTextShelf.LoadBook_ShortPanel());
         }
         /// <summary>
         /// return home screen when press homebutton
@@ -143,8 +167,6 @@ namespace EbookWindows.Screen
         /// <param name="e"></param>
         private void ReturnHome_Click(object sender, RoutedEventArgs e)
         {
-            if(MainGrid.Visibility != Visibility.Visible)
-            {
                 MainGrid.Visibility = Visibility.Visible;
                 if (detailScreen.Visibility == Visibility.Visible)
                 {
@@ -171,11 +193,6 @@ namespace EbookWindows.Screen
                 {
                     //do nothing
                 }
-            }
-            else
-            {
-                //do nothing
-            }
 
 
         }
@@ -206,26 +223,22 @@ namespace EbookWindows.Screen
             if (fileExtension.Equals(".pdf"))
             {
                 int location = recentFileUserControl.GetRecentLocationOfFile(filePath);
+                AddRecentFileList(index, filePath, "Icon\\pdf.png");
                 if (pdfReadingScreen.LoadData(filePath, location))
                 {
                     MainGrid.Visibility = Visibility.Collapsed;
                     epubReadingScreen.Visibility = Visibility.Collapsed;
                     pdfReadingScreen.Visibility = Visibility.Visible;
-                    AddRecentFileList(index, filePath, "Icon\\pdf.png");
-                }
-            }
-            else if (fileExtension.Equals(".epub"))
+                   
+                }     
+            } else if (fileExtension.Equals(".epub"))
             {
-                if (epubReadingScreen.ReadFile(filePath))
-                {
-                    MainGrid.Visibility = Visibility.Collapsed;
-                    pdfReadingScreen.Visibility = Visibility.Collapsed;
-                    epubReadingScreen.Visibility = Visibility.Visible;
-                    AddRecentFileList(index, filePath, "Icon\\epub.png");
-                }
-                //else do nothing
-            }
-            else
+                epubReadingScreen.ReadFile(filePath);
+                MainGrid.Visibility = Visibility.Collapsed;
+                pdfReadingScreen.Visibility = Visibility.Collapsed;
+                epubReadingScreen.Visibility = Visibility.Visible;
+                AddRecentFileList(index, filePath, "Icon\\epub.png");
+            }else
             {
                 //nothing
             }
@@ -274,21 +287,30 @@ namespace EbookWindows.Screen
         /// <param name="e"></param>
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            if(pdfReadingScreen.Visibility == Visibility)
+            if (pdfReadingScreen.Visibility == Visibility.Visible)
             {
                 pdfReadingScreen.SaveFilePdf();
-                int location = pdfReadingScreen.PageConboBox.SelectedIndex;
-                recentFileUserControl.UpdateLocationOfFile(location);
+                //int location = pdfReadingScreen.PageConboBox.SelectedIndex;
+                //recentFileUserControl.UpdateLocationOfFile(location);
             }
-            recentFileUserControl.SaveRecentFileList();
+
+            //Saving Setting before close
+            App.Global.RecentFile_ViewModel.Save_File();
+            App.Global.Settings_ViewModel.SaveSetting();
         }
 
         private void LeftHeader_Click(object sender, RoutedEventArgs e)
         {
-            if (LeftHeaderColumn.Width.Value == 0)
+            if (LeftHeaderColumn.Width.Value == 50)
+            {
+                BookListGrid.Visibility = Visibility.Visible;
                 LeftHeaderColumn.Width = new GridLength(250, GridUnitType.Pixel);
+            }
             else
-                LeftHeaderColumn.Width = new GridLength(0, GridUnitType.Pixel);
+            {
+                BookListGrid.Visibility = Visibility.Collapsed;
+                LeftHeaderColumn.Width = new GridLength(50, GridUnitType.Pixel);
+            }
         }
 
         private void SolidColorBrush_ColorChanged(object sender, RoutedPropertyChangedEventArgs<Color> e)
@@ -296,13 +318,93 @@ namespace EbookWindows.Screen
 
         }
 
-        public void LoadTreeViewList()
+        public async void LoadTreeViewList()
         {
-            App.Global.Book_TreeView.Clear();
-            Book_Short_TreeView ChildTree = new Book_Short_TreeView() { Title = "BOOK_CONTENTS" };
-            ChildTree.Items.AddRange(App.Global.Book_Short_ViewModel.Book_Short.ToList());
-            App.Global.Book_TreeView.Add(ChildTree);
-            TreeView_BookList.ItemsSource = App.Global.Book_TreeView;
+            await Task.Run(() =>
+            {
+                this.Dispatcher.Invoke(() =>
+            {
+                App.Global.Book_TreeView.Clear();
+                //Book_Short_TreeView ChildTree = new Book_Short_TreeView() { Title = "BOOK_CONTENTS" };
+                //ChildTree.Items.AddRange(App.Global.Book_Short_ViewModel.Book_Short);
+                //App.Global.Book_TreeView.Add(ChildTree);
+                TreeView_BookList.ItemsSource = App.Global.Book_Short_ViewModel.Book_Short;
+                TreeView_BookList.Items.Refresh();
+            });
+            });
+            
+            
+        }
+
+        private void Settings_Click(object sender, RoutedEventArgs e)
+        {
+            SettingsGrid.Visibility = Visibility.Visible;
+        }
+        public void SettingClose()
+        {
+            SettingsGrid.Visibility = Visibility.Collapsed;
+        }
+
+        private void Book_Click(object sender, RoutedPropertyChangedEventArgs<object> e)
+        {
+            
+        }
+        public void ModifyFullscreenMode() // Wait fix
+        {
+            if (App.Global.isFullScreen)
+            {
+                this.MaxHeight = SystemParameters.MaximizedPrimaryScreenHeight;
+                RowHeaderSize.Height = new GridLength(30);
+            }
+            else
+            {
+                this.MaxHeight = double.PositiveInfinity;
+                RowHeaderSize.Height = new GridLength(0);
+            }
+            App.Global.isFullScreen = !App.Global.isFullScreen;
+        }
+
+        private void About_Click(object sender, RoutedEventArgs e)
+        {
+            AboutGrid.Visibility = Visibility.Visible;
+        }
+        public void AboutClose()
+        {
+            AboutGrid.Visibility = Visibility.Collapsed;
+        }
+        private void Book_Click(object sender, SelectionChangedEventArgs e)
+        {
+            if (!((sender as ListView).SelectedItem is Book_Short item))
+                return;
+            else if ((sender as ListView).SelectedIndex < 0)
+                return;
+            else
+            {
+                OpenDetailScreen(item);
+                //var x = (sender as TreeView).ItemContainerGenerator.ContainerFromIndex
+
+                
+                if (pdfReadingScreen.Visibility == Visibility.Visible)
+                {
+                    pdfReadingScreen.homeBtn_Click(sender, e);
+                    return;
+                }
+                else if (epubReadingScreen.Visibility == Visibility.Visible)
+                {
+                    epubReadingScreen.Visibility = Visibility.Collapsed;
+                    return;
+                }
+                else if (comicReadingScreen.Visibility == Visibility.Visible)
+                {
+                    comicReadingScreen.Visibility = Visibility.Collapsed;
+                    return;
+                }
+                else
+                {
+                    //do nothing
+                }
+                (sender as ListView).SelectedIndex = -1;
+            }
         }
     }
 }

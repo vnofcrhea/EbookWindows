@@ -23,8 +23,8 @@ namespace EbookWindows.Screen
     /// </summary>
     public partial class RecentFileUserControl : UserControl
     {
-        private BindingList<RecentFile> recentFileList = new BindingList<RecentFile>();
-        private BindingList<RecentFile> viewingList = new BindingList<RecentFile>();
+        //private BindingList<RecentFile> recentFileList = new BindingList<RecentFile>();
+        private List<RecentFile> viewingList = new List<RecentFile>();
         private string viewMore = "View more";
         private string viewLess = "View less";
         private const int minItems = 5;
@@ -44,10 +44,11 @@ namespace EbookWindows.Screen
         /// <param name="e"></param>
         private void LoadData(object sender, RoutedEventArgs e)
         {
-            RecentFile_ViewModel recentFileDao = new RecentFile_ViewModel();
-            recentFileList = recentFileDao.GetAll();
+            //RecentFile_ViewModel recentFileDao = new RecentFile_ViewModel();
+            //recentFileList = recentFileDao.GetAll();
             MappingDataFromListToView(minItems);
             recentFileListView.ItemsSource = viewingList;
+            recentFileListView.Items.Refresh();
         }
 
         /// <summary>
@@ -63,28 +64,24 @@ namespace EbookWindows.Screen
             //filepath is not exist in recentFileList
             if (index == -1)
             {
-                RecentFile temp = new RecentFile(fileName, filePath, fileIcon);
-                if (viewingList.Count() == minItems && viewBtn.Content.Equals(viewMore))
+                //viewingList.Insert(0, temp);
+                App.Global.RecentFile_ViewModel.Recent_File.Insert(0, new RecentFile(fileName, filePath, fileIcon));
+                if (viewBtn.Content.Equals(viewMore))
                 {
-                    viewingList.RemoveAt(minItems - 1);
+                    MappingDataFromListToView(minItems);
                 }
-                else if (viewingList.Count() == maxItems && viewBtn.Content.Equals(viewLess))
+                else if (viewBtn.Content.Equals(viewLess))
                 {
-                    viewingList.RemoveAt(maxItems - 1);
+                    MappingDataFromListToView(maxItems);
                 }
-                else
-                { //do nothing
-                }
-                viewingList.Insert(0, temp);
-                recentFileList.Insert(0, temp);
                 return true;
             }
             //filepath is exist in recentFileList
             else
             {
                 //swap recentfileList[index]
-                recentFileList.Insert(0, recentFileList[index]);
-                recentFileList.RemoveAt(index + 1);
+                App.Global.RecentFile_ViewModel.Recent_File.Insert(0, App.Global.RecentFile_ViewModel.Recent_File[index]);
+                App.Global.RecentFile_ViewModel.Recent_File.RemoveAt(index + 1);
                 //Loading data in recentFileListView again
                 if (viewBtn.Content.Equals(viewMore))
                 {
@@ -106,10 +103,16 @@ namespace EbookWindows.Screen
         /// <returns></returns>
         public bool openAFileInRecentFileList(int index)
         {
-            viewingList.Insert(0, viewingList[index]);
-            viewingList.RemoveAt(index + 1);
-            recentFileList.Insert(0, recentFileList[index]);
-            recentFileList.RemoveAt(index + 1);
+            App.Global.RecentFile_ViewModel.Recent_File.Insert(0, App.Global.RecentFile_ViewModel.Recent_File[index]);
+            App.Global.RecentFile_ViewModel.Recent_File.RemoveAt(index + 1);
+            if (viewBtn.Content.Equals(viewMore))
+            {
+                MappingDataFromListToView(minItems);
+            }
+            else if (viewBtn.Content.Equals(viewLess))
+            {
+                MappingDataFromListToView(maxItems);
+            }
             return true;
         }
 
@@ -119,7 +122,7 @@ namespace EbookWindows.Screen
             int index = IsFilePathExist(filePath);
             if (index != -1) 
             {
-                Int32.TryParse(recentFileList[index].recentLocation, out location);
+               location = App.Global.RecentFile_ViewModel.Recent_File[index].recentLocation;
             }
             return location;
         }
@@ -131,21 +134,22 @@ namespace EbookWindows.Screen
         /// <returns>-1: if the filepath isn't exist; index of filepath exist in recentList</returns>
         private int IsFilePathExist(string newfilePath)
         {
-            int amount = recentFileList.Count();
-            if (recentFileList.Count() > 10)
-            {
-                amount = 10;
-            }
-            for (int i = 0; i < amount; ++i)
-            {
-                if (newfilePath.Equals(recentFileList[i].filePath))
-                {
-                    return i;
-                }
-            }
-            return -1;
+            //int amount = recentFileList.Count();
+            //if (recentFileList.Count() > 10)
+            //{
+            //    amount = 10;
+            //}
+            //for (int i = 0; i < amount; ++i)
+            //{
+            //    if (newfilePath.Equals(recentFileList[i].filePath))
+            //    {
+            //        return i;
+            //    }
+            //}
+            //return -1;
+            return App.Global.RecentFile_ViewModel.Recent_File.FindIndex(e => e.filePath == newfilePath);
         }
-
+        
         /// <summary>
         /// Mapping data from recentFileList to viewingList with amount
         /// </summary>
@@ -153,18 +157,15 @@ namespace EbookWindows.Screen
         private void MappingDataFromListToView(int amount)
         {
             viewingList.Clear();
-            foreach (var i in recentFileList.Take(amount).ToList())
-            {
-                viewingList.Add(i);
-            }
-
+            viewingList.AddRange(App.Global.RecentFile_ViewModel.Recent_File.Take(amount).ToList());
+            recentFileListView.Items.Refresh();
         }
 
-        public void UpdateLocationOfFile(int location)
-        {
-            recentFileList[0].recentLocation = location.ToString();
+        //public void UpdateLocationOfFile(int location)
+        //{
+        //  //  recentFileList[0].recentLocation = location.ToString();
 
-        }
+        //}
 
         private void viewBtn_CLick(object sender, RoutedEventArgs e)
         {
@@ -183,12 +184,14 @@ namespace EbookWindows.Screen
 
         private void deleteBtn_Click(object sender, RoutedEventArgs e)
         {
-            var item = (sender as FrameworkElement).DataContext;
+            var item = (sender as Button).DataContext;
             int index = recentFileListView.Items.IndexOf(item);
+
             //MessageBox.Show(index.ToString());
             viewingList.RemoveAt(index);
-            recentFileList.RemoveAt(index);
-            
+            recentFileListView.Items.Refresh();
+            App.Global.RecentFile_ViewModel.Recent_File.RemoveAt(index);
+            App.Global.RecentFile_ViewModel.Save_File();
         }
 
         private void recentFileListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -226,11 +229,7 @@ namespace EbookWindows.Screen
         }
 
         //Write File
-        public void SaveRecentFileList()
-        {
-            RecentFile_ViewModel recentFileDao = new RecentFile_ViewModel();
-            recentFileDao.WriteNewRecentFileData(recentFileList);
-        }
+        
 
 
     }

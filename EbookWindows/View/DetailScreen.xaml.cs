@@ -38,50 +38,48 @@ namespace EbookWindows.Screen
 
         }
 
-        //public void LoadData(Book_Short item) //Load data offine here
-        //{
-        //    App.Global.Book_Directory = item.book_dir;
-        //    using (StreamReader file = File.OpenText(item.book_dir + "\\detail.json"))
-        //    {
-        //        JsonSerializer serializer = new JsonSerializer();
-        //        App.Global.Items = (Book)serializer.Deserialize(file, typeof(Book));
-        //    }
-            
-        //    page_numbers = App.Global.Items.chapter_name.Count / chapter_limit + 1;
-        //    page_index = 1;
-        //    this.Dispatcher.Invoke(() =>
-        //    {
-        //        bookAuthor.Text = App.Global.Items.book_author;
-        //        bookTotalChapter.Text = App.Global.Items.chapter_name.Count.ToString();
-        //        bookDec.Text = App.Global.Items.book_intro;
-        //        bookName.Text = App.Global.Items.book_name;
-        //        bookImg.Source = new BitmapImage(new Uri(item.book_dir + "\\img.jpg"));
-        //        LoadPaging(page_index);
-        //        PagePanelReload();
-        //    });
-        //}
+        
 
-        public void LoadData(Book_Short item) //Load data offine here
+        public bool LoadData(Book_Short item) //Load data offine here
         {
-            App.Global.Book_ViewModel.LoadData(item);
+            if (!App.Global.Book_ViewModel.LoadData(item))
+                return false;
             page_numbers = App.Global.Book_ViewModel.bookTotalChapter / chapter_limit + 1;
             page_index = 1;
+            
             this.Dispatcher.Invoke(() =>
             {//Gán DataContext được 
-                bookAuthor.Text = App.Global.Book_ViewModel.book_author;
+                bookAuthor.Text = App.Global.Book_ViewModel.book_author.Replace("\n","");
                 bookTotalChapter.Text = App.Global.Book_ViewModel.bookTotalChapter.ToString();
                 bookDec.Text = App.Global.Book_ViewModel.book_intro;
                 bookName.Text = App.Global.Book_ViewModel.book_name;
-                bookImg.Source = new BitmapImage(new Uri(item.book_dir + "\\img.jpg"));
+                if (App.Global.Book_ViewModel.IsBookDownloaded)
+                {
+                    btnAddToLibrary.Visibility = Visibility.Collapsed;
+                    btnDownloadContent.Visibility = Visibility.Visible;
+                }    
+                    else
+                {
+                    btnAddToLibrary.Visibility = Visibility.Visible;
+                    btnDownloadContent.Visibility = Visibility.Collapsed;
+                }
+                BitmapImage image = new BitmapImage();
+                image.BeginInit();
+                image.CacheOption = BitmapCacheOption.OnLoad;
+                image.UriSource = new Uri(item.book_dir + "\\img.jpg");
+                image.EndInit();
+                bookImg.Source = image;
                 LoadPaging(page_index);
                 PagePanelReload();
             });
+            return true;
         }
         #region Loading Data Online 
 
-        public void LoadData(string url) //Load data online here
+        public bool LoadData(string url) //Load data online here
         {
-            App.Global.Book_ViewModel.LoadData(url);
+            if(!App.Global.Book_ViewModel.LoadData(url))
+                return false;
             #region //Xác định số trang
             page_numbers = App.Global.Book_ViewModel.bookTotalChapter / chapter_limit + 1;
             page_index = 1;
@@ -92,36 +90,20 @@ namespace EbookWindows.Screen
                 bookTotalChapter.Text = App.Global.Book_ViewModel.bookTotalChapter.ToString();
                 bookDec.Text = App.Global.Book_ViewModel.book_intro;
                 bookName.Text = App.Global.Book_ViewModel.book_name;
-                bookImg.Source = new BitmapImage(new Uri(App.Global.Book_ViewModel.img_url));
+                BitmapImage image = new BitmapImage();
+                image.BeginInit();
+                image.CacheOption = BitmapCacheOption.OnLoad;
+                image.UriSource = new Uri(App.Global.Book_ViewModel.img_url);
+                image.EndInit();
+                bookImg.Source = image;
                 LoadPaging(page_index);
                 PagePanelReload();
             });
-
+            return true;
         }
 
 
 
-        //public void LoadData(string url) //Load data online here
-        //{
-        //    var json = new WebClient().DownloadString(App.Global.API_URL_Primary + "/api/books?url=" + url);
-        //    App.Global.Items = JsonConvert.DeserializeObject<Book>(json);
-            
-        //    #region //Xác định số trang
-        //    page_numbers = App.Global.Items.chapter_name.Count / chapter_limit + 1;
-        //    page_index = 1;
-        //    #endregion
-        //    this.Dispatcher.Invoke(() =>
-        //    {
-        //        bookAuthor.Text = App.Global.Items.book_author;
-        //        bookTotalChapter.Text = App.Global.Items.chapter_name.Count.ToString();
-        //        bookDec.Text = App.Global.Items.book_intro;
-        //        bookName.Text = App.Global.Items.book_name;
-        //        bookImg.Source = new BitmapImage(new Uri(App.Global.Items.img_url));
-        //        LoadPaging(page_index);
-        //        PagePanelReload();
-        //    });
-
-        //} 
         #endregion
         #region LOADING PAGING
         public void LoadPaging(int page)
@@ -143,7 +125,7 @@ namespace EbookWindows.Screen
                             {
                                 for (int i = index_start; i < App.Global.Book_ViewModel.season_index[count + 1]; i++)
                                 {
-                                    childItem1.Items.Add(new Chapter { Title = App.Global.Book_ViewModel.chapter_name[i], link = App.Global.Book_ViewModel.chapter_link[i] });
+                                    childItem1.Items.Add(new Chapter { Title = App.Global.Book_ViewModel.chapter_name[i], link = App.Global.Book_ViewModel.chapter_link[i],isReaded = App.Global.Book_ViewModel.Bookmark_Chapters.Contains(i),isDownloaded = App.Global.Book_ViewModel.Downloaded_Chapters_index.Contains(i) });
                                     check_count++;
                                     if (check_count >= chapter_limit)
                                         break;
@@ -153,7 +135,7 @@ namespace EbookWindows.Screen
                             {
                                 for (int i = index_start; i < App.Global.Book_ViewModel.chapter_name.Count; i++)
                                 {
-                                    childItem1.Items.Add(new Chapter { Title = App.Global.Book_ViewModel.chapter_name[i], link = App.Global.Book_ViewModel.chapter_link[i] });
+                                    childItem1.Items.Add(new Chapter { Title = App.Global.Book_ViewModel.chapter_name[i], link = App.Global.Book_ViewModel.chapter_link[i], isReaded = App.Global.Book_ViewModel.Bookmark_Chapters.Contains(i), isDownloaded = App.Global.Book_ViewModel.Downloaded_Chapters_index.Contains(i) });
                                     check_count++;
                                     if (check_count >= chapter_limit)
                                         break;
@@ -173,7 +155,7 @@ namespace EbookWindows.Screen
                         Chapter childItem1 = new Chapter() { Title = item };
                         for (int i = index_start; i < App.Global.Book_ViewModel.chapter_name.Count; i++)
                         {
-                            childItem1.Items.Add(new Chapter { Title = App.Global.Book_ViewModel.chapter_name[i], link = App.Global.Book_ViewModel.chapter_link[i] });
+                            childItem1.Items.Add(new Chapter { Title = App.Global.Book_ViewModel.chapter_name[i], link = App.Global.Book_ViewModel.chapter_link[i], isReaded = App.Global.Book_ViewModel.Bookmark_Chapters.Contains(i), isDownloaded = App.Global.Book_ViewModel.Downloaded_Chapters_index.Contains(i) });
                             check_count++;
                             if (check_count >= chapter_limit)
                                 break;
@@ -190,7 +172,7 @@ namespace EbookWindows.Screen
                 {
                     for (int i = App.Global.Book_ViewModel.season_index[count]; i < App.Global.Book_ViewModel.season_index[count + 1]; i++)
                     {
-                        childItem.Items.Add(new Chapter { Title = App.Global.Book_ViewModel.chapter_name[i], link = App.Global.Book_ViewModel.chapter_link[i] });
+                        childItem.Items.Add(new Chapter { Title = App.Global.Book_ViewModel.chapter_name[i], link = App.Global.Book_ViewModel.chapter_link[i], isReaded = App.Global.Book_ViewModel.Bookmark_Chapters.Contains(i), isDownloaded = App.Global.Book_ViewModel.Downloaded_Chapters_index.Contains(i) });
                         check_count++;
                         if (check_count >= chapter_limit)
                             break;
@@ -200,7 +182,7 @@ namespace EbookWindows.Screen
                 {
                     for (int i = App.Global.Book_ViewModel.season_index[count]; i < App.Global.Book_ViewModel.chapter_name.Count; i++)
                     {
-                        childItem.Items.Add(new Chapter { Title = App.Global.Book_ViewModel.chapter_name[i], link = App.Global.Book_ViewModel.chapter_link[i] });
+                        childItem.Items.Add(new Chapter { Title = App.Global.Book_ViewModel.chapter_name[i], link = App.Global.Book_ViewModel.chapter_link[i], isReaded = App.Global.Book_ViewModel.Bookmark_Chapters.Contains(i), isDownloaded = App.Global.Book_ViewModel.Downloaded_Chapters_index.Contains(i) });
 
                         check_count++;
                         if (check_count >= chapter_limit)
@@ -246,15 +228,15 @@ namespace EbookWindows.Screen
             for (int j = i; j <= page_numbers; j++)
             {
                 if (count >= 5)
-                    return;
+                    break;
                 Page_Panel.Items.Add(j);
                 count++;
             }
-            if(page_index == 1)
+            if (page_index == 1)
             {
-                lastpagebtn.IsEnabled = false;
+                firstpagebtn.IsEnabled = false;
                 prepagebtn.IsEnabled = false;
-                if(page_numbers==1)
+                if (page_numbers == 1)
                 {
                     nextpagebtn.IsEnabled = false;
                     lastpagebtn.IsEnabled = false;
@@ -262,21 +244,22 @@ namespace EbookWindows.Screen
                 }
                 nextpagebtn.IsEnabled = true;
                 lastpagebtn.IsEnabled = true;
+                return;
             }
-            else if(page_index == page_numbers)
+            else if (page_index == page_numbers)
             {
+                firstpagebtn.IsEnabled = true;
+                prepagebtn.IsEnabled = true;
                 nextpagebtn.IsEnabled = false;
                 lastpagebtn.IsEnabled = false;
-                lastpagebtn.IsEnabled = true;
-                prepagebtn.IsEnabled = true;
-            }  
+            }
             else
             {
                 nextpagebtn.IsEnabled = true;
                 lastpagebtn.IsEnabled = true;
-                lastpagebtn.IsEnabled = true;
+                firstpagebtn.IsEnabled = true;
                 prepagebtn.IsEnabled = true;
-            }    
+            }
         }
 
         private void Select_Click(object sender, RoutedPropertyChangedEventArgs<object> e)
@@ -288,107 +271,181 @@ namespace EbookWindows.Screen
             else
             {
                 App.Global.Chapter_ViewModel.Current_Chapter = item;
+                if (!item.isReaded)
+                {
+                    ((sender as TreeView).SelectedItem as Chapter).isReaded = true;
+                    (sender as TreeView).Items.Refresh();
+                    App.Global.Book_ViewModel.Update_ChapterOpened(item);
+                }
                 WindowScreen win = (WindowScreen)Window.GetWindow(this);
                 win.OpenComicReadingScreen();
             }
         }
-          
+
         private async void AddToLibrary_Click(object sender, RoutedEventArgs e)
         {
-            #region old code
-            //var path_data = App.Global.Directory_Folder + "\\data\\book" + "\\" + App.Global.Items.source + "\\" + App.Global.Items.book_id;
-            //#region create path. 
-            //if (!Directory.Exists(path_data))
-            //{
-            //    Directory.CreateDirectory(path_data);
-            //}
-            //#endregion
-            //File.WriteAllText(path_data + "\\" + "detail.json", JsonConvert.SerializeObject(App.Global.Items));
-            //using (WebClient client = new WebClient())
-            //{
-            //    await Task.Run(()=> { client.DownloadFile(new Uri(App.Global.Items.img_url), path_data + "\\" + "img.jpg"); });
-            //};
-            #endregion
-            await Task.Run(()=> App.Global.Book_ViewModel.AddToLibrary());
-            await Task.Run(()=>(App.Current.MainWindow as WindowScreen).LoadShelf());
+            await Task.Run(() => App.Global.Book_ViewModel.AddToLibrary());
+            if (App.Global.Book_ViewModel.IsBookDownloaded)
+            {
+                btnAddToLibrary.Visibility = Visibility.Collapsed;
+                btnDownloadContent.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                btnAddToLibrary.Visibility = Visibility.Visible;
+                btnDownloadContent.Visibility = Visibility.Collapsed;
+            }
+            (App.Current.MainWindow as WindowScreen).LoadShelf();
+            (App.Current.MainWindow as WindowScreen).LoadTreeViewList();
         }
-        //public void Download_Content()
-        //{
-        //    var path_data = App.Global.Directory_Folder + "\\data\\book" + "\\" + App.Global.Items.source + "\\" + App.Global.Items.book_id + "\\content";
-        //    if (!Directory.Exists(path_data))
-        //    {
-        //        Directory.CreateDirectory(path_data);
-        //    }
-
-
-        //    Parallel.ForEach(App.Global.Items.chapter_link, new ParallelOptions { MaxDegreeOfParallelism = -1 }, getjsonstring);
-        //    List<Task> TaskList = new List<Task>();
-        //    //foreach (var url in App.Items.chapter_link)
-        //    //{
-        //    //     Task LastTask = new Task(() => {getjsonstring(url, count); });
-        //    //    TaskList.Add(LastTask);
-        //    //    count++;
-        //    //}
-
-        //    //Task.WaitAll(TaskList.ToArray());
-        //    Console.WriteLine("EndInit");
-        //}
-        //public static void getjsonstring(string item)
-        //{
-        //    var count = App.Global.Items.chapter_link.FindIndex(x => x.Contains(item));
-        //    var path_data = App.Global.Directory_Folder + "\\data\\book" + "\\" + App.Global.Items.source + "\\" + App.Global.Items.book_id + "\\content";
-        //    if (File.Exists(path_data + "\\" + count + ".json"))
-        //        return;
-        //    while (true)
-        //    {
-        //        try
-        //        {
-        //            var json = new WebClient().DownloadString(App.Global.API_URL_Primary + "/api/chapters?url=" + item);
-        //            File.WriteAllText(path_data + "\\" + count + ".json", json);
-        //            return;
-        //        }
-        //        catch
-        //        {
-
-        //        }
-        //    }
-        //}
-        private void DownloadContent_Click(object sender, RoutedEventArgs e)
+        private async void DeleteBook_Click(object sender, RoutedEventArgs e)
         {
-            App.Global.Book_ViewModel.Download_Content();
-        }
+            await Task.Run(() => { App.Global.Book_Short_ViewModel.Book_Short.RemoveAll(x => x.book_dir == App.Global.Book_Directory); });
+            (App.Current.MainWindow as WindowScreen).LoadTreeViewList();
+            (App.Current.MainWindow as WindowScreen).LoadShelf();
+            try
+            {
+                bookImg.Source = null;
+                if (Directory.Exists(App.Global.Book_Directory))
+                    Directory.Delete(App.Global.Book_Directory, true);
+            }
+            catch (Exception i)
+            {
 
+            }
+            (App.Current.MainWindow as WindowScreen).MainGrid.Visibility = Visibility.Visible;
+            (App.Current.MainWindow as WindowScreen).detailScreen.Visibility = Visibility.Collapsed;
+        }
+        private async void DownloadContent_Click(object sender, RoutedEventArgs e)
+        {
+            await Task.Run(() => App.Global.Book_ViewModel.Download_Content());
+
+        }
         private void NextPage_Click(object sender, RoutedEventArgs e)
         {
             page_index++;
             LoadPaging(page_index);
             PagePanelReload();
         }
-
         private void LastPage_Click(object sender, RoutedEventArgs e)
         {
             page_index = page_numbers;
             LoadPaging(page_index);
             PagePanelReload();
         }
-
         private void PreviousPage_Click(object sender, RoutedEventArgs e)
         {
             page_index--;
             LoadPaging(page_index);
             PagePanelReload();
         }
-
         private void FirstPage_Click(object sender, RoutedEventArgs e)
         {
-            page_index=1;
+            page_index = 1;
             LoadPaging(page_index);
             PagePanelReload();
         }
-
-        private void ScrollViewer_SizeChanged(object sender, SizeChangedEventArgs e)
+        private void ReadFirstChapter_Click(object sender, RoutedEventArgs e)
         {
+            App.Global.Chapter_ViewModel.Current_Chapter = new Chapter() { link = App.Global.Book_ViewModel.Book.chapter_link[0] };
+            WindowScreen win = (WindowScreen)Window.GetWindow(this);
+            win.OpenComicReadingScreen();
+        }
+
+        private void ReadLastChapter_Click(object sender, RoutedEventArgs e)
+        {
+            App.Global.Chapter_ViewModel.Current_Chapter = new Chapter() { link = App.Global.Book_ViewModel.Book.chapter_link.Last() };
+            WindowScreen win = (WindowScreen)Window.GetWindow(this);
+            win.OpenComicReadingScreen();
+        }
+
+        private async void DownloadOneChapter_Click(object sender, RoutedEventArgs e)
+        {
+            var x = (sender as Button);
+            if (x.Content is ProgressBar || x.Content is MaterialDesignThemes.Wpf.PackIcon && (x.Content as MaterialDesignThemes.Wpf.PackIcon).Kind == MaterialDesignThemes.Wpf.PackIconKind.CheckboxMarkedCircleOutline)
+                return;
+            x.Content = new ProgressBar { Style = Application.Current.FindResource("MaterialDesignCircularProgressBar") as Style, IsIndeterminate=true,Value=0};
+            var url = (x.DataContext as Chapter).link;
+            if(await Task.Run(()=>App.Global.Book_ViewModel.Download_Content_OneChaper(url)))
+            {
+                (x.DataContext as Chapter).isDownloaded = true;
+                x.Content = new MaterialDesignThemes.Wpf.PackIcon { Kind = MaterialDesignThemes.Wpf.PackIconKind.CheckboxMarkedCircleOutline };
+            } 
+            else
+            {
+                (x.DataContext as Chapter).isDownloaded = false;
+                x.Content = new MaterialDesignThemes.Wpf.PackIcon { Kind = MaterialDesignThemes.Wpf.PackIconKind.Download };
+            }    
             
+
         }
     }
+    public class OpacityBoolConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            if (value is Boolean && (bool)value)
+            {
+                return 0.3;
+            }
+            return 1;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            return parameter;
+        }
+    }
+    public class KindDowloadedBoolConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            if (value is Boolean && (bool)value)
+            {
+                return MaterialDesignThemes.Wpf.PackIconKind.CheckboxMarkedCircleOutline;
+            }
+            return MaterialDesignThemes.Wpf.PackIconKind.Download ;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            return parameter;
+        }
+    }
+    public class EnableDowloadedBoolConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            if (value is Boolean && (bool)value)
+            {
+                return MaterialDesignThemes.Wpf.PackIconKind.CheckboxMarkedCircleOutline;
+            }
+            return MaterialDesignThemes.Wpf.PackIconKind.Download;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            return parameter;
+        }
+    }
+    public class SeasonVisibilityConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            if (App.Global.Book_ViewModel.IsBookDownloaded)
+            {
+                if (value is string && value != null)
+                {
+                    return Visibility.Visible;
+                }
+            }
+            return Visibility.Collapsed;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            return parameter;
+        }
+    }
+    
 }

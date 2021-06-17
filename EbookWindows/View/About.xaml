@@ -1,0 +1,83 @@
+﻿<UserControl x:Class="EbookWindows.Screen.About"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:system="clr-namespace:System;assembly=mscorlib"
+        xmlns:materialDesignConverters="clr-namespace:MaterialDesignThemes.Wpf.Converters;assembly=MaterialDesignThemes.Wpf"
+        xmlns:local="clr-namespace:EbookWindows.Screen"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800"  VerticalAlignment="Center" HorizontalAlignment="Center">
+    <Grid Margin="0" Background="{DynamicResource MaterialDesignPaper}">
+        <Border VerticalAlignment="Bottom" BorderThickness="1" Margin="0"
+                 BorderBrush="{DynamicResource PrimaryHueMidBrush}" CornerRadius="0">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="30"/>
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
+                <Border  Grid.Row="0" Margin="0" BorderBrush="{DynamicResource PrimaryHueMidBrush}" CornerRadius="0"
+                          BorderThickness="0,0,0,1">
+                    <Grid Grid.Row="0" MouseMove="DragStart">
+                        <Label FontWeight="Bold">About</Label>
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Right" Grid.RowSpan="2" Grid.Row="0">
+                            <StackPanel.Resources>
+                                <Style TargetType="{x:Type Button}" BasedOn="{StaticResource MaterialDesignFlatButton}">
+                                    <Setter Property="Margin" Value="0,0,0,0"/>
+                                    <Setter Property="Padding" Value="0"/>
+                                    <Setter Property="VerticalContentAlignment" Value="Center"/>
+                                    <Setter Property="BorderThickness" Value="0"></Setter>
+                                    <Setter Property="Width" Value="40"/>
+                                    <Setter Property="Height" Value="30"/>
+                                </Style>
+                            </StackPanel.Resources>
+                            <Button Click="Close" >
+                                <materialDesign:PackIcon Kind="WindowClose" />
+                            </Button>
+                        </StackPanel>
+
+                    </Grid>
+                </Border>
+                <Grid Grid.Row="1">
+                    <TextBlock  Style="{DynamicResource MaterialDesignBody1TextBlock}" Margin="8,8,8,16" TextWrapping="WrapWithOverflow">
+                    INTRO <LineBreak/>
+                    Welcome to READER+<LineBreak/>
+                    A place for people who loves reading online novels<LineBreak/>
+                    We support a better UI for reading online novels and ton of customizations.<LineBreak/>
+                    Promising a much better reading experience for all user.<LineBreak/><LineBreak/>
+
+                    Currently, we provide reader view for these sites below:<LineBreak/>   
+                    <ItemsControl>
+                        <TextBlock>
+                             <Hyperlink ToolTip="https://truyen.tangthuvien.vn/"  Foreground="{DynamicResource PrimaryHueMidBrush}" FontSize="15" NavigateUri="https://truyen.tangthuvien.vn/" RequestNavigate="Hyperlink_RequestNavigate">
+                         Tàng Thư Viện
+                     </Hyperlink>
+                     </TextBlock>
+                        <TextBlock>
+                        <Hyperlink ToolTip="https://trumtruyen.net/"  Foreground="{DynamicResource PrimaryHueMidBrush}" FontSize="15" NavigateUri="https://trumtruyen.net/" RequestNavigate="Hyperlink_RequestNavigate">
+                         Trùm truyện
+                     </Hyperlink>
+                        </TextBlock>
+                        <TextBlock>
+                        <Hyperlink ToolTip="https://iztruyen.com/"   Foreground="{DynamicResource PrimaryHueMidBrush}" FontSize="15" NavigateUri="https://iztruyen.com/" RequestNavigate="Hyperlink_RequestNavigate">
+                         IZ truyện
+                     </Hyperlink>
+                        </TextBlock>
+                       
+                    </ItemsControl>
+                     <LineBreak/> 
+                    ... hopefully, more sites will be supported in the future.<LineBreak/>  
+                    And we also support viewing common document and ebook files, such as:<LineBreak/>  
+                    1. .epub<LineBreak/>  
+                    2. .pdf<LineBreak/>  
+                    <LineBreak/>  
+                    Thank you very much for choosing our app. <LineBreak/> 
+                    Have a nice day!  <LineBreak/>
+                    </TextBlock>
+                </Grid>
+            </Grid>
+
+        </Border>
+    </Grid>
+</UserControl>

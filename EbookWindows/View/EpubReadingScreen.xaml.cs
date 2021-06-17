@@ -35,7 +35,6 @@ namespace EbookWindows.Screen
         public EpubReadingScreen()
         {
             InitializeComponent();
-
         }
 
         private int getIndex(List<string> list, string s)

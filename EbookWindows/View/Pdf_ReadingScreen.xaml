@@ -8,8 +8,8 @@
             xmlns:materialDesignConverters="clr-namespace:MaterialDesignThemes.Wpf.Converters;assembly=MaterialDesignThemes.Wpf"       
             xmlns:local="clr-namespace:EbookWindows.Screen"         
             mc:Ignorable="d" 
-
-            d:DesignHeight="450" d:DesignWidth="800" >
+            d:DesignHeight="450" d:DesignWidth="800" 
+             PreviewKeyDown="keyDown_Test">
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -65,7 +65,7 @@
                         <materialDesign:PackIcon Kind="ZoomOutOutline"></materialDesign:PackIcon>
                     </Button>
                     <Label Name="zoomLabel"  Width="40" Height="20" BorderBrush="{DynamicResource PrimaryHueMidBrush}" BorderThickness="0" Padding="0"
-                             VerticalContentAlignment="Center" HorizontalContentAlignment="Center"  Content="80%" Foreground="#FFFFFF">
+                             VerticalContentAlignment="Center" HorizontalContentAlignment="Center"  Content="100%" Foreground="#FFFFFF">
                     </Label>
 
                     <Button Name="ZoomInBtn"  Click="ZoomInBtn_Click">
@@ -79,7 +79,7 @@
 
 
             <!-- Nút ẩn thanh công cụ để đọc cho dễ hơn.-->
-            <Button HorizontalAlignment="Right" VerticalAlignment="Top" Margin="5"  Style="{StaticResource MaterialDesignFlatButton}" Click="ShowHideToolButton_Click">
+            <Button HorizontalAlignment="Right" VerticalAlignment="Top" Margin="5,5,25,5"  Style="{StaticResource MaterialDesignFlatButton}" Click="ShowHideToolButton_Click">
                 <materialDesign:PackIcon Kind="Eye" ></materialDesign:PackIcon>
             </Button>
 
@@ -105,7 +105,7 @@
                     </Button>
 
                     <ComboBox Name="PageConboBox" materialDesign:ComboBoxAssist.ClassicMode="True" BorderThickness="0"
-                              HorizontalContentAlignment="Center"                  
+                              HorizontalContentAlignment="Center"  SelectionChanged="PageComboBox_SelectionChanged"                
                               Width="100" Padding="5" BorderBrush="{DynamicResource PrimaryHueMidBrush}"
                               ItemsSource="{Binding Pages}" SelectedItem="{Binding Page, Mode=TwoWay}" Foreground="#FFFFFF">
                         <ComboBox.ItemTemplate>
