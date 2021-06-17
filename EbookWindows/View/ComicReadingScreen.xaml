@@ -37,8 +37,8 @@
             <TextBox Margin="0,0,0,-2"  x:Name="Content_Box" TextWrapping="WrapWithOverflow" VerticalAlignment="Top"  HorizontalAlignment="Center" FontFamily="Times New Roman" IsReadOnly="True" TextChanged="Content_Box_TextChanged" AcceptsTab="False" Width="Auto"
               Padding="30,20,30,20" 
                      BorderThickness="0.2,0"
-                     BorderBrush="Gray">
-                <TextBox.LayoutTransform>
+                     BorderBrush="Gray" TextBlock.LineStackingStrategy="BlockLineHeight">
+                <TextBox.LayoutTransform> 
                     <ScaleTransform x:Name="Content_Box_Scaling"/>
                 </TextBox.LayoutTransform>
             </TextBox>
@@ -81,11 +81,9 @@
                                     <ComboBoxItem Content="Tahoma" />
                                 </ComboBox>
                                 <TextBlock Text="Font Size" Margin="8,8,8,8" FontSize="10" Foreground="{DynamicResource MaterialDesignTextAreaBorder}"></TextBlock>
-                                <Slider Margin ="8,-32,8,8" Value="26" Minimum="10" Maximum="40" Style="{StaticResource MaterialDesignDiscreteSlider}" ValueChanged="Slider_ValueChanged"/>
-                                <StackPanel Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Left" Margin="8,8,8,8">
-                                    <TextBlock Text="Dark Mode" FontSize="10" Foreground="{DynamicResource MaterialDesignTextAreaBorder}"></TextBlock>
-                                    <ToggleButton Name="DarkModeToggleButton" Margin="8,0,0,0"  Style="{StaticResource MaterialDesignSwitchToggleButton}" Click="DarkModeChecker_Click" />
-                                </StackPanel>
+                                <Slider Margin ="8,-32,8,8" Value="26" Minimum="10" Maximum="50" Style="{StaticResource MaterialDesignDiscreteSlider}" ValueChanged="Slider_ValueChanged"/>
+                                <TextBlock Text="Line Spacing" Margin="8,8,8,8" FontSize="10" Foreground="{DynamicResource MaterialDesignTextAreaBorder}"></TextBlock>
+                                <Slider Margin ="8,-32,8,8" Value="10" Minimum="0" Maximum="50" Style="{StaticResource MaterialDesignDiscreteSlider}" ValueChanged="LineScaping_ValueChanged"/>
                                 <StackPanel Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Right" >
                                     <Button Content="Close" Command="{x:Static materialDesign:PopupBox.ClosePopupCommand}" />
                                 </StackPanel>

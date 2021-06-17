@@ -96,7 +96,7 @@ namespace EbookWindows.ViewModels
             ITheme theme = _paletteHelper.GetTheme();
             theme.SetBaseTheme(_settings.BaseTheme.GetBaseTheme());
             if (_settings.BaseTheme == BaseTheme.Light)
-                theme.Paper = Color.FromRgb(255, 240, 209);
+                theme.Paper = Color.FromRgb(246, 244, 236);
             _paletteHelper.SetTheme(theme);
         }
         private void ApplyPrimaryColor()

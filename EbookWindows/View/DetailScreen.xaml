@@ -13,6 +13,8 @@
              d:DesignWidth="800">
     <UserControl.Resources>
         <local:OpacityBoolConverter x:Key="actionConverter" />
+        <local:KindDowloadedBoolConverter x:Key="downloadConverter"/>
+        <local:SeasonVisibilityConverter x:Key="seasonConverter"/>
     </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -81,13 +83,13 @@
                                         <Setter Property="Margin" Value="5,0"></Setter>
                                     </Style>
                                 </StackPanel.Resources>
-                                <Button Click="AddToLibrary_Click" VerticalContentAlignment="Center" Padding="5,0">
+                                <Button Name="btnAddToLibrary" Click="AddToLibrary_Click" VerticalContentAlignment="Center" Padding="5,0">
                                     <StackPanel Orientation="Horizontal">
                                         <materialDesign:PackIcon Kind="Add" Width="24" Height="24"></materialDesign:PackIcon>
                                         <TextBlock VerticalAlignment="Center" FontSize="11" Margin="5,0"> Add to Library</TextBlock>
                                     </StackPanel>
                                 </Button>
-                                <Button Click="DownloadContent_Click" ToolTip="Downloader will run in background and need more time to excetute." ToolTipService.InitialShowDelay="300">
+                                <Button Name="btnDownloadContent" Click="DownloadContent_Click" ToolTip="Downloader will run in background and need more time to excetute." ToolTipService.InitialShowDelay="300">
                                     <StackPanel Orientation="Horizontal">
                                         <materialDesign:PackIcon Kind="Download" Width="24" Height="24"></materialDesign:PackIcon>
                                         <TextBlock VerticalAlignment="Center" FontSize="11" Margin="5,0"> Download All Chapter</TextBlock>
@@ -120,21 +122,30 @@
                 <TreeView.ItemContainerStyle>
                     <Style TargetType="{x:Type TreeViewItem}" BasedOn="{StaticResource MaterialDesignTreeViewItem}">
                         <Setter Property="IsExpanded" Value="True"/>
-                        
+                        <Setter Property="HorizontalAlignment" Value="Stretch"></Setter>
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch"></Setter>
                     </Style>
                 </TreeView.ItemContainerStyle>
                 <TreeView.ItemTemplate>
                     <HierarchicalDataTemplate DataType="{x:Type models:Chapter}" ItemsSource="{Binding Items}">
-                        <TextBlock Text="{Binding Title}" Opacity="{Binding isReaded,Converter={StaticResource actionConverter}}">
-                        </TextBlock>
+                        <Grid HorizontalAlignment="Stretch" VerticalAlignment="Center">
+                            <Button HorizontalAlignment="Right" VerticalAlignment="Center" Click="DownloadOneChapter_Click" Width="24" Height="24" Panel.ZIndex="10" Padding="0" Style="{StaticResource MaterialDesignFlatButton}" Visibility="{Binding link,Converter={StaticResource seasonConverter}}">
+                                <materialDesign:PackIcon VerticalAlignment="Center" Kind ="{Binding isDownloaded,Converter={StaticResource downloadConverter}}"></materialDesign:PackIcon>
+                            </Button>
+                            <ProgressBar Value="0" IsIndeterminate="True" VerticalAlignment="Center" HorizontalAlignment="Right" Width="24" Height="24"  Panel.ZIndex="11" Padding="0" Style="{StaticResource MaterialDesignCircularProgressBar}" Visibility="Collapsed">
+                    
+                            </ProgressBar>
+                            <TextBlock VerticalAlignment="Center" Text="{Binding Title}" Opacity="{Binding isReaded,Converter={StaticResource actionConverter}}">
+                            </TextBlock>
+                        </Grid>
                     </HierarchicalDataTemplate>
                 </TreeView.ItemTemplate>
             </TreeView>
             <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center">
-                <Button x:Name="firstpagebtn" Style="{StaticResource MaterialDesignFlatButton}" Click="PreviousPage_Click">
+                <Button x:Name="firstpagebtn" Style="{StaticResource MaterialDesignFlatButton}" Click="FirstPage_Click">
                     <materialDesign:PackIcon Kind="ChevronLeftFirst"></materialDesign:PackIcon>
                 </Button>
-                <Button x:Name="prepagebtn" Style="{StaticResource MaterialDesignFlatButton}" Click="FirstPage_Click">
+                <Button x:Name="prepagebtn" Style="{StaticResource MaterialDesignFlatButton}" Click="PreviousPage_Click">
                     <materialDesign:PackIcon Kind="ChevronLeft"></materialDesign:PackIcon>
                 </Button>
 
@@ -146,7 +157,7 @@
                     </ItemsControl.ItemsPanel>
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <Button Style="{StaticResource MaterialDesignFlatButton}"  Content="{Binding}" Click="PageIndex_Click"/>
+                            <Button Style="{StaticResource MaterialDesignFlatButton}"   Content="{Binding}" Click="PageIndex_Click"/>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>

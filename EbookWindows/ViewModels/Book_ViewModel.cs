@@ -15,9 +15,13 @@ namespace EbookWindows.ViewModels
     {
         private Book _Book;
         private List<int> _Bookmark_Chapters_Index = new List<int>();
+        private List<int> _Downloaded_Chapters_index = new List<int>();
         private bool _IsBookDownloaded = false;
-        private bool _IsBookContentDownloaded;
-        private bool _IsChapterDownloaded;
+        private bool _IsBookContentDownloaded =false;
+        public bool IsBookDownloaded
+        {
+            get { return _IsBookDownloaded; }
+        }
         public Book_ViewModel()
         {
             _Book = new Book();
@@ -27,39 +31,73 @@ namespace EbookWindows.ViewModels
             get { return _Bookmark_Chapters_Index; }
             set { _Bookmark_Chapters_Index = value; }
         }
-        public void LoadData(Book_Short item) //Load data offine here
+        public List<int> Downloaded_Chapters_index
+        {
+            get { return _Downloaded_Chapters_index; }
+            set { _Downloaded_Chapters_index = value; }
+        }
+        public bool ReadDownloadedList()
+        {
+            _Downloaded_Chapters_index.Clear();
+            try
+            {
+                if (Directory.Exists(App.Global.Book_Directory + "\\content"))
+                {
+                    var list = Directory.GetFiles(App.Global.Book_Directory + "\\content", "*.json");
+                    foreach (var item in list)
+                    {
+                        _Downloaded_Chapters_index.Add(Int32.Parse(Path.GetFileName(item).Replace(".json","")));
+                    }
+                }
+            }
+            catch
+            {
+                return false;
+            }
+            return true;
+        }
+        public bool LoadData(Book_Short item) //Load data offine here
         {
             App.Global.Book_Directory = item.book_dir;
+            _Bookmark_Chapters_Index.Clear();
             try
             {
                 using (StreamReader file = File.OpenText(item.book_dir + "\\detail.json"))
                 {
                     JsonSerializer serializer = new JsonSerializer();
                     _Book = (Book)serializer.Deserialize(file, typeof(Book));
-                    if(_Book.season_name.Count ==0)
+                    if (_Book.season_name.Count == 0)
                     {
                         _Book.season_name.Add("Quyển 1");
                         _Book.season_index.Add(0);
-                    }    
+                    }
                     _IsBookDownloaded = true;
+                    
                 }
-                
-            }
-            catch
-            {
-
-            }
-            try
-            {
-                using (StreamReader file = File.OpenText(item.book_dir + "\\Bookmarks.json"))
+                if(ReadDownloadedList())
                 {
-                    JsonSerializer serializer = new JsonSerializer();
-                    _Bookmark_Chapters_Index = (List<int>)serializer.Deserialize(file, typeof(List<int>));
+                    if (_Downloaded_Chapters_index.Count == _Book.chapter_link.Count())
+                        _IsBookContentDownloaded = true;
+                    else
+                        _IsBookContentDownloaded = false;
+                }   
+                else
+                {
+                    _IsBookContentDownloaded = false;
                 }
+                if (File.Exists(item.book_dir + "\\Bookmarks.json"))
+                {
+                    using (StreamReader file = File.OpenText(item.book_dir + "\\Bookmarks.json"))
+                    {
+                        JsonSerializer serializer = new JsonSerializer();
+                        _Bookmark_Chapters_Index = (List<int>)serializer.Deserialize(file, typeof(List<int>));
+                    }
+                }
+                return true;
             }
             catch
             {
-
+                return false;
             }
         }
         public void Save_Bookmark()
@@ -119,6 +157,7 @@ namespace EbookWindows.ViewModels
 
         public void Download_Content()
         {
+            
             var path_data = App.Global.Directory_Folder + "\\data\\book" + "\\" + _Book.source + "\\" + _Book.book_id + "\\content";
             if (!Directory.Exists(path_data))
             {
@@ -136,7 +175,6 @@ namespace EbookWindows.ViewModels
                 //Reset priviouse priority of the TPL Thread
                 Thread.CurrentThread.Priority = priviousePrio;
             });
-            List<Task> TaskList = new List<Task>();
             //Console.WriteLine("EndInit");
         }
 
@@ -157,25 +195,34 @@ namespace EbookWindows.ViewModels
             };
             App.Global.Book_Short_ViewModel.LoadListBookShort();
         }
-
-
-
-        private void Download_Content_OneChaper(string item)
+        public bool Download_Content_OneChaper(string item)
         {
             var count = _Book.chapter_link.FindIndex(x => x.Contains(item));
+            var issues = 0;
             var path_data = App.Global.Directory_Folder + "\\data\\book" + "\\" + _Book.source + "\\" + _Book.book_id + "\\content";
+            if (!Directory.Exists(path_data))
+            {
+                Directory.CreateDirectory(path_data);
+            }
             if (File.Exists(path_data + "\\" + count + ".json"))
-                return;
+                return true;
             while (true)
             {
                 try
                 {
                     var json = new WebClient().DownloadString(App.Global.API_URL_Primary + "/api/chapters?url=" + item);
                     File.WriteAllText(path_data + "\\" + count + ".json", json);
-                    return;
+                    if (!_Bookmark_Chapters_Index.Contains(count))
+                    _Bookmark_Chapters_Index.Add(count);
+                    return true;
                 }
-                catch
+                catch (Exception e)
                 {
+                    issues++;
+                    if(issues >= 3)
+                    {
+                        return false;
+                    }    
                     // Catch but do nothing
                 }
             }

@@ -48,24 +48,24 @@
                     Promising a much better reading experience for all user.<LineBreak/><LineBreak/>
 
                     Currently, we provide reader view for these sites below:<LineBreak/>   
-                    <ListView>
-                        <ListViewItem>
-                             <Hyperlink ToolTip="https://truyen.tangthuvien.vn/" Foreground="{DynamicResource PrimaryHueMidBrush}" FontSize="15" NavigateUri="https://truyen.tangthuvien.vn/" RequestNavigate="Hyperlink_RequestNavigate">
+                    <ItemsControl>
+                        <TextBlock>
+                             <Hyperlink ToolTip="https://truyen.tangthuvien.vn/"  Foreground="{DynamicResource PrimaryHueMidBrush}" FontSize="15" NavigateUri="https://truyen.tangthuvien.vn/" RequestNavigate="Hyperlink_RequestNavigate">
                          Tàng Thư Viện
                      </Hyperlink>
-                     </ListViewItem>
-                        <ListViewItem>
-                        <Hyperlink ToolTip="https://trumtruyen.net/" Foreground="{DynamicResource PrimaryHueMidBrush}" FontSize="15" NavigateUri="https://trumtruyen.net/" RequestNavigate="Hyperlink_RequestNavigate">
+                     </TextBlock>
+                        <TextBlock>
+                        <Hyperlink ToolTip="https://trumtruyen.net/"  Foreground="{DynamicResource PrimaryHueMidBrush}" FontSize="15" NavigateUri="https://trumtruyen.net/" RequestNavigate="Hyperlink_RequestNavigate">
                          Trùm truyện
                      </Hyperlink>
-                        </ListViewItem>
-                        <ListViewItem>
-                        <Hyperlink ToolTip="https://iztruyen.com/" Foreground="{DynamicResource PrimaryHueMidBrush}" FontSize="15" NavigateUri="https://iztruyen.com/" RequestNavigate="Hyperlink_RequestNavigate">
+                        </TextBlock>
+                        <TextBlock>
+                        <Hyperlink ToolTip="https://iztruyen.com/"   Foreground="{DynamicResource PrimaryHueMidBrush}" FontSize="15" NavigateUri="https://iztruyen.com/" RequestNavigate="Hyperlink_RequestNavigate">
                          IZ truyện
                      </Hyperlink>
-                        </ListViewItem>
+                        </TextBlock>
                        
-                    </ListView>
+                    </ItemsControl>
                      <LineBreak/> 
                     ... hopefully, more sites will be supported in the future.<LineBreak/>  
                     And we also support viewing common document and ebook files, such as:<LineBreak/>  

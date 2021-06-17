@@ -112,15 +112,24 @@ namespace EbookWindows.Screen
         }
         public void OpenDetailScreen()
         {
+            detailScreen.LoadPaging(detailScreen.page_index);
             comicReadingScreen.Visibility = Visibility.Collapsed;
             detailScreen.Visibility = Visibility.Visible;
         }
         public async void OpenDetailScreen(Book_Short x)
         {
             StartLoading();
-            await Task.Run(()=>detailScreen.LoadData(x));
-            MainGrid.Visibility = Visibility.Collapsed;
-            detailScreen.Visibility = Visibility.Visible;
+            var xa = await Task.Run(()=> detailScreen.LoadData(x));
+            if (xa)
+            {
+                MainGrid.Visibility = Visibility.Collapsed;
+                detailScreen.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                MessageBox.Show("Có lỗi xảy ra khi đọc file, vui lòng thử lại.");
+            }
+
             EndLoading();
         }
         
@@ -130,7 +139,6 @@ namespace EbookWindows.Screen
             var x= await Task.Run(() => detailScreen.LoadData(url));
             if (x)
             {
-
                 MainGrid.Visibility = Visibility.Collapsed;
                 detailScreen.Visibility = Visibility.Visible;
             }    
