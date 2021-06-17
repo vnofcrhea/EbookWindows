@@ -40,16 +40,40 @@
                     </Grid>
                 </Border>
                 <Grid Grid.Row="1">
-                    <TextBlock  Style="{DynamicResource MaterialDesignBody1TextBlock}" Margin="8,8,8,16" TextWrapping="WrapWithOverflow"
-                       >
-                Features:<LineBreak/>
-                Support reading epub, pdf book files<LineBreak/>
-                Support reading and storing books from the following free online reading websites: <LineBreak/>
-                <TabPanel></TabPanel>
-                 <Hyperlink Foreground="{DynamicResource PrimaryHueMidBrush}" FontSize="15" NavigateUri="https://truyen.tangthuvien.vn/" RequestNavigate="Hyperlink_RequestNavigate">
-                     Tàng Thư Viện
-                 </Hyperlink>
-                <LineBreak/>continue to update...
+                    <TextBlock  Style="{DynamicResource MaterialDesignBody1TextBlock}" Margin="8,8,8,16" TextWrapping="WrapWithOverflow">
+                    INTRO <LineBreak/>
+                    Welcome to READER+<LineBreak/>
+                    A place for people who loves reading online novels<LineBreak/>
+                    We support a better UI for reading online novels and ton of customizations.<LineBreak/>
+                    Promising a much better reading experience for all user.<LineBreak/><LineBreak/>
+
+                    Currently, we provide reader view for these sites below:<LineBreak/>   
+                    <ListView>
+                        <ListViewItem>
+                             <Hyperlink ToolTip="https://truyen.tangthuvien.vn/" Foreground="{DynamicResource PrimaryHueMidBrush}" FontSize="15" NavigateUri="https://truyen.tangthuvien.vn/" RequestNavigate="Hyperlink_RequestNavigate">
+                         Tàng Thư Viện
+                     </Hyperlink>
+                     </ListViewItem>
+                        <ListViewItem>
+                        <Hyperlink ToolTip="https://trumtruyen.net/" Foreground="{DynamicResource PrimaryHueMidBrush}" FontSize="15" NavigateUri="https://trumtruyen.net/" RequestNavigate="Hyperlink_RequestNavigate">
+                         Trùm truyện
+                     </Hyperlink>
+                        </ListViewItem>
+                        <ListViewItem>
+                        <Hyperlink ToolTip="https://iztruyen.com/" Foreground="{DynamicResource PrimaryHueMidBrush}" FontSize="15" NavigateUri="https://iztruyen.com/" RequestNavigate="Hyperlink_RequestNavigate">
+                         IZ truyện
+                     </Hyperlink>
+                        </ListViewItem>
+                       
+                    </ListView>
+                     <LineBreak/> 
+                    ... hopefully, more sites will be supported in the future.<LineBreak/>  
+                    And we also support viewing common document and ebook files, such as:<LineBreak/>  
+                    1. .epub<LineBreak/>  
+                    2. .pdf<LineBreak/>  
+                    <LineBreak/>  
+                    Thank you very much for choosing our app. <LineBreak/> 
+                    Have a nice day!  <LineBreak/>
                     </TextBlock>
                 </Grid>
             </Grid>
