@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -44,7 +45,7 @@ namespace EbookWindows.Screen
 
         private Task task;
 
-        private int GlobalScale = 2;
+        private int GlobalScale = 1;
 
         private Rectangle destinationRectangle;
 
@@ -59,7 +60,7 @@ namespace EbookWindows.Screen
         private string filePath;
         public Pdf_ReadingScreen()
         {
-            zoomValue = 0.8;
+            zoomValue = 1;
             InitializeComponent();
             this.document = new pdfDocument();
             this.DataContext = this.document;
@@ -256,10 +257,21 @@ namespace EbookWindows.Screen
         /// <param name="routedEventArgs"></param>
         private void OnLinkClick(object sender, RoutedEventArgs routedEventArgs)
         {
-            Link link = (Link)((Button)sender).DataContext;
-            this.document.Document.Navigator.GoToLink(link);
+             Link link = (Link)((Button)sender).DataContext;
+            //    this.document.Document.Navigator.GoToLink(link);
+            //    this.destinationRectangle = link.GetDestinationRectangle((int)(this.document.Page.Width * this.GlobalScale), (int)(this.document.Page.Height * this.GlobalScale), null);
+            string linkStr = link.DestinationUri.ToString();
+            MessageBoxResult result = MessageBox.Show($"Are you sure you want to continue connecting \n{linkStr}", "Warning", MessageBoxButton.YesNo,MessageBoxImage.Warning);
+            if (result == MessageBoxResult.Yes)
+            {
+                Process.Start(new ProcessStartInfo(linkStr));
+                routedEventArgs.Handled = true;
+            }
+            else if (result == MessageBoxResult.No)
+            {
+                //no...
+            }
 
-            this.destinationRectangle = link.GetDestinationRectangle((int)(this.document.Page.Width * this.GlobalScale), (int)(this.document.Page.Height * this.GlobalScale), null);
         }
 
         /// <summary>

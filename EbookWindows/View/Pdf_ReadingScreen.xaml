@@ -65,7 +65,7 @@
                         <materialDesign:PackIcon Kind="ZoomOutOutline"></materialDesign:PackIcon>
                     </Button>
                     <Label Name="zoomLabel"  Width="40" Height="20" BorderBrush="{DynamicResource PrimaryHueMidBrush}" BorderThickness="0" Padding="0"
-                             VerticalContentAlignment="Center" HorizontalContentAlignment="Center"  Content="80%" Foreground="#FFFFFF">
+                             VerticalContentAlignment="Center" HorizontalContentAlignment="Center"  Content="100%" Foreground="#FFFFFF">
                     </Label>
 
                     <Button Name="ZoomInBtn"  Click="ZoomInBtn_Click">
