@@ -22,6 +22,7 @@ namespace EbookWindows.ViewModels
         public static List<string> menuItems = new List<string>();
         public static Dictionary<string, string> tableContent = new Dictionary<string, string>();
         public static Dictionary<string, string> bookmarks = new Dictionary<string, string>();
+        public static List<string> readingStatus = new List<string>();
 
         //Variables for font
         public static List<string> fontFamilys = epub.fontFamilys;
@@ -31,7 +32,8 @@ namespace EbookWindows.ViewModels
         public static bool ReadFile(string filePath)
         {
             if (File.Exists(filePath)) //check if any file is chosen
-            {
+            {               
+                //Start read new file
                 epub.filePath = filePath;
                 epub.fileName = Path.GetFileNameWithoutExtension(epub.filePath);
                 //Create library folder if not have yet
@@ -48,15 +50,18 @@ namespace EbookWindows.ViewModels
                 catch
                 {
                     MessageBox.Show("Invalid epub file! Please choose another file.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return false;
                 }                
-                //Set up new epub file folder: stylesheet, bookmark
+                //Set up new epub file folder: stylesheet, bookmark, status
                 epub.baseMenuXmlDiretory = Path.Combine(epub.tempPath, epubBook.Schema.ContentDirectoryPath);
                 SetupNewEpub();
                 Clear();
-
-                //get stylesheet path
+                //get stylesheet, status path
                 if (epub.stylesheetPath == null)
-                    epub.stylesheetPath = Path.Combine(epub.tempPath, epub.baseMenuXmlDiretory, getStylesheetFileName());
+                {
+                    epub.stylesheetPath = Path.Combine(epub.baseMenuXmlDiretory, getStylesheetFileName());
+                    epub.readingStatusPath = Path.Combine(epub.baseMenuXmlDiretory, epub.statusFileName);
+                }                  
                 //get menu
                 foreach (EpubContentFile epubContent in epubBook.ReadingOrder)
                 {
@@ -66,8 +71,9 @@ namespace EbookWindows.ViewModels
                 getTableContent(epubBook.Navigation);
                 setTableContent();
                 //get epub.bookmarks
-                getBookmarkFromFile(Path.GetFullPath(Path.Combine(epub.tempPath, epub.baseMenuXmlDiretory, epub.bookmarkFileName)));
-
+                getBookmarkFromFile(Path.GetFullPath(Path.Combine(epub.baseMenuXmlDiretory, epub.bookmarkFileName)));
+                //get reading status
+                getReadingStatus();
             }
             else return false;
             return true;
@@ -84,10 +90,20 @@ namespace EbookWindows.ViewModels
                 //add bookmark file
                 var fileStream = File.Create((epub.baseMenuXmlDiretory + "\\" + epub.bookmarkFileName));
                 fileStream.Close();
+                //  initial reading status file
+                setInitialReadingStatus();
                 //set initial Stylesheet file - create new if not exists
-                setInitialStylesheet();
-                // add latest read file
+                setInitialStylesheet();                  
             }
+        }
+
+        private static void setInitialReadingStatus()
+        {
+            epub.readingStatusPath = (epub.baseMenuXmlDiretory + "\\" + epub.statusFileName);
+            var fileStream = File.Create(epub.readingStatusPath);
+            fileStream.Close();
+            string firstStatus = "0\nTime New Roman";
+            writeAllFile(epub.readingStatusPath, firstStatus);
         }
 
         private static void setInitialStylesheet()
@@ -104,6 +120,7 @@ namespace EbookWindows.ViewModels
                     "\n padding: 0 1em 1em 1em; " +
                     "\n Background-color: white;" +
                     "\n Color: black;" +
+                    "\n Font-family: Time New Roman;" +
                     "\n }" +
                     "\n" + cssContent;
                 writeAllFile(epub.stylesheetPath, cssContent);
@@ -112,16 +129,18 @@ namespace EbookWindows.ViewModels
             else //stylesheet File not exists
             {
                 string directoryName = Path.GetDirectoryName(cssFiles.ElementAt(0).Key);
-                //make new sylesheet file,
-                var fileStream = File.Create((epub.baseMenuXmlDiretory + "\\" + directoryName + "\\" + epub.stylesheetFileName));
-                fileStream.Close();
+                //update stylesheetPath
                 epub.stylesheetPath = epub.baseMenuXmlDiretory + "\\" + directoryName + "\\" + epub.stylesheetFileName;
+                //make new sylesheet file,
+                var fileStream = File.Create(epub.stylesheetPath);
+                fileStream.Close();
                 //update new stylesheet file
                 string cssContent = "/*Offline epub reader custom*/" +
                     "\nbody { " +
                     "\n padding: 0 1em 1em 1em; " +
                     "\n Background-color: white;" +
                     "\n Color: black;" +
+                    "\n Font-family: Time New Roman;" +
                     "\n }\n";
                 writeAllFile(epub.stylesheetPath, cssContent);
                 //import that file to other css file "@import "stylesheet.css";
@@ -131,9 +150,6 @@ namespace EbookWindows.ViewModels
                     cssContent = "import " + epub.stylesheetFileName + "\n" + cssContent;
                     writeAllFile(Path.Combine(epub.baseMenuXmlDiretory, temp.Value.FileName.ToString()), cssContent);
                 }
-
-
-
             }
         }
 
@@ -150,6 +166,7 @@ namespace EbookWindows.ViewModels
             menuItems.Clear();
             bookmarks.Clear();
             tableContent.Clear();
+            readingStatus.Clear();
         }
         private static string GetPath(string link)
         {
@@ -267,7 +284,7 @@ namespace EbookWindows.ViewModels
             if (bookmarks.ContainsKey(chapterLink))
                 return 0; //chapter already bookmarked
             bookmarks.Add(chapterLink, tableContent[chapterLink]);
-            updateBookmarkToFile(Path.Combine(epub.tempPath, epub.baseMenuXmlDiretory, epub.bookmarkFileName));
+            updateBookmarkToFile(Path.Combine(epub.baseMenuXmlDiretory, epub.bookmarkFileName));
             return 1;
         }
         public static int deleteBookmark(string chapterLink)
@@ -277,7 +294,7 @@ namespace EbookWindows.ViewModels
                 return 0;
             }
             bookmarks.Remove(chapterLink);
-            updateBookmarkToFile(Path.Combine(epub.tempPath, epub.baseMenuXmlDiretory, epub.bookmarkFileName));
+            updateBookmarkToFile(Path.Combine(epub.baseMenuXmlDiretory, epub.bookmarkFileName));
             return 1;
         }
 
@@ -323,6 +340,54 @@ namespace EbookWindows.ViewModels
         }
         #endregion
 
+        #region reading status
+        private static bool getReadingStatus()
+        {
+            try
+            {
+                using (StreamReader sr = new StreamReader(epub.readingStatusPath))
+                {
+                    string line;
+                    while ((line = sr.ReadLine()) != null)
+                    {
+                        readingStatus.Add(line);
+                    }
+                    sr.Close();
+                    return true;
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+            return false;
+        }
+
+        public static bool updateReadingStatus(int chapter, string fontFamily)
+        {
+            try
+            {
+                //update status list
+                readingStatus[0] = chapter.ToString();
+                readingStatus[1] = fontFamily;
+                 //update file
+                using (StreamWriter sw = new StreamWriter(epub.readingStatusPath))
+                {
+                    foreach (string s in readingStatus)
+                        sw.WriteLine(s);
+                    sw.Close();
+                }
+
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+            return false;
+        }
+
+        #endregion
+
         #region color and font
         public static void changeBackgroundColor(string newColor)
         {
@@ -360,7 +425,7 @@ namespace EbookWindows.ViewModels
             //change new color
             StringBuilder s = new StringBuilder(newStyle);
             int currentIndex = newStyle.IndexOf("Color");
-            if (currentIndex >= 0) //check custom background is added yet
+            if (currentIndex >= 0) //check custom foreground is added yet
             {
                 //delete old color
                 s.Remove(currentIndex,
@@ -387,7 +452,7 @@ namespace EbookWindows.ViewModels
             //change new color
             StringBuilder s = new StringBuilder(newStyle);
             int currentIndex = newStyle.IndexOf("Font-family: ");
-            if (currentIndex >= 0) //check custom background is added yet
+            if (currentIndex >= 0) //check custom font-family is added yet
             {
                 //delete old color
                 s.Remove(currentIndex,

@@ -206,21 +206,26 @@ namespace EbookWindows.Screen
             if (fileExtension.Equals(".pdf"))
             {
                 int location = recentFileUserControl.GetRecentLocationOfFile(filePath);
-                if(pdfReadingScreen.LoadData(filePath, location))
+                if (pdfReadingScreen.LoadData(filePath, location))
                 {
                     MainGrid.Visibility = Visibility.Collapsed;
                     epubReadingScreen.Visibility = Visibility.Collapsed;
                     pdfReadingScreen.Visibility = Visibility.Visible;
                     AddRecentFileList(index, filePath, "Icon\\pdf.png");
-                }     
-            } else if (fileExtension.Equals(".epub"))
+                }
+            }
+            else if (fileExtension.Equals(".epub"))
             {
-                epubReadingScreen.ReadFile(filePath);
-                MainGrid.Visibility = Visibility.Collapsed;
-                pdfReadingScreen.Visibility = Visibility.Collapsed;
-                epubReadingScreen.Visibility = Visibility.Visible;
-                AddRecentFileList(index, filePath, "Icon\\epub.png");
-            }else
+                if (epubReadingScreen.ReadFile(filePath))
+                {
+                    MainGrid.Visibility = Visibility.Collapsed;
+                    pdfReadingScreen.Visibility = Visibility.Collapsed;
+                    epubReadingScreen.Visibility = Visibility.Visible;
+                    AddRecentFileList(index, filePath, "Icon\\epub.png");
+                }
+                //else do nothing
+            }
+            else
             {
                 //nothing
             }

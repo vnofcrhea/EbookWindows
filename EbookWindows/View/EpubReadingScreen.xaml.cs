@@ -27,7 +27,7 @@ namespace EbookWindows.Screen
         System.Windows.Threading.DispatcherTimer dispatcherTimer = new System.Windows.Threading.DispatcherTimer();
         private TimeSpan SpanTime;
 
-        private static int currentPage = 0;
+        private static int currentPage = -1;
         private static double currentZoom = 0;
 
 
@@ -49,22 +49,30 @@ namespace EbookWindows.Screen
             }
             return -1;
         }
-        public void ReadFile(string filePath)
+        public bool ReadFile(string filePath)
         {
-            OfflineEpub_ViewModel.ReadFile(filePath);
+            //update reading status before read new file
+            if(currentPage!=-1)
+                OfflineEpub_ViewModel.updateReadingStatus(currentPage, textFontComboBox.SelectedItem.ToString());
+            if (OfflineEpub_ViewModel.ReadFile(filePath))
+            {
+               currentPage = int.Parse(OfflineEpub_ViewModel.readingStatus[0]);
+                //Font family combobox
+                textFontComboBox.ItemsSource = OfflineEpub_ViewModel.fontFamilys;
+                //update table content
+                TableContentComboBox.ItemsSource = OfflineEpub_ViewModel.tableContent;
+                TableContentComboBox.Items.Refresh();
+                TableContentComboBox.SelectedIndex = currentPage;
+                //update boookmark list
+                bookmarkListview.ItemsSource = OfflineEpub_ViewModel.bookmarks;
+                bookmarkListview.Items.Refresh();
+                //update reading status
+                epubWebBrowser.Address = OfflineEpub_ViewModel.menuItems[currentPage];
+                textFontComboBox.Text = OfflineEpub_ViewModel.readingStatus[1];
 
-            currentPage = 0;
-
-            textFontComboBox.ItemsSource = OfflineEpub_ViewModel.fontFamilys;
-
-            TableContentComboBox.ItemsSource = OfflineEpub_ViewModel.tableContent;
-            TableContentComboBox.Items.Refresh();
-            TableContentComboBox.SelectedIndex = 0;
-
-            bookmarkListview.ItemsSource = OfflineEpub_ViewModel.bookmarks;
-            bookmarkListview.Items.Refresh();
-
-            epubWebBrowser.Address = OfflineEpub_ViewModel.menuItems[0];
+                return true;
+            }
+            return false;
         }
 
         #region show/hide tool bar
@@ -272,23 +280,6 @@ namespace EbookWindows.Screen
         {
             WindowScreen windowScreen = (WindowScreen)Application.Current.MainWindow;
             windowScreen.addMoreBookBtn_Click(sender, e);
-
-            //if (myEpub.ReadFile()) //file not ""
-            //{
-            //    currentPage = 0;
-
-            //    TableContentComboBox.Items.Clear();
-            //    foreach (string title in OfflineEpub_ViewModel.tableContentTitle)
-            //    {
-            //        TableContentComboBox.Items.Add(title);
-            //    }
-            //    TableContentComboBox.SelectedIndex = 0;
-
-            //    bookmarkListview.ItemsSource = OfflineEpub_ViewModel.tableContentTitle;
-            //    bookmarkListview.Items.Refresh();
-
-            //    epubWebBrowser.Address = OfflineEpub_ViewModel.menuItems[0];
-            //}
         }
 
         #region bookmark

@@ -9,11 +9,12 @@ namespace EbookWindows.Model
 {
     public class OfflineEpub
     {
-        #region private variables
+        #region initial variables
         //Initial file/folder names
         public readonly string library = "Library"; 
         public readonly string bookmarkFileName = "bookmarks.txt";
         public readonly string stylesheetFileName = "stylesheet.css";
+        public readonly string statusFileName = "status.txt";
         #endregion
 
         //Variables  for epub paths
@@ -22,6 +23,7 @@ namespace EbookWindows.Model
         public  string tempPath { get; set; }
         public  string baseMenuXmlDiretory { get; set; }
         public  string stylesheetPath { get; set; }
+        public  string readingStatusPath { get; set; }
 
         public List<string> fontFamilys = new List<string>();
 
@@ -34,8 +36,6 @@ namespace EbookWindows.Model
             fontFamilys.Add("Roboto");
             fontFamilys.Add("Tahoma");
         }
-        #endregion
-
 
         public static OfflineEpub GetInstance()
         {
@@ -43,7 +43,7 @@ namespace EbookWindows.Model
                 instance = new OfflineEpub();
             return instance;
         }
-
+        #endregion
 
 
     }
