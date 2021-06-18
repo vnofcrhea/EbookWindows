@@ -5,8 +5,6 @@ VisualStudioVersion = 16.0.30907.101
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EbookWindows", "EbookWindows\EbookWindows.csproj", "{103561F6-79BD-441E-805D-6EA2EE26B493}"
 EndProject
-Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "EbookWindowsInstaller", "EbookWindowsInstaller\EbookWindowsInstaller.vdproj", "{CBA0EE45-F93E-48B3-A12D-8FD3F92A9A7B}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,13 +27,6 @@ Global
 		{103561F6-79BD-441E-805D-6EA2EE26B493}.Release|x64.Build.0 = Release|x64
 		{103561F6-79BD-441E-805D-6EA2EE26B493}.Release|x86.ActiveCfg = Release|x86
 		{103561F6-79BD-441E-805D-6EA2EE26B493}.Release|x86.Build.0 = Release|x86
-		{CBA0EE45-F93E-48B3-A12D-8FD3F92A9A7B}.Debug|Any CPU.ActiveCfg = Debug
-		{CBA0EE45-F93E-48B3-A12D-8FD3F92A9A7B}.Debug|x64.ActiveCfg = Debug
-		{CBA0EE45-F93E-48B3-A12D-8FD3F92A9A7B}.Debug|x86.ActiveCfg = Debug
-		{CBA0EE45-F93E-48B3-A12D-8FD3F92A9A7B}.Debug|x86.Build.0 = Debug
-		{CBA0EE45-F93E-48B3-A12D-8FD3F92A9A7B}.Release|Any CPU.ActiveCfg = Release
-		{CBA0EE45-F93E-48B3-A12D-8FD3F92A9A7B}.Release|x64.ActiveCfg = Release
-		{CBA0EE45-F93E-48B3-A12D-8FD3F92A9A7B}.Release|x86.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

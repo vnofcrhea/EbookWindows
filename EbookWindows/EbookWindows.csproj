@@ -83,8 +83,8 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Apitron.PDF.Rasterizer, Version=3.0.157.0, Culture=neutral, PublicKeyToken=6e759dbb0039406e, processorArchitecture=MSIL">
-      <HintPath>..\packages\Apitron.PDF.Rasterizer.3.0.157\lib\net471\Apitron.PDF.Rasterizer.dll</HintPath>
+    <Reference Include="Apitron.PDF.Rasterizer, Version=3.0.160.0, Culture=neutral, PublicKeyToken=6e759dbb0039406e, processorArchitecture=MSIL">
+      <HintPath>..\packages\Apitron.PDF.Rasterizer.3.0.160\lib\net471\Apitron.PDF.Rasterizer.dll</HintPath>
     </Reference>
     <Reference Include="BouncyCastle.Crypto, Version=1.8.9.0, Culture=neutral, PublicKeyToken=0e99375e54769942, processorArchitecture=MSIL">
       <HintPath>..\packages\Portable.BouncyCastle.1.8.9\lib\net40\BouncyCastle.Crypto.dll</HintPath>
