@@ -83,12 +83,12 @@
                                         <Setter Property="Margin" Value="5,0"></Setter>
                                     </Style>
                                 </StackPanel.Resources>
-                                <Button Name="btnAddToLibrary" Click="AddToLibrary_Click" VerticalContentAlignment="Center" Padding="5,0">
+                                <!--<Button Name="btnAddToLibrary" Click="AddToLibrary_Click" VerticalContentAlignment="Center" Padding="5,0">
                                     <StackPanel Orientation="Horizontal">
                                         <materialDesign:PackIcon Kind="Add" Width="24" Height="24"></materialDesign:PackIcon>
                                         <TextBlock VerticalAlignment="Center" FontSize="11" Margin="5,0"> Add to Library</TextBlock>
                                     </StackPanel>
-                                </Button>
+                                </Button>-->
                                 <Button Name="btnDownloadContent" Click="DownloadContent_Click" ToolTip="Downloader will run in background and need more time to excetute." ToolTipService.InitialShowDelay="300">
                                     <StackPanel Orientation="Horizontal">
                                         <materialDesign:PackIcon Kind="Download" Width="24" Height="24"></materialDesign:PackIcon>

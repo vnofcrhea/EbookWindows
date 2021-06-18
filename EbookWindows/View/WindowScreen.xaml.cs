@@ -139,6 +139,9 @@ namespace EbookWindows.Screen
             var x= await Task.Run(() => detailScreen.LoadData(url));
             if (x)
             {
+                
+                LoadShelf();
+                LoadTreeViewList();
                 MainGrid.Visibility = Visibility.Collapsed;
                 detailScreen.Visibility = Visibility.Visible;
             }    

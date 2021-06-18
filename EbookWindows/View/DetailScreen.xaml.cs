@@ -55,12 +55,12 @@ namespace EbookWindows.Screen
                 bookName.Text = App.Global.Book_ViewModel.book_name;
                 if (App.Global.Book_ViewModel.IsBookDownloaded)
                 {
-                    btnAddToLibrary.Visibility = Visibility.Collapsed;
+                    //btnAddToLibrary.Visibility = Visibility.Collapsed;
                     btnDownloadContent.Visibility = Visibility.Visible;
                 }    
                     else
                 {
-                    btnAddToLibrary.Visibility = Visibility.Visible;
+                    //btnAddToLibrary.Visibility = Visibility.Visible;
                     btnDownloadContent.Visibility = Visibility.Collapsed;
                 }
                 BitmapImage image = new BitmapImage();
@@ -80,6 +80,7 @@ namespace EbookWindows.Screen
         {
             if(!App.Global.Book_ViewModel.LoadData(url))
                 return false;
+            AddToLibrary();
             #region //Xác định số trang
             page_numbers = App.Global.Book_ViewModel.bookTotalChapter / chapter_limit + 1;
             page_index = 1;
@@ -287,16 +288,21 @@ namespace EbookWindows.Screen
             await Task.Run(() => App.Global.Book_ViewModel.AddToLibrary());
             if (App.Global.Book_ViewModel.IsBookDownloaded)
             {
-                btnAddToLibrary.Visibility = Visibility.Collapsed;
+                //btnAddToLibrary.Visibility = Visibility.Collapsed;
                 btnDownloadContent.Visibility = Visibility.Visible;
             }
             else
             {
-                btnAddToLibrary.Visibility = Visibility.Visible;
+                //btnAddToLibrary.Visibility = Visibility.Visible;
                 btnDownloadContent.Visibility = Visibility.Collapsed;
             }
             (App.Current.MainWindow as WindowScreen).LoadShelf();
             (App.Current.MainWindow as WindowScreen).LoadTreeViewList();
+        }
+        private async void AddToLibrary()
+        {
+            await Task.Run(() => App.Global.Book_ViewModel.AddToLibrary());
+           
         }
         private async void DeleteBook_Click(object sender, RoutedEventArgs e)
         {

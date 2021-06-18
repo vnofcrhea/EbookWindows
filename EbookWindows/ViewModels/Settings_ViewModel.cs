@@ -10,7 +10,6 @@ using System.Windows.Media;
 using MaterialDesignColors;
 using MaterialDesignColors.ColorManipulation;
 using Newtonsoft.Json;
-
 namespace EbookWindows.ViewModels
 {
     public class Settings_ViewModel
@@ -43,6 +42,7 @@ namespace EbookWindows.ViewModels
                 _settings.SecondaryColor = Color.FromRgb(50, 205, 50);
             }
         }
+        private Color old_Color;
         public Settings Settings
         {
             get { return _settings; }
@@ -78,7 +78,7 @@ namespace EbookWindows.ViewModels
         public Color PrimaryColor
         {
             get { return _settings.PrimaryColor; }
-            set { if (_settings.PrimaryColor != value) { _settings.PrimaryColor = value; ApplyPrimaryColor(); } }
+            set { if (_settings.PrimaryColor != value) { old_Color = _settings.PrimaryColor; _settings.PrimaryColor = value; ApplyPrimaryColor(); } }
         }
         public Color SecondaryColor
         {
@@ -90,14 +90,23 @@ namespace EbookWindows.ViewModels
             get { if (_settings.BaseTheme == BaseTheme.Dark) return true; else return false; }
             set { if (value) BaseTheme = BaseTheme.Dark; else BaseTheme = BaseTheme.Light; }
         }
-        
+
         private void ApplyBaseTheme()
         {
+            if (_settings.BaseTheme == BaseTheme.Light)
+            {
+                PrimaryColor = Color.FromRgb(65, 69, 21);
+            }
+            else
+            {
+                PrimaryColor = Color.FromRgb(0, 200, 255);
+            }
             ITheme theme = _paletteHelper.GetTheme();
             theme.SetBaseTheme(_settings.BaseTheme.GetBaseTheme());
             if (_settings.BaseTheme == BaseTheme.Light)
                 theme.Paper = Color.FromRgb(246, 244, 236);
             _paletteHelper.SetTheme(theme);
+                
         }
         private void ApplyPrimaryColor()
         {

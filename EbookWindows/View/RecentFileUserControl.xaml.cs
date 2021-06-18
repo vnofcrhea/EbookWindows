@@ -35,7 +35,8 @@ namespace EbookWindows.Screen
         {
 
             InitializeComponent();
-
+            recentFileListView.ItemsSource = viewingList;
+            recentFileListView.Items.Refresh();
         }
         /// <summary>
         /// Loading data after RecentFileUserControl()

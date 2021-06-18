@@ -193,6 +193,8 @@ namespace EbookWindows.ViewModels
             {
                 Task.Run(() => { client.DownloadFile(new Uri(_Book.img_url), path_data + "\\" + "img.jpg"); });
             };
+            _IsBookDownloaded = true;
+            App.Global.Book_Directory = path_data;
             App.Global.Book_Short_ViewModel.LoadListBookShort();
         }
         public bool Download_Content_OneChaper(string item)
