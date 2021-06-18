@@ -368,14 +368,29 @@ namespace EbookWindows.Screen
             var url = (x.DataContext as Chapter).link;
             if(await Task.Run(()=>App.Global.Book_ViewModel.Download_Content_OneChaper(url)))
             {
-                (x.DataContext as Chapter).isDownloaded = true;
-                x.Content = new MaterialDesignThemes.Wpf.PackIcon { Kind = MaterialDesignThemes.Wpf.PackIconKind.CheckboxMarkedCircleOutline };
+                try
+                {
+                    (x.DataContext as Chapter).isDownloaded = true;
+                    x.Content = new MaterialDesignThemes.Wpf.PackIcon { Kind = MaterialDesignThemes.Wpf.PackIconKind.CheckboxMarkedCircleOutline };
+                }
+                catch
+                {
+
+                }
+
             } 
             else
             {
-                (x.DataContext as Chapter).isDownloaded = false;
-                x.Content = new MaterialDesignThemes.Wpf.PackIcon { Kind = MaterialDesignThemes.Wpf.PackIconKind.Download };
-            }    
+                try 
+                { 
+                    (x.DataContext as Chapter).isDownloaded = false;
+                    x.Content = new MaterialDesignThemes.Wpf.PackIcon { Kind = MaterialDesignThemes.Wpf.PackIconKind.Download };
+                }
+                catch
+                {
+    
+                }
+        }    
             
 
         }
