@@ -29,8 +29,8 @@ namespace EbookWindows.Screen
         private string viewLess = "View less";
         private const int minItems = 5;
         private const int maxItems = 10;
-        private const string pdf = "Icon\\pdf.png";
-        private const string epub = "Icon\\epub.png";
+        private const string pdf = "\\Icon\\pdf.png";
+        private const string epub = "\\Icon\\epub.png";
         public RecentFileUserControl()
         {
 

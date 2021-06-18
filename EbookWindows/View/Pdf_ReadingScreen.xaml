@@ -72,9 +72,6 @@
                     <Button Name="ZoomInBtn"  Click="ZoomInBtn_Click">
                         <materialDesign:PackIcon Kind="ZoomInOutline"></materialDesign:PackIcon>
                     </Button>
-                    <Button Margin="0" >
-                        <materialDesign:PackIcon Kind="FullscreenExit" ></materialDesign:PackIcon>
-                    </Button>
                 </StackPanel>
             </Border>
 

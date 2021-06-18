@@ -11,7 +11,7 @@
              mc:Ignorable="d"  Loaded="LoadData"
              d:DesignHeight="600" d:DesignWidth="500" >
     <UserControl.Resources>
-        <local1:AbsoluteConverter x:Key="converter"  />
+
     </UserControl.Resources>
 
     <Grid Margin="10,0,0,0" >
@@ -49,7 +49,7 @@
                     <DataTemplate>
                         <Grid HorizontalAlignment="Stretch">
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,0,20,0">
-                            <Image DockPanel.Dock="Left" Source="{Binding fileIcon, Converter={StaticResource converter}}"  Width="32" Height="32"/>
+                                <Image DockPanel.Dock="Left" Source="{Binding fileIcon}"  Width="32" Height="32"/>
                             <TextBlock DockPanel.Dock="Left" Grid.Column="0" Style="{DynamicResource MaterialDesignBody1TextBlock}" Text="{Binding fileName}" Margin="5,0,0,0" HorizontalAlignment="Stretch"  VerticalAlignment="Center" FontWeight="Bold"
                                                  TextWrapping="Wrap" TextTrimming="CharacterEllipsis"  ToolTip="{Binding fileName}"/>
                         </StackPanel>

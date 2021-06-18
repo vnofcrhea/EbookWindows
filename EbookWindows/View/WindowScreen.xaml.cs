@@ -223,7 +223,7 @@ namespace EbookWindows.Screen
             if (fileExtension.Equals(".pdf"))
             {
                 int location = recentFileUserControl.GetRecentLocationOfFile(filePath);
-                AddRecentFileList(index, filePath, "Icon\\pdf.png");
+                AddRecentFileList(index, filePath, "\\Icon\\pdf.png");
                 if (pdfReadingScreen.LoadData(filePath, location))
                 {
                     MainGrid.Visibility = Visibility.Collapsed;
@@ -237,7 +237,7 @@ namespace EbookWindows.Screen
                 MainGrid.Visibility = Visibility.Collapsed;
                 pdfReadingScreen.Visibility = Visibility.Collapsed;
                 epubReadingScreen.Visibility = Visibility.Visible;
-                AddRecentFileList(index, filePath, "Icon\\epub.png");
+                AddRecentFileList(index, filePath, "\\Icon\\epub.png");
             }else
             {
                 //nothing
