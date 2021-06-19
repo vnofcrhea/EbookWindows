@@ -27,10 +27,6 @@ namespace EbookWindows.View
             InitializeComponent();
         }
 
-        private void DragStart(object sender, MouseEventArgs e)
-        {
-
-        }
 
         private void Close(object sender, RoutedEventArgs e)
         {

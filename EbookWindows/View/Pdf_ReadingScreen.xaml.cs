@@ -73,8 +73,8 @@ namespace EbookWindows.Screen
         /// Load data with a file path
         /// </summary>
         /// <param name="filePath">the file path need to read</param>
-        public bool LoadData(string filePath, int location) //Load data here
-        {
+        public bool ReadFilePdf(string filePath, int location) //Load data here
+        {//WithoutPassword
             bool hasPassword = false;
             this.document = new pdfDocument();
             this.DataContext = this.document;
@@ -85,17 +85,23 @@ namespace EbookWindows.Screen
 
             try
             {
-                //A file doesn't has password
+               
                 Document document = new Document(file);
                 (this.document).Document = document;
                 pdfFile = new PdfLoadedDocument(filePath);              
                 bookmarkListView.ItemsSource = pdfFile.Bookmarks;     
             }
-            catch (Exception e)
+            catch (Apitron.PDF.Rasterizer.ErrorHandling.DocumentLoadException)
             {
                 file.Close();
                 hasPassword = true;
             }
+            catch (Exception)
+            {
+                MessageBox.Show("Sorry something went wrong in Reader+ can't open this file", "Error", MessageBoxButton.OK,MessageBoxImage.Error);
+                return false;
+            }
+
             if (hasPassword)
             {
                 //A file has password
@@ -111,25 +117,7 @@ namespace EbookWindows.Screen
             checkBookmark();
             return true;
         }
-
-        private void checkBookmark()
-        {
-          
-            for(int i = 0; i< pdfFile.Bookmarks.Count; )
-            {
-                if (pdfFile.Bookmarks[i].Destination == null)
-                {
-                    pdfFile.Bookmarks.RemoveAt(i);
-
-                }
-                else
-                {
-                    i++;
-                }
-                
-            }
-        }
-
+       
         /// <summary>
         /// Check: Is password string valid?
         /// </summary>
@@ -153,7 +141,25 @@ namespace EbookWindows.Screen
                 return false;
             }
             return true;
-        } 
+        }
+
+        private void checkBookmark()
+        {
+
+            for (int i = 0; i < pdfFile.Bookmarks.Count;)
+            {
+                if (pdfFile.Bookmarks[i].Destination == null)
+                {
+                    pdfFile.Bookmarks.RemoveAt(i);
+
+                }
+                else
+                {
+                    i++;
+                }
+
+            }
+        }
 
         private void DocumentOnPropertyChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
         {
@@ -170,13 +176,20 @@ namespace EbookWindows.Screen
                 document.Document.Navigator.GoToPage(recentLocation);
                 recentLocation = -1;
             }
-            Page currentPage = this.document.Page;
-            int desiredWidth = (int)currentPage.Width * GlobalScale;
-            int desiredHeight = (int)currentPage.Height * GlobalScale;
-            byte[] image = currentPage.RenderAsBytes(desiredWidth, desiredHeight, new RenderingSettings());
-            IList<Link> links = currentPage.Links;
-            SetImageSourceDelegate del = this.SetImageSource; //gán sự kiện vào hàm delegate
-            this.Dispatcher.Invoke(del, image, links, desiredWidth, desiredHeight); //thực hiện hàm SetImageSource
+            try
+            {
+                Page currentPage = this.document.Page;
+                int desiredWidth = (int)currentPage.Width * GlobalScale;
+                int desiredHeight = (int)currentPage.Height * GlobalScale;
+                byte[] image = currentPage.RenderAsBytes(desiredWidth, desiredHeight, new RenderingSettings());
+                IList<Link> links = currentPage.Links;
+                SetImageSourceDelegate del = this.SetImageSource; //gán sự kiện vào hàm delegate
+                this.Dispatcher.Invoke(del, image, links, desiredWidth, desiredHeight); //thực hiện hàm SetImageSource
+            }
+            catch (Exception)
+            {
+
+            }
         }
 
         private void SetImageSource(byte[] image, IList<Link> links, int width, int height)
@@ -259,9 +272,7 @@ namespace EbookWindows.Screen
         /// <param name="routedEventArgs"></param>
         private void OnLinkClick(object sender, RoutedEventArgs routedEventArgs)
         {
-             Link link = (Link)((Button)sender).DataContext;
-            //    this.document.Document.Navigator.GoToLink(link);
-            //    this.destinationRectangle = link.GetDestinationRectangle((int)(this.document.Page.Width * this.GlobalScale), (int)(this.document.Page.Height * this.GlobalScale), null);
+            Link link = (Link)((Button)sender).DataContext;
             string linkStr = link.DestinationUri.ToString();
             MessageBoxResult result = MessageBox.Show($"Are you sure you want to continue connecting \n{linkStr}", "Warning", MessageBoxButton.YesNo,MessageBoxImage.Warning);
             if (result == MessageBoxResult.Yes)
@@ -271,7 +282,7 @@ namespace EbookWindows.Screen
             }
             else if (result == MessageBoxResult.No)
             {
-                //no...
+                //nothing
             }
 
         }
@@ -467,14 +478,11 @@ namespace EbookWindows.Screen
             if (index != -1)
             {
                 int pageIndex = GetPageIndexFormTitle(pdfFile.Bookmarks[index].Title);
-                //if (pageIndex == -1)
-                //{
-                //    pageIndex = pdfFile.Bookmarks[index].Destination.PageIndex;
-                //}
                 document.Document.Navigator.GoToPage(pageIndex);
                 bookmarkListView.SelectedIndex = -1;
             }
         }
+
         private int top = 0;
         private void PageScroller_Changed(object sender, ScrollChangedEventArgs e)
         {
@@ -545,7 +553,6 @@ namespace EbookWindows.Screen
 
         private void keyDown_Test(object sender, KeyEventArgs e)
         {
-            //int index = PageConboBox.SelectedIndex;
             if (e.Key == Key.Right)
             {
                 document.Document.Navigator.MoveForward();
@@ -554,20 +561,6 @@ namespace EbookWindows.Screen
             }
             
         }
-
-        //private void toolBar_MouseEnter(object sender, MouseEventArgs e)
-        //{
-        //    BottomStackPanel.Visibility = Visibility.Visible;
-        //    TopStackPanel.Visibility = Visibility.Visible;
-        //    dispatcherTimer.Stop();
-        //}
-
-        //private void toolBar_MouseLeave(object sender, MouseEventArgs e)
-        //{
-        //    BottomStackPanel.Visibility = Visibility.Hidden;
-        //    TopStackPanel.Visibility = Visibility.Hidden;
-        //    dispatcherTimer.Stop();
-        //}
 
         private void PageComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {

@@ -23,7 +23,6 @@ namespace EbookWindows.Screen
     /// </summary>
     public partial class RecentFileUserControl : UserControl
     {
-        //private BindingList<RecentFile> recentFileList = new BindingList<RecentFile>();
         private List<RecentFile> viewingList = new List<RecentFile>();
         private string viewMore = "View more";
         private string viewLess = "View less";
@@ -45,8 +44,6 @@ namespace EbookWindows.Screen
         /// <param name="e"></param>
         private void LoadData(object sender, RoutedEventArgs e)
         {
-            //RecentFile_ViewModel recentFileDao = new RecentFile_ViewModel();
-            //recentFileList = recentFileDao.GetAll();
             MappingDataFromListToView(minItems);
             recentFileListView.ItemsSource = viewingList;
             recentFileListView.Items.Refresh();
@@ -135,19 +132,6 @@ namespace EbookWindows.Screen
         /// <returns>-1: if the filepath isn't exist; index of filepath exist in recentList</returns>
         private int IsFilePathExist(string newfilePath)
         {
-            //int amount = recentFileList.Count();
-            //if (recentFileList.Count() > 10)
-            //{
-            //    amount = 10;
-            //}
-            //for (int i = 0; i < amount; ++i)
-            //{
-            //    if (newfilePath.Equals(recentFileList[i].filePath))
-            //    {
-            //        return i;
-            //    }
-            //}
-            //return -1;
             return App.Global.RecentFile_ViewModel.Recent_File.FindIndex(e => e.filePath == newfilePath);
         }
         
@@ -161,12 +145,6 @@ namespace EbookWindows.Screen
             viewingList.AddRange(App.Global.RecentFile_ViewModel.Recent_File.Take(amount).ToList());
             recentFileListView.Items.Refresh();
         }
-
-        //public void UpdateLocationOfFile(int location)
-        //{
-        //  //  recentFileList[0].recentLocation = location.ToString();
-
-        //}
 
         private void viewBtn_CLick(object sender, RoutedEventArgs e)
         {
@@ -228,9 +206,6 @@ namespace EbookWindows.Screen
             }
 
         }
-
-        //Write File
-        
 
 
     }
