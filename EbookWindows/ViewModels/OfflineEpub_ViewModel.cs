@@ -36,10 +36,11 @@ namespace EbookWindows.ViewModels
                 //Start read new file
                 epub.filePath = filePath;
                 epub.fileName = Path.GetFileNameWithoutExtension(epub.filePath);
-                //Create library folder if not have yet
+                //Create "Hidden" library folder if not have yet
                 if (!Directory.Exists(epub.library))
                 {
-                    Directory.CreateDirectory(epub.library);
+                    DirectoryInfo di = Directory.CreateDirectory(epub.library);
+                    di.Attributes = FileAttributes.Directory | FileAttributes.Hidden;
                 }
                 epub.tempPath = Path.Combine(epub.library, epub.fileName);
                 //Check valid epub type
