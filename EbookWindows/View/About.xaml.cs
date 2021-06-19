@@ -32,11 +32,7 @@ namespace EbookWindows.Screen
             e.Handled = true;
         }
 
-        private void DragStart(object sender, MouseEventArgs e)
-        {
-
-        }
-
+       
         private void Close(object sender, RoutedEventArgs e)
         {
             (App.Current.MainWindow as WindowScreen).AboutClose();

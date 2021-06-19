@@ -35,8 +35,9 @@
                 <Canvas Name="PageCanvas" VerticalAlignment="Center" HorizontalAlignment="Center">
                     <Canvas.RenderTransform>
                         <ScaleTransform x:Name="st"></ScaleTransform>
+                        
                     </Canvas.RenderTransform>
-                    <Image Name="PageImage" Canvas.Top="0" Canvas.Left="0"></Image>
+                    <Image Name="PageImage" RenderOptions.BitmapScalingMode="HighQuality" Canvas.Top="0" Canvas.Left="0"></Image>
                 </Canvas>
             </ScrollViewer>
 
@@ -66,7 +67,7 @@
                         <materialDesign:PackIcon Kind="ZoomOutOutline"></materialDesign:PackIcon>
                     </Button>
                     <Label Name="zoomLabel"  Width="40" Height="20" BorderBrush="{DynamicResource PrimaryHueMidBrush}" BorderThickness="0" Padding="0"
-                             VerticalContentAlignment="Center" HorizontalContentAlignment="Center"  Content="100%" Foreground="#FFFFFF">
+                             VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Foreground="#FFFFFF">
                     </Label>
 
                     <Button Name="ZoomInBtn"  Click="ZoomInBtn_Click">
