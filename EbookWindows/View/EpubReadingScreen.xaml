@@ -33,8 +33,9 @@
         <Grid Margin="0">
 
             <!-- Reading Web Browser-->
-            <Grid Background="White">
-                <cefSharpWpf:ChromiumWebBrowser x:Name="epubWebBrowser" ScrollViewer.VerticalScrollBarVisibility="Disabled" ScrollViewer.HorizontalScrollBarVisibility="Disabled" />
+            <Grid>
+                <cefSharpWpf:ChromiumWebBrowser  x:Name="epubWebBrowser" ScrollViewer.VerticalScrollBarVisibility="Disabled" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                </cefSharpWpf:ChromiumWebBrowser>
             </Grid>
 
             <!-- Tool buttons.-->
@@ -51,7 +52,7 @@
                             <Setter Property="Height" Value="{StaticResource ButtonIconSizeDefault}"/>
                         </Style>
                     </StackPanel.Resources >
-                    <materialDesign:PopupBox  StaysOpen="True" IsEnabled="{Binding IsChecked, ElementName=PopupEnabled}" Foreground="{DynamicResource PrimaryHueMidBrush}">
+                    <materialDesign:PopupBox Style="{StaticResource MaterialDesignToolForegroundPopupBox}"  StaysOpen="True" IsEnabled="{Binding IsChecked, ElementName=PopupEnabled}" Foreground="{DynamicResource PrimaryHueMidBrush}">
                         <Grid Width="300" Margin="8,8,8,8">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*" />
@@ -86,7 +87,6 @@
                                             <Button Style="{DynamicResource MaterialDesignFlatButton}" Width="30" Background="#f6f4ec" Click="changeBackgroundButton_Click" Margin="0,0,5,0"></Button>
                                             <Button Style="{DynamicResource MaterialDesignFlatButton}" Width="30" Background="#e6f0e6" Click="changeBackgroundButton_Click" Margin="0,0,5,0"></Button>
                                             <Button Style="{DynamicResource MaterialDesignFlatButton}" Width="30" Background="#e3f5fa" Click="changeBackgroundButton_Click" Margin="0,0,5,0"></Button>
-                                            <Button Style="{DynamicResource MaterialDesignFlatButton}" Width="30" Background="#f6f4ec" Click="changeBackgroundButton_Click" Margin="0,0,5,0"></Button>
                                         </StackPanel>
                                     </Grid>
                                 </StackPanel>
@@ -114,7 +114,7 @@
                         <materialDesign:PackIcon Kind="ZoomOutOutline"></materialDesign:PackIcon>
                     </Button>
                     <Slider x:Name="zoomSlider" Value="0" Minimum="-7" Maximum="9" ValueChanged="zoomSlider_ValueChanged"
-                             Width="50" Height="20" BorderBrush="{DynamicResource PrimaryHueMidBrush}" BorderThickness="0" Padding="0" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+                             Width="50" Height="20" BorderBrush="{DynamicResource PrimaryHueMidBrush}" BorderThickness="0" Padding="0" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Style="{StaticResource MaterialDesignSlider}"/>
 
                     <Button x:Name="zoominButton" Click="zoominButton_Click">
                         <materialDesign:PackIcon Kind="ZoomInOutline"></materialDesign:PackIcon>
@@ -127,9 +127,9 @@
                     <Button x:Name="openBookmarksButton" Click="openBookmarksButton_Click" >
                         <materialDesign:PackIcon Kind="BookmarkMultiple"></materialDesign:PackIcon>
                     </Button>
-                    <Button x:Name="readingHomeButton" Click="readingOtherButton_Click">
+                    <!--<Button x:Name="readingHomeButton" Click="readingOtherButton_Click">
                         <materialDesign:PackIcon Kind="FolderSearch"></materialDesign:PackIcon>
-                    </Button>
+                    </Button>-->
                 </StackPanel>
             </Border>
             <!-- Hide tool bar button.-->

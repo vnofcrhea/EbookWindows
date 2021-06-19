@@ -48,12 +48,17 @@
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <Grid HorizontalAlignment="Stretch">
-                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,0,20,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                                <ColumnDefinition Width="30"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <StackPanel Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,0,20,0">
                                 <Image DockPanel.Dock="Left" Source="{Binding fileIcon}"  Width="32" Height="32"/>
-                            <TextBlock DockPanel.Dock="Left" Grid.Column="0" Style="{DynamicResource MaterialDesignBody1TextBlock}" Text="{Binding fileName}" Margin="5,0,0,0" HorizontalAlignment="Stretch"  VerticalAlignment="Center" FontWeight="Bold"
-                                                 TextWrapping="Wrap" TextTrimming="CharacterEllipsis"  ToolTip="{Binding fileName}"/>
-                        </StackPanel>
-                            <Button Panel.ZIndex="10" Click="deleteBtn_Click" HorizontalAlignment="Right" Width="20" Height="20" Padding="0" Style="{StaticResource MaterialDesignIconButton}">
+                                <TextBlock DockPanel.Dock="Left" Grid.Column="0" Style="{DynamicResource MaterialDesignBody1TextBlock}" Text="{Binding fileName}"  Margin="5,0,0,0" HorizontalAlignment="Stretch"  VerticalAlignment="Center" FontWeight="Bold" FontSize="12"
+                                                  TextTrimming="CharacterEllipsis"  Width="280" ToolTip="{Binding fileName}"/>
+                                
+                                </StackPanel>
+                            <Button Grid.Column="1"  Panel.ZIndex="10" Click="deleteBtn_Click" HorizontalAlignment="Right" Width="20" Height="20" Padding="0" Style="{StaticResource MaterialDesignIconButton}">
                                 <materialDesign:PackIcon Kind="Delete" Width="20" Height="20" Padding="0"></materialDesign:PackIcon>
                             </Button>
                         </Grid>

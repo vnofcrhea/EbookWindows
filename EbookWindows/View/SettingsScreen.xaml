@@ -10,21 +10,23 @@
         mc:Ignorable="d" Width="600" VerticalAlignment="Center" HorizontalAlignment="Center">
     <Grid Name="MainGrid" Background="{DynamicResource MaterialDesignPaper}">
 
-        <StackPanel>
+        <Grid>
             <Button Style="{StaticResource MaterialDesignFlatButton}" Padding="0" HorizontalAlignment="Right" Margin="4" Click="CloseSetting_Click">
                 <materialDesign:PackIcon Kind="Close" Width="30" Height="30"></materialDesign:PackIcon>
             </Button>
-            <TextBlock Style="{StaticResource MaterialDesignHeadline6TextBlock}" Margin="8,8,8,16" Text="OPTIONS" />
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="8,8,8,8">
-                <TextBlock Text="Dark Mode" FontSize="12" Foreground="{DynamicResource MaterialDesignTextAreaBorder}" ></TextBlock>
-                <CheckBox Name="DarkModeChecker" Margin="8,0,0,0"  Style="{StaticResource MaterialDesignSwitchToggleButton}" IsChecked="{Binding IsDarkTheme }" />
+            <StackPanel>
+                <TextBlock Style="{StaticResource MaterialDesignHeadline6TextBlock}" Margin="8,8,8,16" Text="SETTINGS" />
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="8,8,8,8">
+                    <TextBlock Text="Dark Mode" FontSize="12" Foreground="{DynamicResource MaterialDesignTextAreaBorder}" ></TextBlock>
+                    <CheckBox Name="DarkModeChecker" Margin="8,0,0,0"  Style="{StaticResource MaterialDesignSwitchToggleButton}" IsChecked="{Binding IsDarkTheme }" />
+                </StackPanel>
             </StackPanel>
             <!--<DockPanel Margin="8,8,8,8" >
                 <TextBlock  DockPanel.Dock="Left" Text="Main Color:" VerticalAlignment="Center" Padding="0"></TextBlock>
 
                 --><!--<materialDesign:ColorPicker  HorizontalContentAlignment="Left" Height="150" HorizontalAlignment="Stretch" MaxWidth="300"  VerticalAlignment="Center"  Color="{Binding PrimaryColor, Delay=25}"></materialDesign:ColorPicker>--><!--
             </DockPanel>-->
-        </StackPanel>
+        </Grid>
     </Grid>
 
 

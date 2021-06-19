@@ -89,7 +89,38 @@
                             <materialDesign:PackIcon Kind="WindowMinimize"  />
                         </Button>
                         <Button Click="Maximize">
-                            <materialDesign:PackIcon Kind="WindowMaximize" />
+                            <Button.Style>
+                                <Style TargetType="{x:Type Button}" BasedOn="{StaticResource MaterialDesignFlatButton}">
+                                    <Setter Property="Margin" Value="0,0,0,0"/>
+                                    <Setter Property="Padding" Value="0"/>
+                                    <Setter Property="VerticalContentAlignment" Value="Center"/>
+                                    <Setter Property="BorderThickness" Value="0"></Setter>
+                                    <Setter Property="Width" Value="40"/>
+                                    <Setter Property="Height" Value="30"/>
+                                    <Style.Triggers>
+                                        <!-- Add to avoid border disappearing when window is maximised -->
+                                        <DataTrigger Binding="{Binding WindowState, RelativeSource={RelativeSource AncestorType=Window}}" 
+                                 Value="Maximized">
+                                            <Setter Property="Content" >
+                                                <Setter.Value>
+                                                    <materialDesign:PackIcon Kind="WindowMaximize"/>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding WindowState, RelativeSource={RelativeSource AncestorType=Window}}" 
+                                 Value="Normal">
+                                            <Setter Property="Content" >
+                                                <Setter.Value>
+                                                    <materialDesign:PackIcon Kind="WindowRestore"/>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+                            <!--<materialDesign:PackIcon Kind="WindowMaximize" >
+                                
+                            </materialDesign:PackIcon>/>-->
                         </Button>
                         <Button Click="Close" >
                             <materialDesign:PackIcon Kind="WindowClose" />
@@ -200,8 +231,8 @@
                     </Grid>
                     <Grid Grid.Row="1">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="700*"/>
-                            <ColumnDefinition Width="300*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="400"/>
                         </Grid.ColumnDefinitions>
                         <Grid Grid.Column="0">
                             <!--Phần này là chỗ Rhea sẽ edit lại cái shelf-->
