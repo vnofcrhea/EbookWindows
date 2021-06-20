@@ -264,10 +264,15 @@
                   Visibility="Collapsed">
                 <StackPanel Orientation="Vertical" VerticalAlignment="Center">
                     <ProgressBar
-                        Style="{StaticResource MaterialDesignCircularProgressBar}"
+                        Style="{DynamicResource MaterialDesignCircularProgressBar}"
                         Value="0"
-                        IsIndeterminate="True" Width="100" Height="100" />
-                    <TextBlock HorizontalAlignment="Center">Loading...</TextBlock>
+                        IsIndeterminate="True"  Foreground="Cyan"   >
+                        <ProgressBar.LayoutTransform>
+                            <ScaleTransform ScaleX="2.5" ScaleY="2.5" ></ScaleTransform>
+                        </ProgressBar.LayoutTransform>
+                    </ProgressBar>
+                    
+                    <TextBlock HorizontalAlignment="Center" FontWeight="DemiBold" Foreground="White">Loading...</TextBlock>
                 </StackPanel>
             </Grid>
             <Grid Grid.Row="1" Background="#AF000000" Name="SettingsGrid"
