@@ -214,7 +214,7 @@ namespace EbookWindows.Screen
             int i;
             if (page_numbers <= 5)
             {
-                i = 0;
+                i = 1;
             }
             else
             {
