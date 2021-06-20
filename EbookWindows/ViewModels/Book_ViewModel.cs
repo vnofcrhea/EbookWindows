@@ -140,6 +140,7 @@ namespace EbookWindows.ViewModels
                     if (json == "Error: Invalid books source.")
                         return false;
                     _Book = JsonConvert.DeserializeObject<Book>(json);
+                    _Book.book_link = url;
                 }
                 if (_Book.season_name.Count == 0)
                 {

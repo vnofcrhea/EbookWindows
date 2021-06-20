@@ -85,6 +85,24 @@ namespace EbookWindows.Screen
         {
             if (!((sender as ComboBox).SelectedItem is Chapter item))
                 return;
+            int index = Chapter_List.SelectedIndex;
+            int count = Chapter_List.Items.Count;
+            if(index == 0)
+            {
+                btnPreviousChapter.IsEnabled = false;
+            }
+            else
+            {
+                btnPreviousChapter.IsEnabled = true;
+            }
+            if (index == count)
+            {
+                btnNextChapter.IsEnabled = false;
+            }
+            else
+            {
+                btnNextChapter.IsEnabled = true;
+            }
             WindowScreen win = (WindowScreen)Window.GetWindow(this);
             win.StartLoading();
             await Task.Run(() => Load_Content(item));

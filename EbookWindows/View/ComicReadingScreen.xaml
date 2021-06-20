@@ -60,6 +60,16 @@
                     <Button Click="BackToDetail_Click">
                         <materialDesign:PackIcon Kind="ArrowBack" ></materialDesign:PackIcon>
                     </Button>
+                   
+                    <Button Click="ZoomOut_Click" x:Name="ZoomOut_Button">
+                        <materialDesign:PackIcon Kind="ZoomOutOutline"></materialDesign:PackIcon>
+                    </Button>
+                    <TextBox Name="zoomTextbox" Width="40" Height="20" BorderBrush="{DynamicResource PrimaryHueMidBrush}" BorderThickness="0" Padding="0" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Foreground="{DynamicResource MaterialDesignBody}">
+                        100%</TextBox>
+
+                    <Button Click="ZoomIn_Click" x:Name="ZoomIn_Button">
+                        <materialDesign:PackIcon Kind="ZoomInOutline"></materialDesign:PackIcon>
+                    </Button>
                     <materialDesign:PopupBox  StaysOpen="True" IsEnabled="{Binding IsChecked, ElementName=PopupEnabled}" Foreground="{DynamicResource PrimaryHueMidBrush}">
                         <Grid Width="300" Margin="8,8,8,8">
                             <Grid.Resources>
@@ -72,7 +82,7 @@
                                 </Style>
                             </Grid.Resources>
                             <StackPanel>
-                                <TextBlock Style="{StaticResource MaterialDesignHeadline6TextBlock}" Margin="8,8,8,16" Text="OPTIONS" />
+                                <TextBlock Style="{StaticResource MaterialDesignHeadline6TextBlock}" Margin="8,8,8,16" Text="CUSTOMS" />
 
                                 <ComboBox materialDesign:HintAssist.IsFloating="True" materialDesign:HintAssist.Hint="Font Family" MaxDropDownHeight="200" Margin="8" SelectionChanged="Font_Changed">
                                     <ComboBoxItem Content="Times New Roman" IsSelected="True" FontFamily="Times New Roman"/>
@@ -90,19 +100,10 @@
                             </StackPanel>
                         </Grid>
                     </materialDesign:PopupBox>
-                    <Button Click="ZoomOut_Click" x:Name="ZoomOut_Button">
-                        <materialDesign:PackIcon Kind="ZoomOutOutline"></materialDesign:PackIcon>
-                    </Button>
-                    <TextBox Name="zoomTextbox" Width="40" Height="20" BorderBrush="{DynamicResource PrimaryHueMidBrush}" BorderThickness="0" Padding="0" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Foreground="{DynamicResource MaterialDesignBody}">
-                        100%</TextBox>
-
-                    <Button Click="ZoomIn_Click" x:Name="ZoomIn_Button">
-                        <materialDesign:PackIcon Kind="ZoomInOutline"></materialDesign:PackIcon>
-                    </Button>
-                    <Button>
+                    <Button Visibility="Collapsed">
                         <materialDesign:PackIcon Kind="Forward"></materialDesign:PackIcon>
                     </Button>
-                    <Button Margin="0" Click="FullScreen_Click" >
+                    <Button Margin="0" Click="FullScreen_Click"  Visibility="Collapsed">
                         <materialDesign:PackIcon Name="btnKindFullScreen" Kind="FullscreenExit" ></materialDesign:PackIcon>
                     </Button>
                 </StackPanel>
@@ -128,7 +129,7 @@
                         </Style>
                     </StackPanel.Resources>
 
-                    <Button Click="PreviousChapter_Click">
+                    <Button Name="btnPreviousChapter" Click="PreviousChapter_Click">
                         <materialDesign:PackIcon Kind="ChevronLeft" Width="24" Height="24"></materialDesign:PackIcon>
                     </Button>
 
@@ -140,7 +141,7 @@
                         </ComboBox.ItemsPanel>
                     </ComboBox>
 
-                    <Button Click="NextChapter_Click">
+                    <Button Name="btnNextChapter" Click="NextChapter_Click">
                         <materialDesign:PackIcon Kind="ChevronRight" Width="24" Height="24"></materialDesign:PackIcon>
                     </Button>
 

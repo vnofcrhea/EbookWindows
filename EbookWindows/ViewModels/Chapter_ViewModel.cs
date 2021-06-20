@@ -69,8 +69,21 @@ namespace EbookWindows.ViewModels
             else
             {
                 // Console.WriteLine(App.Global.Book_Directory + "\\content\\" + index + ".json");
-                var json = new WebClient().DownloadString(App.Global.API_URL_Primary + "/api/chapters?url=" + _Current_Chapter.link) ;
-                _Current_Chapter_Content = JsonConvert.DeserializeObject<Chapter_Content>(json);
+                while (true)
+                {
+                    try
+                    {
+                        var json = new WebClient().DownloadString(App.Global.API_URL_Primary + "/api/chapters?url=" + _Current_Chapter.link);
+                        _Current_Chapter_Content = JsonConvert.DeserializeObject<Chapter_Content>(json);
+                        File.WriteAllText(chapter_dir, json);
+                        App.Global.Book_ViewModel.Downloaded_Chapters_index.Add(index);
+                        return;
+                    }
+                    catch
+                    {
+
+                    }
+                }
             }
         }
     }

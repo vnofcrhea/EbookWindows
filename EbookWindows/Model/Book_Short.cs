@@ -15,6 +15,7 @@ namespace EbookWindows.Model
         public string Title { get; set; }
         public string img_dir { get; set; }
         public string book_dir { get; set; }
+        public string book_link { get; set; }
 
     }
     public class Book_Short_TreeView

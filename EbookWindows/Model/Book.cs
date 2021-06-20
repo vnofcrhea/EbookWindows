@@ -18,6 +18,7 @@ namespace EbookWindows.Model
         public List<string> chapter_link { get; set; }
         public List<string> season_name { get; set; }
         public List<int> season_index { get; set; }
+        public string book_link {get; set; }
     }
     public class Bookmark_Chapter
     {

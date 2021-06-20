@@ -127,7 +127,7 @@ namespace EbookWindows.Screen
             }
             else
             {
-                MessageBox.Show("Có lỗi xảy ra khi đọc file, vui lòng thử lại.");
+                MessageBox.Show("An error occurred while processing, please try again.");
             }
 
             EndLoading();
@@ -147,7 +147,7 @@ namespace EbookWindows.Screen
             }    
             else
             {
-                MessageBox.Show("Đường đẫn không hợp lệ hoặc không hỗ trợ.");
+                MessageBox.Show("The path is invalid or not supported. ");
             }    
             EndLoading();
         }

@@ -10,7 +10,7 @@
         xmlns:material="clr-namespace:EbookWindows.Material"
         mc:Ignorable="d"
         Style="{StaticResource MaterialDesignWindow1}"
-        Title="Window1" ResizeMode="CanResizeWithGrip"
+        Title="ReaderPlus" ResizeMode="CanResizeWithGrip"
         WindowStyle="None"
         WindowState="Maximized"
         x:Name="MainWindowScreen"

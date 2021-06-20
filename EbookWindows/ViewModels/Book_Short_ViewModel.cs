@@ -45,7 +45,7 @@ namespace EbookWindows.ViewModels
                     {
                         JsonSerializer serializer = new JsonSerializer();
                         Book root = (Book)serializer.Deserialize(file, typeof(Book));
-                        _List_Book_Short.Add(new Book_Short() { Title = root.book_name, img_dir = item1 + "\\img.jpg", book_dir = item1 });
+                        _List_Book_Short.Add(new Book_Short() { Title = root.book_name, img_dir = item1 + "\\img.jpg", book_dir = item1, book_link = root.book_link });
                     }
                 }
             }

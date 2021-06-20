@@ -102,9 +102,18 @@ namespace EbookWindows.Screen
 
         private void OpenviaLink_Click(object sender, RoutedEventArgs e)
         {
-            var x = Application.Current.MainWindow as WindowScreen;
-            x.OpenDetailScreen(linkTextBox.Text);
-            this.Close();
+            WindowScreen x = Application.Current.MainWindow as WindowScreen;
+            int index = App.Global.Book_Short_ViewModel.Book_Short.FindIndex(a => a.book_link == linkTextBox.Text);
+            if (index >= 0)
+            {
+                x.OpenDetailScreen(App.Global.Book_Short_ViewModel.Book_Short[index]);
+            }
+            else
+            {
+                x.OpenDetailScreen(linkTextBox.Text);
+            }
+
+            Close();
         }
     }
 }
