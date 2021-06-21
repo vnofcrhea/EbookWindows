@@ -307,7 +307,6 @@ namespace EbookWindows.Screen
             this.Dispatcher.Invoke(() =>
             {
                 App.Global.Book_Short_ViewModel.LoadListBookShort();
-                (App.Current.MainWindow as WindowScreen).LoadShelf();
                 (App.Current.MainWindow as WindowScreen).LoadTreeViewList();
             });
            

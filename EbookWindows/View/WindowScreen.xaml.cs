@@ -170,7 +170,8 @@ namespace EbookWindows.Screen
         /// <param name="e"></param>
         private void ReturnHome_Click(object sender, RoutedEventArgs e)
         {
-            
+
+            LoadShelf();
             MainGrid.Visibility = Visibility.Visible;
                 if (detailScreen.Visibility == Visibility.Visible)
                 {
