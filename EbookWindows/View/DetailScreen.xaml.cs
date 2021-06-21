@@ -99,6 +99,7 @@ namespace EbookWindows.Screen
                 bookImg.Source = image;
                 LoadPaging(page_index);
                 PagePanelReload();
+                
             });
             return true;
         }
@@ -269,6 +270,8 @@ namespace EbookWindows.Screen
                 return;
             if (item.Items.Count > 0)
                 return;
+            if (item.link == "" || item.link == null)
+                return;
             else
             {
                 App.Global.Chapter_ViewModel.Current_Chapter = item;
@@ -296,12 +299,17 @@ namespace EbookWindows.Screen
                 //btnAddToLibrary.Visibility = Visibility.Visible;
                 btnDownloadContent.Visibility = Visibility.Collapsed;
             }
-            (App.Current.MainWindow as WindowScreen).LoadShelf();
-            (App.Current.MainWindow as WindowScreen).LoadTreeViewList();
+            
         }
         private async void AddToLibrary()
         {
             await Task.Run(() => App.Global.Book_ViewModel.AddToLibrary());
+            this.Dispatcher.Invoke(() =>
+            {
+                App.Global.Book_Short_ViewModel.LoadListBookShort();
+                (App.Current.MainWindow as WindowScreen).LoadShelf();
+                (App.Current.MainWindow as WindowScreen).LoadTreeViewList();
+            });
            
         }
         private async void DeleteBook_Click(object sender, RoutedEventArgs e)

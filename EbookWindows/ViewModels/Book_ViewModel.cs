@@ -1,4 +1,5 @@
 ﻿using EbookWindows.Model;
+using EbookWindows.Screen;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -179,7 +180,7 @@ namespace EbookWindows.ViewModels
             //Console.WriteLine("EndInit");
         }
 
-        public void AddToLibrary()
+        public async void AddToLibrary()
         {
 
             var path_data = App.Global.Directory_Folder + "\\data\\book" + "\\" + _Book.source + "\\" + _Book.book_id;
@@ -192,11 +193,12 @@ namespace EbookWindows.ViewModels
             File.WriteAllText(path_data + "\\" + "detail.json", JsonConvert.SerializeObject(_Book));
             using (WebClient client = new WebClient())
             {
-                Task.Run(() => { client.DownloadFile(new Uri(_Book.img_url), path_data + "\\" + "img.jpg"); });
+                await Task.Run(() => { client.DownloadFile(new Uri(_Book.img_url), path_data + "\\" + "img.jpg"); });
             };
             _IsBookDownloaded = true;
             App.Global.Book_Directory = path_data;
-            App.Global.Book_Short_ViewModel.LoadListBookShort();
+
+            
         }
         public bool Download_Content_OneChaper(string item)
         {

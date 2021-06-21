@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using EbookWindows.Model;
 using Newtonsoft.Json;
 
@@ -56,6 +57,7 @@ namespace EbookWindows.ViewModels
         public void Load_Content()
         {
             var index = App.Global.Book_ViewModel.chapter_link.FindIndex(e => e.Contains(_Current_Chapter.link));
+            var contents_dir = App.Global.Book_Directory + "\\content";
             var chapter_dir = App.Global.Book_Directory + "\\content\\" + index + ".json";
             if (File.Exists(chapter_dir))
             {
@@ -68,6 +70,7 @@ namespace EbookWindows.ViewModels
             }
             else
             {
+                int count = 0;
                 // Console.WriteLine(App.Global.Book_Directory + "\\content\\" + index + ".json");
                 while (true)
                 {
@@ -75,13 +78,22 @@ namespace EbookWindows.ViewModels
                     {
                         var json = new WebClient().DownloadString(App.Global.API_URL_Primary + "/api/chapters?url=" + _Current_Chapter.link);
                         _Current_Chapter_Content = JsonConvert.DeserializeObject<Chapter_Content>(json);
+                        if(!Directory.Exists(contents_dir))
+                        {
+                            Directory.CreateDirectory(contents_dir);
+                        }    
                         File.WriteAllText(chapter_dir, json);
                         App.Global.Book_ViewModel.Downloaded_Chapters_index.Add(index);
                         return;
                     }
-                    catch
+                    catch (Exception e)
                     {
-
+                        count++;
+                        if (count > 3)
+                        {
+                            MessageBox.Show("Error While Loading\n"+ e.Message);
+                            return;
+                        }
                     }
                 }
             }

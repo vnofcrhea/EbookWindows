@@ -170,7 +170,8 @@ namespace EbookWindows.Screen
         /// <param name="e"></param>
         private void ReturnHome_Click(object sender, RoutedEventArgs e)
         {
-                MainGrid.Visibility = Visibility.Visible;
+            
+            MainGrid.Visibility = Visibility.Visible;
                 if (detailScreen.Visibility == Visibility.Visible)
                 {
                     detailScreen.Visibility = Visibility.Collapsed;
@@ -211,6 +212,7 @@ namespace EbookWindows.Screen
             pdfReadingScreen.Visibility = Visibility.Collapsed;
             epubReadingScreen.Visibility = Visibility.Collapsed;
             comicReadingScreen.Visibility = Visibility.Collapsed;
+           
         }
 
 
@@ -386,7 +388,6 @@ namespace EbookWindows.Screen
                 OpenDetailScreen(item);
                 //var x = (sender as TreeView).ItemContainerGenerator.ContainerFromIndex
 
-                
                 if (pdfReadingScreen.Visibility == Visibility.Visible)
                 {
                     pdfReadingScreen.homeBtn_Click(sender, e);
