@@ -273,16 +273,26 @@ namespace EbookWindows.Screen
         private void OnLinkClick(object sender, RoutedEventArgs routedEventArgs)
         {
             Link link = (Link)((Button)sender).DataContext;
-            string linkStr = link.DestinationUri.ToString();
-            MessageBoxResult result = MessageBox.Show($"Are you sure you want to continue connecting \n{linkStr}", "Warning", MessageBoxButton.YesNo,MessageBoxImage.Warning);
-            if (result == MessageBoxResult.Yes)
+            if(link.DestinationUri != null)
             {
-                Process.Start(new ProcessStartInfo(linkStr));
-                routedEventArgs.Handled = true;
+                string linkStr = link.DestinationUri.ToString();
+                MessageBoxResult result = MessageBox.Show($"Are you sure you want to continue connecting \n{linkStr}", "Warning", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                if (result == MessageBoxResult.Yes)
+                {
+                    Process.Start(new ProcessStartInfo(linkStr));
+                    routedEventArgs.Handled = true;
+                }
+                else if (result == MessageBoxResult.No)
+                {
+                    //nothing
+                }
             }
-            else if (result == MessageBoxResult.No)
+            else
             {
-                //nothing
+                this.document.Document.Navigator.GoToLink(link);
+
+                this.destinationRectangle = link.GetDestinationRectangle((int)(this.document.Page.Width * this.GlobalScale), (int)(this.document.Page.Height * this.GlobalScale), null);
+
             }
 
         }
