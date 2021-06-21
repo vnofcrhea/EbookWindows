@@ -164,6 +164,7 @@ namespace EbookWindows.Material
                 if (child == null) continue;
 
                 // Flow passes its own constrint to children
+                
                 child.Measure(childConstraint);
 
                 // This is the size of the child in UV space

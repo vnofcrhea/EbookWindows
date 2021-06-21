@@ -179,10 +179,8 @@ namespace EbookWindows.ViewModels
             });
             //Console.WriteLine("EndInit");
         }
-
         public async void AddToLibrary()
         {
-
             var path_data = App.Global.Directory_Folder + "\\data\\book" + "\\" + _Book.source + "\\" + _Book.book_id;
             #region create path. 
             if (!Directory.Exists(path_data))
@@ -197,8 +195,6 @@ namespace EbookWindows.ViewModels
             };
             _IsBookDownloaded = true;
             App.Global.Book_Directory = path_data;
-
-            
         }
         public bool Download_Content_OneChaper(string item)
         {
