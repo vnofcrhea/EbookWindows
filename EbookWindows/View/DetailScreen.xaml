@@ -91,7 +91,8 @@
                                 </Button>-->
                                 <Button Name="btnDownloadContent" Click="DownloadContent_Click" ToolTip="Downloader will run in background and need more time to excetute." ToolTipService.InitialShowDelay="300">
                                     <StackPanel Orientation="Horizontal">
-                                        <materialDesign:PackIcon Kind="Download" Width="24" Height="24"></materialDesign:PackIcon>
+                                        <materialDesign:PackIcon Name="btnIconDownload" Kind="Download" Width="24" Height="24"></materialDesign:PackIcon>
+                                        <ProgressBar x:Name="btnPBDownload" Style="{StaticResource MaterialDesignCircularProgressBar}" Value="0" IsIndeterminate="True" Visibility="Collapsed"/>
                                         <TextBlock VerticalAlignment="Center" FontSize="11" Margin="5,0"> Download All Chapter</TextBlock>
                                     </StackPanel>
                                 </Button>

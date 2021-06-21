@@ -331,8 +331,13 @@ namespace EbookWindows.Screen
         }
         private async void DownloadContent_Click(object sender, RoutedEventArgs e)
         {
+            btnIconDownload.Visibility = Visibility.Collapsed;
+            btnPBDownload.Visibility = Visibility.Visible;
+            btnDownloadContent.IsEnabled = false;
             await Task.Run(() => App.Global.Book_ViewModel.Download_Content());
-
+            btnIconDownload.Visibility = Visibility.Visible;
+            btnPBDownload.Visibility = Visibility.Collapsed;
+            btnDownloadContent.IsEnabled = true;
         }
         private void NextPage_Click(object sender, RoutedEventArgs e)
         {

@@ -213,8 +213,8 @@ namespace EbookWindows.ViewModels
                 {
                     var json = new WebClient().DownloadString(App.Global.API_URL_Primary + "/api/chapters?url=" + item);
                     File.WriteAllText(path_data + "\\" + count + ".json", json);
-                    if (!_Bookmark_Chapters_Index.Contains(count))
-                    _Bookmark_Chapters_Index.Add(count);
+                    if (!_Downloaded_Chapters_index.Contains(count))
+                        _Downloaded_Chapters_index.Add(count);
                     return true;
                 }
                 catch (Exception e)
