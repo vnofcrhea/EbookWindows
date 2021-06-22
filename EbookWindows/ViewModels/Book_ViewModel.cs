@@ -189,10 +189,25 @@ namespace EbookWindows.ViewModels
             }
             #endregion
             File.WriteAllText(path_data + "\\" + "detail.json", JsonConvert.SerializeObject(_Book));
-            using (WebClient client = new WebClient())
+            int count = 0;
+            while (true)
+            try
             {
-              client.DownloadFile(new Uri(_Book.img_url), path_data + "\\" + "img.jpg");
-            };
+                using (WebClient client = new WebClient())
+                {
+                    client.DownloadFile(new Uri(_Book.img_url), path_data + "\\" + "img.jpg");
+                };
+                break;
+            }
+            catch
+            {
+                count++;
+                    if (count > 2)
+                    {
+                        File.Copy(App.Global.Book_Directory + "\\Icon\\no-img.jpg", path_data + "\\" + "img.jpg");
+                        break;
+                    }
+            }
             _IsBookDownloaded = true;
             App.Global.Book_Directory = path_data;
         }
