@@ -28,7 +28,7 @@
                 <StackPanel HorizontalAlignment="Right" VerticalAlignment="Center" Margin="5" Orientation="Horizontal">
                     <materialDesign:PopupBox PlacementMode="BottomAndAlignRightEdges" Width="50" Height="50" HorizontalContentAlignment="Center" >
                         <materialDesign:PopupBox.ToggleContent >
-                            <materialDesign:PackIcon Kind="Menu" Width="30" Height="30" Foreground="{DynamicResource PrimaryHueMidBrush}" />
+                            <materialDesign:PackIcon Kind="DotsVertical" Width="30" Height="30" Foreground="{DynamicResource PrimaryHueMidBrush}" />
                         </materialDesign:PopupBox.ToggleContent>
                         <StackPanel Width="150">
                             <!--Thêm tính năng ở đây LOL-->
