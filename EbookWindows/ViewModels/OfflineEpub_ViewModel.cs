@@ -32,7 +32,7 @@ namespace EbookWindows.ViewModels
         public static bool ReadFile(string filePath)
         {
             if (File.Exists(filePath)) //check if any file is chosen
-            {               
+            {
                 //Start read new file
                 epub.filePath = filePath;
                 epub.fileName = Path.GetFileNameWithoutExtension(epub.filePath);
@@ -52,17 +52,15 @@ namespace EbookWindows.ViewModels
                 {
                     MessageBox.Show("Invalid epub file! Please choose another file.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                     return false;
-                }                
+                }
                 //Set up new epub file folder: stylesheet, bookmark, status
                 epub.baseMenuXmlDiretory = Path.Combine(epub.tempPath, epubBook.Schema.ContentDirectoryPath);
                 SetupNewEpub();
                 Clear();
                 //get stylesheet, status path
-                if (epub.stylesheetPath == null)
-                {
-                    epub.stylesheetPath = Path.Combine(epub.baseMenuXmlDiretory, getStylesheetFileName());
-                    epub.readingStatusPath = Path.Combine(epub.baseMenuXmlDiretory, epub.statusFileName);
-                }                  
+
+                epub.stylesheetPath = Path.Combine(epub.baseMenuXmlDiretory, getStylesheetFileName());
+                epub.readingStatusPath = Path.Combine(epub.baseMenuXmlDiretory, epub.statusFileName);
                 //get menu
                 foreach (EpubContentFile epubContent in epubBook.ReadingOrder)
                 {
