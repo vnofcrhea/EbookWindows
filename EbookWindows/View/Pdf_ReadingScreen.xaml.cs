@@ -107,6 +107,7 @@ namespace EbookWindows.Screen
                 //A file has password
                 var passwordScreen = new PasswordScreen();
                 passwordScreen.EnterPasswordEvent += checkPassword;
+                passwordScreen.Owner = App.Current.MainWindow as WindowScreen;
                 passwordScreen.ShowDialog();
 
             }

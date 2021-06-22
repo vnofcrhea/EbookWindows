@@ -66,7 +66,10 @@ namespace EbookWindows.Screen
                 BitmapImage image = new BitmapImage();
                 image.BeginInit();
                 image.CacheOption = BitmapCacheOption.OnLoad;
-                image.UriSource = new Uri(item.book_dir + "\\img.jpg");
+                if(File.Exists(item.book_dir + "\\img.jpg"))
+                    image.UriSource = new Uri(item.book_dir + "\\img.jpg");
+                else
+                    image.UriSource = new Uri(App.Global.Directory_Folder + "\\Icon\\no-image.jpg");
                 image.EndInit();
                 bookImg.Source = image;
                 LoadPaging(page_index);
@@ -99,7 +102,6 @@ namespace EbookWindows.Screen
                 bookImg.Source = image;
                 LoadPaging(page_index);
                 PagePanelReload();
-                
             });
             return true;
         }
@@ -301,15 +303,9 @@ namespace EbookWindows.Screen
             }
             
         }
-        private async void AddToLibrary()
+        private void AddToLibrary()
         {
-            await Task.Run(() => App.Global.Book_ViewModel.AddToLibrary());
-            this.Dispatcher.Invoke(() =>
-            {
-                App.Global.Book_Short_ViewModel.LoadListBookShort();
-                (App.Current.MainWindow as WindowScreen).LoadTreeViewList();
-            });
-           
+            App.Global.Book_ViewModel.AddToLibrary();
         }
         private async void DeleteBook_Click(object sender, RoutedEventArgs e)
         {

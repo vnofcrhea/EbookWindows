@@ -87,6 +87,7 @@ namespace EbookWindows.Screen
             if (dialogResult.Value)
             {
                 string filePath = openFileDialog.FileName;
+                this.Hide();
                 BrowserEvent?.Invoke(filePath,-1);
                 this.Close();
 

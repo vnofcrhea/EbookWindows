@@ -139,7 +139,7 @@ namespace EbookWindows.Screen
             var x= await Task.Run(() => detailScreen.LoadData(url));
             if (x)
             {
-                
+                App.Global.Book_Short_ViewModel.LoadListBookShort();
                 LoadShelf();
                 LoadTreeViewList();
                 MainGrid.Visibility = Visibility.Collapsed;
@@ -275,8 +275,8 @@ namespace EbookWindows.Screen
         {
             var popupEbookScreen = new PopupEbookScreen();
             popupEbookScreen.BrowserEvent += filePathChanged;
+            popupEbookScreen.Owner = this;
             popupEbookScreen.ShowDialog();
-            
         }
         public void StartLoading()
         {

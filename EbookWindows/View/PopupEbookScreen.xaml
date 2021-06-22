@@ -12,7 +12,7 @@
         AutomationProperties.Name="{Binding Title, RelativeSource={RelativeSource Self}}"
         Title="OPEN" Height="219" Width="456" ResizeMode="NoResize"
         WindowStyle="SingleBorderWindow" 
-        WindowStartupLocation="CenterScreen" >
+        WindowStartupLocation="CenterScreen" ShowInTaskbar="False" >
     <WindowChrome.WindowChrome>
         <WindowChrome     
             CaptionHeight="1"  

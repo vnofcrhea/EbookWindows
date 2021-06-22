@@ -12,6 +12,9 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
              >
+    <UserControl.Resources>
+        <local:NoImageConverter x:Key="NoImageConverter" />
+    </UserControl.Resources>
     <Grid Margin="0,5">
         <Grid.RowDefinitions>
             <RowDefinition Height="20"></RowDefinition>
@@ -52,8 +55,9 @@
                         <Grid HorizontalAlignment="Center">
                             <Image  StretchDirection="Both" Stretch="Fill">
                                 <Image.Source>
-                                    <BitmapImage CacheOption="OnLoad" UriSource="{Binding img_dir}"/>
+                                    <BitmapImage CacheOption="OnLoad" UriSource="{Binding img_dir,Converter={StaticResource NoImageConverter}}" />
                                 </Image.Source>
+
                             </Image>
                             <materialDesign:ColorZone Mode="Standard"  VerticalAlignment="Bottom"  Height="30" Opacity="0.7" >
                                 

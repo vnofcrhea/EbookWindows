@@ -191,7 +191,7 @@ namespace EbookWindows.ViewModels
             File.WriteAllText(path_data + "\\" + "detail.json", JsonConvert.SerializeObject(_Book));
             using (WebClient client = new WebClient())
             {
-                await Task.Run(() => { client.DownloadFile(new Uri(_Book.img_url), path_data + "\\" + "img.jpg"); });
+              client.DownloadFile(new Uri(_Book.img_url), path_data + "\\" + "img.jpg");
             };
             _IsBookDownloaded = true;
             App.Global.Book_Directory = path_data;

@@ -154,5 +154,29 @@ namespace EbookWindows.Screen
                 }
             }
         }
-    } 
+
+        private void BitmapImage_DecodeFailed(object sender, ExceptionEventArgs e)
+        {
+
+        }
+    }
+    public class NoImageConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            if (value is string)
+            {
+                if (File.Exists((string)value))
+                    return value;
+                else
+                    return App.Global.Directory_Folder + "\\Icon\\no-image.jpg";
+            }
+            return App.Global.Directory_Folder + "\\Icon\\no-image.jpg";
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            return parameter;
+        }
+    }
 }
