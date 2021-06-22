@@ -91,7 +91,8 @@ namespace EbookWindows.ViewModels
                         count++;
                         if (count > 3)
                         {
-                            MessageBox.Show("Error While Loading\n"+ e.Message);
+                            _Current_Chapter_Content = new Chapter_Content() {  content=""};
+                            MessageBox.Show("Error while processing, please try again later!");
                             return;
                         }
                     }

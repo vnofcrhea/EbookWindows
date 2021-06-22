@@ -67,7 +67,7 @@ namespace EbookWindows.Screen
         {
             App.Global.Chapter_ViewModel.Current_Chapter = chapter;
             App.Global.Chapter_ViewModel.Load_Content();
-            if (App.Global.Book_ViewModel.IsBookDownloaded)
+            if (App.Global.Book_ViewModel.IsBookDownloaded && App.Global.Chapter_ViewModel.Current_Chapter_Content.Equals(""))
                 App.Global.Book_ViewModel.Update_ChapterOpened(chapter);
             this.Dispatcher.Invoke(() =>
             {
