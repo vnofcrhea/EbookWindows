@@ -204,7 +204,7 @@ namespace EbookWindows.ViewModels
                 count++;
                     if (count > 2)
                     {
-                        File.Copy(App.Global.Book_Directory + "\\Icon\\no-img.jpg", path_data + "\\" + "img.jpg");
+                        File.Copy(App.Global.Directory_Folder + "\\Icon\\no-image.jpg", path_data + "\\" + "img.jpg");
                         break;
                     }
             }
