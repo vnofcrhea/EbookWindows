@@ -34,7 +34,7 @@
 
             <!-- Reading Web Browser-->
             <Grid>
-                <cefSharpWpf:ChromiumWebBrowser  x:Name="epubWebBrowser" ScrollViewer.VerticalScrollBarVisibility="Disabled" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                <cefSharpWpf:ChromiumWebBrowser  x:Name="epubWebBrowser"  ScrollViewer.VerticalScrollBarVisibility="Disabled" ScrollViewer.HorizontalScrollBarVisibility="Disabled" >
                 </cefSharpWpf:ChromiumWebBrowser>
             </Grid>
 
@@ -114,7 +114,7 @@
                         <materialDesign:PackIcon Kind="ZoomOutOutline"></materialDesign:PackIcon>
                     </Button>
                     <Slider x:Name="zoomSlider" Value="0" Minimum="-7" Maximum="9" ValueChanged="zoomSlider_ValueChanged"
-                             Width="50" Height="20" BorderBrush="{DynamicResource PrimaryHueMidBrush}" BorderThickness="0" Padding="0" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Style="{StaticResource MaterialDesignSlider}"/>
+                             Width="100" Height="20" BorderBrush="{DynamicResource PrimaryHueMidBrush}" BorderThickness="0" Padding="0" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Style="{StaticResource MaterialDesignSlider}"/>
 
                     <Button x:Name="zoominButton" Click="zoominButton_Click">
                         <materialDesign:PackIcon Kind="ZoomInOutline"></materialDesign:PackIcon>

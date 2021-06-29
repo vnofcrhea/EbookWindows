@@ -138,6 +138,7 @@ namespace EbookWindows.Screen
 
                 if (currentPage == 0)
                 {
+                    FirstButton.IsEnabled = false;
                     PreButton.IsEnabled = false;
                     NextButton.IsEnabled = true;
                 }
@@ -146,12 +147,14 @@ namespace EbookWindows.Screen
 
                     NextButton.IsEnabled = false;
                     PreButton.IsEnabled = true;
+                    LastButton.IsEnabled = false;
                 }
                 else
                 {
-
+                    FirstButton.IsEnabled = true;
                     NextButton.IsEnabled = true;
                     PreButton.IsEnabled = true;
+                    FirstButton.IsEnabled = true;
                 }
 
                 epubWebBrowser.Address = OfflineEpub_ViewModel.menuItems[currentPage];
@@ -163,13 +166,19 @@ namespace EbookWindows.Screen
             if (currentPage < OfflineEpub_ViewModel.menuItems.Count - 1)
             {
                 currentPage++;
+
+                FirstButton.IsEnabled = true;
                 PreButton.IsEnabled = true;
                 NextButton.IsEnabled = true;
+                LastButton.IsEnabled = true;
             }
             else
             {
+
+                FirstButton.IsEnabled = true;
                 NextButton.IsEnabled = false;
                 PreButton.IsEnabled = true;
+                LastButton.IsEnabled = false;
             }
 
             string uri = OfflineEpub_ViewModel.menuItems[currentPage];
@@ -181,13 +190,17 @@ namespace EbookWindows.Screen
             if (currentPage >= 1)
             {
                 currentPage--;
+                FirstButton.IsEnabled = true;
                 PreButton.IsEnabled = true;
                 NextButton.IsEnabled = true;
+                LastButton.IsEnabled = true;
             }
             else
             {
+                FirstButton.IsEnabled = false;
                 PreButton.IsEnabled = false;
                 NextButton.IsEnabled = true;
+                LastButton.IsEnabled = true;
             }
             //update table content
             string uri = OfflineEpub_ViewModel.menuItems[currentPage];
@@ -197,8 +210,10 @@ namespace EbookWindows.Screen
         private void FirstButton_Click(object sender, RoutedEventArgs e)
         {
             currentPage = 0;
-            NextButton.IsEnabled = true;
+            FirstButton.IsEnabled = false;
             PreButton.IsEnabled = false;
+            NextButton.IsEnabled = true;
+            LastButton.IsEnabled = true;
             string uri = OfflineEpub_ViewModel.menuItems[currentPage];
             //update table content
             TableContentComboBox.SelectedIndex = currentPage;
@@ -207,8 +222,10 @@ namespace EbookWindows.Screen
         private void LastButton_Click(object sender, RoutedEventArgs e)
         {
             currentPage = OfflineEpub_ViewModel.menuItems.Count - 1;
+            FirstButton.IsEnabled = true;
             NextButton.IsEnabled = false;
             PreButton.IsEnabled = true;
+            LastButton.IsEnabled = false;
             string uri = OfflineEpub_ViewModel.menuItems[currentPage];
             //update table content            
             TableContentComboBox.SelectedIndex = currentPage;
@@ -339,6 +356,12 @@ namespace EbookWindows.Screen
             Button button = (Button)sender;
             string color = button.Background.ToString();
             OfflineEpub_ViewModel.changeBackgroundColor(color);
+            if(color.Equals("#FF303030"))
+                OfflineEpub_ViewModel.changeForegroundColor("#FFFFFFFF");
+            else
+            {
+                OfflineEpub_ViewModel.changeForegroundColor("#FF303030");
+            }    
             //
             epubWebBrowser.Address = OfflineEpub_ViewModel.menuItems[currentPage];
         }
