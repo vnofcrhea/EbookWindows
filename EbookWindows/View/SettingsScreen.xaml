@@ -33,7 +33,7 @@
                 </StackPanel>
                 <TextBlock  Style="{StaticResource MaterialDesignSubtitle1TextBlock}" FontWeight="Bold">Synchronization
                 </TextBlock>
-                <TextBlock  Style="{StaticResource MaterialDesignTextBlock}" Margin="0,5"  FontSize="14" TextWrapping="Wrap"> Synchronizing the online story list allows storing the list of stories and reading on other devices.
+                <TextBlock  Style="{StaticResource MaterialDesignTextBlock}" Margin="0,5"  FontSize="14" TextWrapping="Wrap"> Synchronizing the online story list allows storing the list of stories and reading on other devices. (Windows Desktop Only)
                 </TextBlock>
                 <StackPanel Orientation="Horizontal" Visibility="{Binding IsLogged, Converter={StaticResource LoginConverter}}" >
                     <Button Margin="10,3"  Style="{StaticResource MaterialDesignOutlinedButton}" 
