@@ -44,7 +44,7 @@
                     <RowDefinition Height="70"></RowDefinition>
                     <RowDefinition Height="5*"></RowDefinition>
                 </Grid.RowDefinitions>
-                <TextBlock x:Name="bookName" Margin="5,5,5,0" Grid.Row="0" FontSize="48" FontWeight="Bold" VerticalAlignment="Center">LAST FOR LUST</TextBlock>
+                <TextBlock x:Name="bookName" Margin="5,5,50,0" Grid.Row="0" FontSize="48" FontWeight="Bold" VerticalAlignment="Center"  TextTrimming="CharacterEllipsis">LAST FOR LUST</TextBlock>
                 <Grid Grid.Row="1" Margin="10,10,10,10">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition MaxWidth="200"></ColumnDefinition>

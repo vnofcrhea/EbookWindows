@@ -40,7 +40,6 @@
             <ListView Grid.Row="1" Name="recentFileListView" ScrollViewer.HorizontalScrollBarVisibility="Hidden" SelectionChanged="recentFileListView_SelectionChanged">
                 <ListView.ItemContainerStyle>
                     <Style TargetType="{x:Type ListViewItem}" BasedOn="{StaticResource MaterialDesignListBoxItem}">
-                      
                         <Setter Property="HorizontalAlignment" Value="Stretch"></Setter>
                         <Setter Property="HorizontalContentAlignment" Value="Stretch"></Setter>
                     </Style>

@@ -330,7 +330,7 @@ namespace EbookWindows.ViewModels
                 File.Delete(zipPath);
                 Notification = "Upload Failed! Check your connection and try again.";
             }
-            Notification = "Upload Sucessful!";
+            Notification = "Upload Successful!";
         }
 
 
@@ -381,7 +381,7 @@ namespace EbookWindows.ViewModels
                 (App.Current.MainWindow as WindowScreen).LoadTreeViewList();
                 (App.Current.MainWindow as WindowScreen).LoadShelf();
             }
-            Notification = "Download and Sync Sucessful!";
+            Notification = "Download and Sync Successful!";
 
         }
         static void Download_ProgressChanged(IDownloadProgress progress)
