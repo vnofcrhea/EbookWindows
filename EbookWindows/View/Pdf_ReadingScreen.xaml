@@ -27,7 +27,53 @@
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid Name="MainGrid" >
-        <Grid Margin="0">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="auto"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        
+        <!--Table of content-->
+        <Grid Name="TOCGrid" Grid.Column="0" Visibility="Visible">
+            <!--Table of content Button-->
+            <Button HorizontalAlignment="Left" ToolTip="Table of content"  VerticalAlignment="Top" Margin="0"  Style="{StaticResource MaterialDesignFlatButton}" Click="ShowContentOfTable_Click">
+                <materialDesign:PackIcon Kind="TableOfContents" Width="30"  ></materialDesign:PackIcon>
+            </Button>
+
+            <Border HorizontalAlignment="Left" BorderThickness="1,1,0,0" x:Name="TOCBorder"
+                    BorderBrush="{DynamicResource PrimaryHueMidBrush}" Visibility="Collapsed"
+                    Background="{DynamicResource MaterialDesignPaper}" >
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"></RowDefinition>
+                        <RowDefinition Height="auto"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Grid Grid.Row="0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                            <ColumnDefinition Width="auto"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <Label Grid.Row="0" FontSize="17" FontWeight="Bold">Table Of Content</Label>
+                        <Button Grid.Column="1" Name="closeTOCBtn" Style="{StaticResource MaterialDesignFlatButton}" Click="closeTOCBtn_Click">
+                            <materialDesign:PackIcon Kind="Close" ></materialDesign:PackIcon>
+                        </Button>
+                    </Grid>
+                    <Separator Grid.Row="1"  Margin="5,0,5,0"></Separator>
+                    <Grid Grid.Row="2">
+
+                        <TreeView Name="TOCTree" SelectedItemChanged="TOCSelectionChanged">
+                            <TreeView.ItemTemplate>
+                                <HierarchicalDataTemplate ItemsSource="{Binding Children}">
+                                    <TextBlock Text="{Binding Title}"/>
+                                </HierarchicalDataTemplate>
+                            </TreeView.ItemTemplate>
+                        </TreeView>
+                    </Grid>
+                </Grid>
+            </Border>
+        </Grid>
+
+        <Grid Grid.Column="1" Margin="0">
             <!--Content of book-->
             <ScrollViewer Name="PageScroller"  ScrollViewer.CanContentScroll="True"  ScrollChanged="PageScroller_Changed"             
                        ScrollViewer.HorizontalScrollBarVisibility="auto"
@@ -35,7 +81,7 @@
                 <Canvas Name="PageCanvas" VerticalAlignment="Center" HorizontalAlignment="Center">
                     <Canvas.RenderTransform>
                         <ScaleTransform x:Name="st"></ScaleTransform>
-                        
+
                     </Canvas.RenderTransform>
                     <Image Name="PageImage" RenderOptions.BitmapScalingMode="HighQuality" Canvas.Top="0" Canvas.Left="0"></Image>
                 </Canvas>
@@ -70,7 +116,7 @@
                     <Button Name="ZoomInBtn"  Click="ZoomInBtn_Click">
                         <materialDesign:PackIcon Kind="ZoomInOutline"></materialDesign:PackIcon>
                     </Button>
-                    
+
                     <Button x:Name="bookmarkListBtn" Click="bookmarkListBtn_Click">
                         <materialDesign:PackIcon Kind="BookmarkMultiple"></materialDesign:PackIcon>
                     </Button>
@@ -152,6 +198,7 @@
                     </Grid>
                     <Separator Grid.Row="1"  Margin="5,0,5,0"></Separator>
                     <Grid Grid.Row="2">
+
                         <ListView x:Name="bookmarkListView" 
                                   HorizontalContentAlignment="Stretch" VerticalAlignment="Stretch" SelectionChanged="bookmarkListView_SelectionChanged">
                             <ListView.ItemTemplate>
@@ -173,6 +220,9 @@
                     </Grid>
                 </Grid>
             </Border>
+           
+
         </Grid>
+
     </Grid>
 </UserControl>

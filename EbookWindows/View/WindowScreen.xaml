@@ -133,9 +133,6 @@
                     <ColumnDefinition x:Name="LeftHeaderColumn" Width="250"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                <!--<Button Panel.ZIndex="5" Width="20" Height="25"  BorderThickness="0,1,1,1" BorderBrush="Transparent" Padding="0" HorizontalContentAlignment="Left" Grid.Column="0" HorizontalAlignment="Right" Margin="0,0,-20,0" Style="{StaticResource MaterialDesignOutlinedButton}" Click="LeftHeader_Click">
-                    <materialDesign:PackIcon Width="20" Height="20"  Kind="ChevronDoubleLeft" Padding="0" Foreground="{DynamicResource MaterialHueMidBrush}"></materialDesign:PackIcon>
-                </Button>-->
                 <Border Name="LeftHeader" BorderBrush="#AFAFAF"  BorderThickness="0,0,0,0">
                     <Border.Background>
                         <SolidColorBrush Color="#3F000000" Opacity="1" ></SolidColorBrush>
@@ -157,8 +154,7 @@
                         <Button  Name="btnExpandLeftHeader" materialDesign:ButtonAssist.CornerRadius="0" Grid.Row="0" Padding="12" Width="50" Height="50" HorizontalAlignment="Left" Style="{StaticResource MaterialDesignFlatButton}" Click="LeftHeader_Click">
                             <materialDesign:PackIcon Kind="Menu" Width="24" Height="24" ></materialDesign:PackIcon>
                         </Button>
-                        <!--<Button  Grid.Row="1" Margin="5" Style="{StaticResource MaterialDesignFlatButton}" HorizontalContentAlignment="Left" >ALL LIST</Button>-->
-                        <Grid Name="BookListGrid" Grid.Row="2" VerticalAlignment="Stretch">
+                       <Grid Name="BookListGrid" Grid.Row="2" VerticalAlignment="Stretch">
                             <StackPanel>
                                 <TextBlock Style="{StaticResource MaterialDesignButtonTextBlock}" Margin="15,5,0,5" FontSize="12">Book Online</TextBlock>
                                 <ListView Style="{StaticResource MaterialDesignListView}" Name="TreeView_BookList" Grid.RowSpan="1" FontSize="10" Padding="0" Margin="0" ScrollViewer.HorizontalScrollBarVisibility="Disabled" SelectionChanged="Book_Click">
@@ -191,20 +187,6 @@
                                 <TextBlock VerticalAlignment="Center" Margin="12,0" >About</TextBlock>
                             </VirtualizingStackPanel>
                         </Button>
-                        <!--<ListBox Name="lbTodoList" HorizontalContentAlignment="Stretch">
-                                <ListBox.ContextMenu>
-                                    <ContextMenu>
-                                        <MenuItem Header="Delete"/>
-                                    </ContextMenu>
-                                </ListBox.ContextMenu>
-                                <ListBox.ItemTemplate>
-                                    <DataTemplate>
-                                        <Grid Margin="0,2">
-                                            <TextBlock Text="{Binding Title}" Height="20" />
-                                        </Grid>
-                                    </DataTemplate>
-                                </ListBox.ItemTemplate>
-                            </ListBox>-->
                     </Grid>
                 </Border>
                 <!--#region DETAILSCREEN -->
@@ -235,11 +217,11 @@
                             <ColumnDefinition Width="400"/>
                         </Grid.ColumnDefinitions>
                         <Grid Grid.Column="0">
-                            <!--Phần này là chỗ Rhea sẽ edit lại cái shelf-->
+                            <!--#region shelf-->
                             <local:Shelf x:Name="BookTextShelf" VerticalContentAlignment="Stretch" ></local:Shelf>
                         </Grid>
                         <Grid Grid.Column="1">
-                            <!--Chỗ này để Nguyên Edit-->
+                            <!--#region Recent Files-->
                             <local:RecentFileUserControl x:Name="recentFileUserControl" ></local:RecentFileUserControl>
                         </Grid>
                     </Grid>

@@ -165,8 +165,6 @@ namespace EbookWindows.Screen
         {
             var item = (sender as Button).DataContext;
             int index = recentFileListView.Items.IndexOf(item);
-
-            //MessageBox.Show(index.ToString());
             viewingList.RemoveAt(index);
             recentFileListView.Items.Refresh();
             App.Global.RecentFile_ViewModel.Recent_File.RemoveAt(index);
@@ -176,7 +174,7 @@ namespace EbookWindows.Screen
         private void recentFileListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             int index = recentFileListView.SelectedIndex;
-            //MessageBox.Show(index.ToString());
+          
             if (index > -1)
             {
                 if (!File.Exists(viewingList[index].filePath))
@@ -189,12 +187,12 @@ namespace EbookWindows.Screen
                     if (viewingList[index].fileIcon.Equals(pdf))
                     {
                         home.filePathChanged(viewingList[index].filePath, index );
-                        //openAFileInRecentFileList(index);
+                       
                     }
                     else if (viewingList[index].fileIcon.Equals(epub))
                     {
                         home.filePathChanged(viewingList[index].filePath, index);
-                        // openAFileInRecentFileList(index);
+           
                     }
                     else
                     {
