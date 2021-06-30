@@ -41,7 +41,7 @@ namespace EbookWindows.Screen
 
         private delegate void SetImageSourceDelegate(byte[] source, IList<Link> links, int width, int height);
 
-        public pdfDocument document = null;
+        public pdfDocument document = null; //Apatron.PDF.Rasterrizer
 
         private Task task;
 
@@ -53,20 +53,25 @@ namespace EbookWindows.Screen
 
         private TimeSpan SpanTime;
 
-        private PdfLoadedDocument pdfFile;
+        private PdfLoadedDocument pdfFileBookmark; //Syncfusion
 
         private bool changeFile = false;
+
         private int recentLocation;
+
         private string filePath;
+
+        private ObservableCollection<PdfBookmark> bookmarkList = null;
+        private ObservableCollection<Bookmark> toc = null;
+
         public Pdf_ReadingScreen()
         {
             zoomValue = 0.8;
             
             InitializeComponent();
             zoomLabel.Content = $"{zoomValue * 100}%";
-            this.document = new pdfDocument();
-            this.DataContext = this.document;
-            this.document.PropertyChanged += DocumentOnPropertyChanged;
+            bookmarkList = new ObservableCollection<PdfBookmark>();
+            toc = new ObservableCollection<Bookmark>();
         }
 
         /// <summary>
@@ -82,14 +87,13 @@ namespace EbookWindows.Screen
             this.filePath = filePath;
             recentLocation = location;
             file = new FileStream(filePath, FileMode.Open, FileAccess.Read);
-
+          
             try
             {
                
                 Document document = new Document(file);
                 (this.document).Document = document;
-                pdfFile = new PdfLoadedDocument(filePath);              
-                bookmarkListView.ItemsSource = pdfFile.Bookmarks;     
+                pdfFileBookmark = new PdfLoadedDocument(filePath);              
             }
             catch (Apitron.PDF.Rasterizer.ErrorHandling.DocumentLoadException)
             {
@@ -115,7 +119,9 @@ namespace EbookWindows.Screen
             {
                 return false;
             }
-            checkBookmark();
+            ClassifyBookmarks();
+            bookmarkListView.ItemsSource = bookmarkList;
+            TOCTree.ItemsSource = toc;
             return true;
         }
        
@@ -132,9 +138,9 @@ namespace EbookWindows.Screen
                 file = new FileStream(filePath, FileMode.Open, FileAccess.Read);
                 Document document = new Document(file, passwordStr);
                 (this.document).Document = document;
-                pdfFile = new PdfLoadedDocument(filePath, passwordStr);
-                //checkBookmark();
-                bookmarkListView.ItemsSource = pdfFile.Bookmarks;
+                pdfFileBookmark = new PdfLoadedDocument(filePath, passwordStr);
+   
+                bookmarkListView.ItemsSource = pdfFileBookmark.Bookmarks;
             }
             catch (Exception e)
             {
@@ -144,19 +150,21 @@ namespace EbookWindows.Screen
             return true;
         }
 
-        private void checkBookmark()
+        private void ClassifyBookmarks()
         {
 
-            for (int i = 0; i < pdfFile.Bookmarks.Count;)
+            for (int i = 0; i < pdfFileBookmark.Bookmarks.Count; i++)
             {
-                if (pdfFile.Bookmarks[i].Destination == null)
+               // string title = ;
+                if (pdfFileBookmark.Bookmarks[i].Destination != null && pdfFileBookmark.Bookmarks[i].Title.Contains("Page "))
                 {
-                    pdfFile.Bookmarks.RemoveAt(i);
+                    bookmarkList.Add(pdfFileBookmark.Bookmarks[i]);
 
                 }
                 else
                 {
-                    i++;
+                    toc.Add(document.Document.Bookmarks.Children[i]);
+                   
                 }
 
             }
@@ -379,8 +387,7 @@ namespace EbookWindows.Screen
             if (zoomValue > 2)
             {
                 ZoomInBtn.IsEnabled = false;
-                
-              
+                           
             }
 
             this.UpdateImageZoom();
@@ -434,15 +441,15 @@ namespace EbookWindows.Screen
 
         private void bookmarkBtn_Click(object sender, RoutedEventArgs e)
         {
-            changeFile = true;
+            changeFile = true; //should fix
             int pageIndex = PageConboBox.SelectedIndex;
             //Creates document bookmarks.
-            PdfBookmark bookmark = pdfFile.Bookmarks.Add($"Page {pageIndex + 1}");
+            PdfBookmark bookmark = pdfFileBookmark.Bookmarks.Add($"Page {pageIndex + 1}");
             // Sets the destination page.
-            bookmark.Destination = new PdfDestination(pdfFile.Pages[pageIndex]);
+            bookmark.Destination = new PdfDestination(pdfFileBookmark.Pages[pageIndex]);
             //Set the page and location of the bookmark
             bookmark.Destination.Location = new PointF(0, 0);
-            bookmarkListView.Items.Refresh();
+            bookmarkList.Add(bookmark);
         }
 
 
@@ -459,11 +466,11 @@ namespace EbookWindows.Screen
 
         private void bookmarkDeleteButtons_Click(object sender, RoutedEventArgs e)
         {
-            changeFile = true;
-            var item = (sender as FrameworkElement).DataContext;
-            int index = bookmarkListView.Items.IndexOf(item);
-            pdfFile.Bookmarks.RemoveAt(index);
-            bookmarkListView.Items.Refresh();
+            changeFile = true; //should fix
+           var item = (sender as FrameworkElement).DataContext;
+           int index = bookmarkListView.Items.IndexOf(item);
+           pdfFileBookmark.Bookmarks.Remove(bookmarkList[index].Title);
+           bookmarkList.RemoveAt(index);
         }
 
         private int GetPageIndexFormTitle(string title)
@@ -488,9 +495,9 @@ namespace EbookWindows.Screen
             int index = bookmarkListView.SelectedIndex;
             if (index != -1)
             {
-                int pageIndex = GetPageIndexFormTitle(pdfFile.Bookmarks[index].Title);
+                int pageIndex = GetPageIndexFormTitle(bookmarkList[index].Title);
                 document.Document.Navigator.GoToPage(pageIndex);
-                bookmarkListView.SelectedIndex = -1;
+           
             }
         }
 
@@ -537,16 +544,21 @@ namespace EbookWindows.Screen
             zoomLabel.Content = $"{zoomValue * 100}%";
             PageImage.Source = null;
             bottom = 0;
+            //hide
             bookmarkBorder.Visibility = Visibility.Collapsed;
+            TOCBorder.Visibility = Visibility.Collapsed;
+            bookmarkList.Clear();
+            //clear
+            toc.Clear();
             file.Close();
             if (changeFile)
             {
-                pdfFile.Save();
+                pdfFileBookmark.Save();
                 changeFile = false;
             }
-            if(pdfFile != null)
+            if(pdfFileBookmark != null)
             {
-                pdfFile.Close(true);
+                pdfFileBookmark.Close(true);
             }
          
             home.ReturnFromReadingScreen_Click(sender, e);
@@ -557,9 +569,9 @@ namespace EbookWindows.Screen
             file.Close();
             if (changeFile)
             {
-                pdfFile.Save();
+                pdfFileBookmark.Save();
             }
-            pdfFile.Close(true);
+            pdfFileBookmark.Close(true);
         }
 
         private void keyDown_Test(object sender, KeyEventArgs e)
@@ -579,6 +591,28 @@ namespace EbookWindows.Screen
             App.Global.RecentFile_ViewModel.Recent_File[0].recentLocation = index;
         }
 
-        
+        private void TOCSelectionChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        {
+            Bookmark newValue = (Bookmark)e.NewValue;
+            if (newValue != null)
+            {
+                document.Document.Navigator.GoToBookmark(newValue);
+                this.destinationRectangle = newValue.GetDestinationRectangle((int)(this.document.Page.Width * this.GlobalScale), (int)(this.document.Page.Height * this.GlobalScale), null);
+            }
+        }
+
+        private void ShowContentOfTable_Click(object sender, RoutedEventArgs e)
+        {
+         //   TOCGrid.Visibility = Visibility.Visible;
+         TOCBorder.Visibility = Visibility.Visible;
+        }
+
+        private void closeTOCBtn_Click(object sender, RoutedEventArgs e)
+        {
+            //TOCGrid.Visibility = Visibility.Collapsed;
+            TOCBorder.Visibility = Visibility.Collapsed;
+        }
+
+      
     }
 }
