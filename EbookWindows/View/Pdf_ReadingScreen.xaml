@@ -12,6 +12,7 @@
              MouseMove="StackPanel_MouseMove"
              PreviewKeyDown="keyDown_Test">
     <UserControl.Resources>
+
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Button.xaml" />
@@ -24,25 +25,26 @@
             </ResourceDictionary.MergedDictionaries>
             <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
             <materialDesignConverters:BooleanToVisibilityConverter x:Key="InvertedBooleanToVisibilityConverter" TrueValue="Collapsed" FalseValue="Visible" />
+           
         </ResourceDictionary>
+      
     </UserControl.Resources>
-    <Grid Name="MainGrid" >
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="auto"></ColumnDefinition>
-            <ColumnDefinition Width="*"></ColumnDefinition>
-        </Grid.ColumnDefinitions>
-        
+    <Grid Name="MainGrid">
+
         <!--Table of content-->
-        <Grid Name="TOCGrid" Grid.Column="0" Visibility="Visible">
+        <Grid Name="TOCGrid"  Visibility="Visible" Panel.ZIndex="5" >
             <!--Table of content Button-->
-            <Button HorizontalAlignment="Left" ToolTip="Table of content"  VerticalAlignment="Top" Margin="0"  Style="{StaticResource MaterialDesignFlatButton}" Click="ShowContentOfTable_Click">
-                <materialDesign:PackIcon Kind="TableOfContents" Width="30"  ></materialDesign:PackIcon>
+            <Button HorizontalAlignment="Left" ToolTip="Table of content" Width="50" Height="50" Padding="5"  VerticalAlignment="Top" Margin="0"  Style="{StaticResource MaterialDesignFlatButton}" Click="ShowContentOfTable_Click">
+                <materialDesign:PackIcon Kind="TableOfContents" Width="30" Height="30" ></materialDesign:PackIcon>
             </Button>
 
-            <Border HorizontalAlignment="Left" BorderThickness="1,1,0,0" x:Name="TOCBorder"
+            <Border HorizontalAlignment="Left" BorderThickness="0" x:Name="TOCBorder"
                     BorderBrush="{DynamicResource PrimaryHueMidBrush}" Visibility="Collapsed"
                     Background="{DynamicResource MaterialDesignPaper}" >
-                <Grid>
+                <Grid >
+                    <Grid.Background>
+                        <SolidColorBrush Color="Gray" Opacity="0.1"></SolidColorBrush>
+                    </Grid.Background>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="auto"></RowDefinition>
                         <RowDefinition Height="auto"></RowDefinition>
@@ -73,7 +75,7 @@
             </Border>
         </Grid>
 
-        <Grid Grid.Column="1" Margin="0">
+        <Grid Margin="0">
             <!--Content of book-->
             <ScrollViewer Name="PageScroller"  ScrollViewer.CanContentScroll="True"  ScrollChanged="PageScroller_Changed"             
                        ScrollViewer.HorizontalScrollBarVisibility="auto"
@@ -177,10 +179,13 @@
 
 
             <!--bookmarks-->
-            <Border HorizontalAlignment="Right" BorderThickness="1" x:Name="bookmarkBorder"
+            <Border HorizontalAlignment="Right" BorderThickness="0" x:Name="bookmarkBorder"
                     BorderBrush="{DynamicResource PrimaryHueMidBrush}" Visibility="Collapsed"
-                    CornerRadius="5" Background="{DynamicResource MaterialDesignPaper}">
+                     Background="{DynamicResource MaterialDesignPaper}">
                 <Grid>
+                    <Grid.Background>
+                        <SolidColorBrush Color="Gray" Opacity="0.1"></SolidColorBrush>
+                    </Grid.Background>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="auto"></RowDefinition>
                         <RowDefinition Height="auto"></RowDefinition>

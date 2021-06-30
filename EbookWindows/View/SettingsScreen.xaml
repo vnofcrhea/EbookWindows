@@ -7,24 +7,76 @@
         xmlns:system="clr-namespace:System;assembly=mscorlib"
         xmlns:materialDesignConverters="clr-namespace:MaterialDesignThemes.Wpf.Converters;assembly=MaterialDesignThemes.Wpf"
         xmlns:local="clr-namespace:EbookWindows.Screen"
-        mc:Ignorable="d" Width="600" VerticalAlignment="Center" HorizontalAlignment="Center">
-    <Grid Name="MainGrid" Background="{DynamicResource MaterialDesignPaper}">
+        mc:Ignorable="d" Width="600" Height="250" VerticalAlignment="Center" HorizontalAlignment="Center">
 
-        <Grid>
-            <Button Style="{StaticResource MaterialDesignFlatButton}" Padding="0" HorizontalAlignment="Right" Margin="4" Click="CloseSetting_Click">
+    <UserControl.Resources>
+        <local:LoginConverter x:Key="LoginConverter" />
+        <local:LoggedConverter x:Key="LoggedConverter"/>
+    </UserControl.Resources>
+    <Grid Name="MainGrid" Background="{DynamicResource MaterialDesignPaper}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="54*"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0" Margin="5">
+            <TextBlock Style="{StaticResource MaterialDesignHeadline6TextBlock}" VerticalAlignment="Center" Text="SETTINGS" />
+            <Button Style="{StaticResource MaterialDesignFlatButton}" Padding="0"  HorizontalAlignment="Right" Margin="4" Click="CloseSetting_Click">
                 <materialDesign:PackIcon Kind="Close" Width="30" Height="30"></materialDesign:PackIcon>
             </Button>
-            <StackPanel>
-                <TextBlock Style="{StaticResource MaterialDesignHeadline6TextBlock}" Margin="8,8,8,16" Text="SETTINGS" />
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="8,8,8,8">
-                    <TextBlock Text="Dark Mode" FontSize="12" Foreground="{DynamicResource MaterialDesignTextAreaBorder}" ></TextBlock>
+        </Grid>
+        <Grid Grid.Row="1" Margin="5">
+            <StackPanel Margin="5,0,0,0">
+
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,5">
+                    <TextBlock Text="Dark Mode" FontSize="14" FontWeight="Bold" Foreground="{DynamicResource MaterialDesignTextAreaBorder}" ></TextBlock>
                     <CheckBox Name="DarkModeChecker" Margin="8,0,0,0"  Style="{StaticResource MaterialDesignSwitchToggleButton}" IsChecked="{Binding IsDarkTheme }" />
                 </StackPanel>
+                <TextBlock  Style="{StaticResource MaterialDesignSubtitle1TextBlock}" FontWeight="Bold">Synchronization
+                </TextBlock>
+                <TextBlock  Style="{StaticResource MaterialDesignTextBlock}" Margin="0,5"  FontSize="14" TextWrapping="Wrap"> Synchronizing the online story list allows storing the list of stories and reading on other devices.
+                </TextBlock>
+                <StackPanel Orientation="Horizontal" Visibility="{Binding IsLogged, Converter={StaticResource LoginConverter}}" >
+                    <Button Margin="10,3"  Style="{StaticResource MaterialDesignOutlinedButton}" 
+                            Click="Login_Click"
+                            materialDesign:ButtonAssist.CornerRadius="0.4" VerticalContentAlignment="Center">
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" >
+                            <materialDesign:PackIcon  VerticalAlignment="Center" Width="24" Height="24" Kind="Google"/>
+                            <TextBlock Margin="5,0" VerticalAlignment="Center">Login to google Account </TextBlock>
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+                <StackPanel Visibility="{Binding IsLogged, Converter={StaticResource LoggedConverter}}">
+                    <StackPanel Orientation="Horizontal" >
+                        <TextBlock VerticalAlignment="Center" Padding="0,0,2,0" FontWeight="Bold" FontSize="14">Hi,</TextBlock>
+                        <TextBlock  VerticalAlignment="Center" Padding="0,0,0,0" FontWeight="Bold" FontSize="14" Text="{Binding AccountName}"></TextBlock>
+                        <!--<TextBlock VerticalAlignment="Center" Padding="0,0,5,0" FontWeight="Bold">!</TextBlock>-->
+                        <Button  VerticalAlignment="Center" Height="20" 
+                                 Click="Logout_Click"
+                                 Style="{StaticResource MaterialDesignOutlinedButton}" BorderThickness="0" Padding="5,0" FontSize="14" >Logout</Button>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,5">
+                        <Button Style="{StaticResource MaterialDesignOutlinedButton}" 
+                            Click="UploadSyncData_Click"
+                            materialDesign:ButtonAssist.CornerRadius="0.4" VerticalContentAlignment="Center">
+                            Upload Data
+                        </Button>
+                        <Button Margin="10,0"  Style="{StaticResource MaterialDesignOutlinedButton}" 
+                                Click="DownloadSyncData_Click"
+                                materialDesign:ButtonAssist.CornerRadius="0.4" VerticalContentAlignment="Center">
+                            Download Data
+                        </Button>
+                    </StackPanel>
+                    <TextBlock Text="{Binding Notification}"></TextBlock>
+                </StackPanel>
+
             </StackPanel>
+
             <!--<DockPanel Margin="8,8,8,8" >
                 <TextBlock  DockPanel.Dock="Left" Text="Main Color:" VerticalAlignment="Center" Padding="0"></TextBlock>
 
-                --><!--<materialDesign:ColorPicker  HorizontalContentAlignment="Left" Height="150" HorizontalAlignment="Stretch" MaxWidth="300"  VerticalAlignment="Center"  Color="{Binding PrimaryColor, Delay=25}"></materialDesign:ColorPicker>--><!--
+                -->
+            <!--<materialDesign:ColorPicker  HorizontalContentAlignment="Left" Height="150" HorizontalAlignment="Stretch" MaxWidth="300"  VerticalAlignment="Center"  Color="{Binding PrimaryColor, Delay=25}"></materialDesign: Picker>-->
+            <!--
             </DockPanel>-->
         </Grid>
     </Grid>

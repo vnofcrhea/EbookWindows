@@ -369,14 +369,14 @@ namespace EbookWindows.Screen
                 ((sender as Button).Content as MaterialDesignThemes.Wpf.PackIcon).Kind = MaterialDesignThemes.Wpf.PackIconKind.Eye;
                 BottomPanelTool.Visibility = Visibility.Visible;
                 TopPanelTool.Visibility = Visibility.Visible;
-                MainGrid.MouseMove += new MouseEventHandler(StackPanel_MouseMove);
+                this.MouseMove += StackPanel_MouseMove;
             }
             else
             {
                 ((sender as Button).Content as MaterialDesignThemes.Wpf.PackIcon).Kind = MaterialDesignThemes.Wpf.PackIconKind.EyeOff;
                 BottomPanelTool.Visibility = Visibility.Collapsed;
                 TopPanelTool.Visibility = Visibility.Collapsed;
-                MainGrid.MouseMove -= new MouseEventHandler(StackPanel_MouseMove);
+                this.MouseMove -= StackPanel_MouseMove;
             }
         }
 
@@ -531,6 +531,7 @@ namespace EbookWindows.Screen
                         return;
                     }    
                     document.Document.Navigator.MoveBackward();
+                    this.PageScroller.ScrollToVerticalOffset(0.01);
                     top = 0;
                     
                 }
@@ -615,4 +616,5 @@ namespace EbookWindows.Screen
 
       
     }
+   
 }

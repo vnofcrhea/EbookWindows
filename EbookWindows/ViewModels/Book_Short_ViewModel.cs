@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -9,8 +10,9 @@ using Newtonsoft.Json;
 
 namespace EbookWindows.ViewModels
 {
-    public class Book_Short_ViewModel
+    public class Book_Short_ViewModel : INotifyPropertyChanged
     {
+        public event PropertyChangedEventHandler PropertyChanged;
         private List<Book_Short> _List_Book_Short;
         public Book_Short_ViewModel()
         {
@@ -19,13 +21,18 @@ namespace EbookWindows.ViewModels
         public List<Book_Short> Book_Short
         {
             get { return _List_Book_Short; }
-            set { _List_Book_Short = value; }
+            set { _List_Book_Short = value;
+                var handler = this.PropertyChanged;
+                if (handler != null)
+                {
+                    handler(this,
+                          new PropertyChangedEventArgs("Book_Short"));
+                }
+
+            }
         }
         //Get List Book_Short
-        public List<Book_Short> Get_Book_Short_List()
-        {
-            return _List_Book_Short.ToList();
-        }    
+            
         public void LoadListBookShort()
         {
             _List_Book_Short.Clear();

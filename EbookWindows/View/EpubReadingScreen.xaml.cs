@@ -356,11 +356,15 @@ namespace EbookWindows.Screen
             Button button = (Button)sender;
             string color = button.Background.ToString();
             OfflineEpub_ViewModel.changeBackgroundColor(color);
-            if(color.Equals("#FF303030"))
-                OfflineEpub_ViewModel.changeForegroundColor("#FFFFFFFF");
+            if (color.Equals("#FF303030"))
+            { OfflineEpub_ViewModel.changeForegroundColor("#FFFFFFFF");
+                App.Global.Settings_ViewModel.IsDarkTheme = true;
+            }
+
             else
             {
                 OfflineEpub_ViewModel.changeForegroundColor("#FF303030");
+                App.Global.Settings_ViewModel.IsDarkTheme = false;
             }    
             //
             epubWebBrowser.Address = OfflineEpub_ViewModel.menuItems[currentPage];

@@ -18,10 +18,20 @@ namespace EbookWindows.Model
         public BaseTheme BaseTheme { get; set; } //(Light/Dark)
         public Color PrimaryColor { get; set; }
         public Color SecondaryColor { get; set; }
+        public string AccountName { get; set; }
+        public bool IsLogged { get; set; }
         public Settings()
         {
             
         }    
     
+    }   
+    public class GoogleUserProfile
+    {
+        public string id { get; set; }
+        public string name { get; set; }
+        public string given_name { get; set; }
+        public string picture { get; set; }
+        public string locale { get; set; }
     }
 }
