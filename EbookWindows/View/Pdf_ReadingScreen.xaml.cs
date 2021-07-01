@@ -24,6 +24,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 using Page = Apitron.PDF.Rasterizer.Page;
 using Rectangle = Apitron.PDF.Rasterizer.Rectangle;
 
@@ -34,6 +35,7 @@ namespace EbookWindows.Screen
     /// </summary>
     public partial class Pdf_ReadingScreen : UserControl
     {
+        #region Attributes
         private int bottom = 0;
 
         public FileStream file;
@@ -63,6 +65,7 @@ namespace EbookWindows.Screen
 
         private ObservableCollection<PdfBookmark> bookmarkList = null;
         private ObservableCollection<Bookmark> toc = null;
+        #endregion
 
         public Pdf_ReadingScreen()
         {
@@ -72,7 +75,7 @@ namespace EbookWindows.Screen
             zoomLabel.Content = $"{zoomValue * 100}%";
             bookmarkList = new ObservableCollection<PdfBookmark>();
             toc = new ObservableCollection<Bookmark>();
-        }
+        }  
 
         /// <summary>
         /// Load data with a file path
@@ -164,7 +167,6 @@ namespace EbookWindows.Screen
                 else
                 {
                     toc.Add(document.Document.Bookmarks.Children[i]);
-
                 }
 
             }
@@ -313,7 +315,7 @@ namespace EbookWindows.Screen
         /// <param name="e"></param>
         private void OnZoomChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            this.UpdateImageZoom(); //Khởi động chạy 2 lần: Thay đổi ở Minium và Value
+            this.UpdateImageZoom(); //loading: Minium & Value
         }
 
         /// <summary>
@@ -451,7 +453,6 @@ namespace EbookWindows.Screen
             bookmark.Destination.Location = new PointF(0, 0);
             bookmarkList.Add(bookmark);
         }
-
 
         private void bookmarkListBtn_Click(object sender, RoutedEventArgs e)
         {
@@ -624,20 +625,17 @@ namespace EbookWindows.Screen
                 this.destinationRectangle = newValue.GetDestinationRectangle((int)(this.document.Page.Width * this.GlobalScale), (int)(this.document.Page.Height * this.GlobalScale), null);
             }
         }
-
+        
+      
         private void ShowContentOfTable_Click(object sender, RoutedEventArgs e)
         {
-         //   TOCGrid.Visibility = Visibility.Visible;
-         TOCBorder.Visibility = Visibility.Visible;
+            TOCBorder.Visibility = Visibility.Visible;
         }
 
         private void closeTOCBtn_Click(object sender, RoutedEventArgs e)
         {
-            //TOCGrid.Visibility = Visibility.Collapsed;
             TOCBorder.Visibility = Visibility.Collapsed;
         }
-
-      
     }
    
 }

@@ -30,18 +30,21 @@
       
     </UserControl.Resources>
     <Grid Name="MainGrid">
-
-        <!--Table of content-->
-        <Grid Name="TOCGrid"  Visibility="Visible" Panel.ZIndex="5" >
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="auto"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <!--Region Table of content-->
+        <Grid Name="TOCGrid"  Visibility="Visible" Grid.Column="0">
             <!--Table of content Button-->
             <Button HorizontalAlignment="Left" ToolTip="Table of content" Width="50" Height="50" Padding="5"  VerticalAlignment="Top" Margin="0"  Style="{StaticResource MaterialDesignFlatButton}" Click="ShowContentOfTable_Click">
                 <materialDesign:PackIcon Kind="TableOfContents" Width="30" Height="30" ></materialDesign:PackIcon>
             </Button>
-
-            <Border HorizontalAlignment="Left" BorderThickness="0" x:Name="TOCBorder"
+            <!--Table of content-->
+            <Border HorizontalAlignment="Left" BorderThickness="0"  x:Name="TOCBorder"
                     BorderBrush="{DynamicResource PrimaryHueMidBrush}" Visibility="Collapsed"
                     Background="{DynamicResource MaterialDesignPaper}" >
-                <Grid >
+                <Grid>
                     <Grid.Background>
                         <SolidColorBrush Color="Gray" Opacity="0.1"></SolidColorBrush>
                     </Grid.Background>
@@ -62,7 +65,6 @@
                     </Grid>
                     <Separator Grid.Row="1"  Margin="5,0,5,0"></Separator>
                     <Grid Grid.Row="2">
-
                         <TreeView Name="TOCTree" SelectedItemChanged="TOCSelectionChanged">
                             <TreeView.ItemTemplate>
                                 <HierarchicalDataTemplate ItemsSource="{Binding Children}">
@@ -74,9 +76,9 @@
                 </Grid>
             </Border>
         </Grid>
-
-        <Grid Margin="0">
-            <!--Content of book-->
+        
+        <!--Content of book-->
+        <Grid Margin="0" Grid.Column="1">
             <ScrollViewer Name="PageScroller"  ScrollViewer.CanContentScroll="True"  ScrollChanged="PageScroller_Changed"             
                        ScrollViewer.HorizontalScrollBarVisibility="auto"
                        ScrollViewer.VerticalScrollBarVisibility="Visible">
@@ -88,7 +90,6 @@
                     <Image Name="PageImage" RenderOptions.BitmapScalingMode="HighQuality" Canvas.Top="0" Canvas.Left="0"></Image>
                 </Canvas>
             </ScrollViewer>
-
 
             <!--Customize toolbar-->
             <Border  Name="TopPanelTool" Margin="0,5,0,0"  HorizontalAlignment="Center" BorderBrush="{DynamicResource PrimaryHueMidBrush}" VerticalAlignment="Top" BorderThickness="0.5"  CornerRadius="0"
@@ -124,7 +125,6 @@
                     </Button>
                 </StackPanel>
             </Border>
-
 
             <!-- Nút ẩn thanh công cụ để đọc cho dễ hơn.-->
             <Button HorizontalAlignment="Right" VerticalAlignment="Top" Margin="5,5,25,5"  Style="{StaticResource MaterialDesignFlatButton}" Click="ShowHideToolButton_Click">
@@ -225,9 +225,6 @@
                     </Grid>
                 </Grid>
             </Border>
-           
-
         </Grid>
-
     </Grid>
 </UserControl>
