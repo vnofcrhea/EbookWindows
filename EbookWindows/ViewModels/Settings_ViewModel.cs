@@ -54,7 +54,7 @@ namespace EbookWindows.ViewModels
                         }    
                         else
                         {
-                            GetUserCredential();
+                           Task.Run(()=>GetUserCredential());
                         }    
                     }
                 }
@@ -224,7 +224,23 @@ namespace EbookWindows.ViewModels
                     "user",
                     new CancellationTokenSource().Token,
                     new FileDataStore(credPath, true));
-                
+                if (credentialx.Token.IsExpired(Google.Apis.Util.SystemClock.Default))
+                {
+                    try
+                    {
+                        var refreshResult = credentialx.RefreshTokenAsync(CancellationToken.None).Result;
+                        credential = credentialx;
+                    }
+                    catch
+                    {
+                        IsLogged = false;
+                        return;
+                    }
+                }
+                else
+                {
+                    credential = credentialx;
+                }    
                 var di = new DirectoryInfo(@".\token.json");
                 if ((di.Attributes & FileAttributes.Hidden) != FileAttributes.Hidden)
                 {
@@ -234,7 +250,7 @@ namespace EbookWindows.ViewModels
                 //var paragraph = new Paragraph();
                 //paragraph.Inlines.Add(new Run(string.Format("Login Successed! Credential file saved to: " + credPath)));
                 //content.Document.Blocks.Add(paragraph);
-                credential = credentialx;
+                
                 driveService = new DriveService(new BaseClientService.Initializer()
                 {
                     HttpClientInitializer = credential,

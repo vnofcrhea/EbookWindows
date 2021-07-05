@@ -41,7 +41,7 @@
                             materialDesign:ButtonAssist.CornerRadius="0.4" VerticalContentAlignment="Center">
                         <StackPanel Orientation="Horizontal" VerticalAlignment="Center" >
                             <materialDesign:PackIcon  VerticalAlignment="Center" Width="24" Height="24" Kind="Google"/>
-                            <TextBlock Margin="5,0" VerticalAlignment="Center">Login to google Account </TextBlock>
+                            <TextBlock Margin="5,0" VerticalAlignment="Center" Text="Login to Google Account"/>
                         </StackPanel>
                     </Button>
                 </StackPanel>
