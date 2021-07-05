@@ -24,6 +24,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 using Page = Apitron.PDF.Rasterizer.Page;
 using Rectangle = Apitron.PDF.Rasterizer.Rectangle;
 
@@ -34,6 +35,7 @@ namespace EbookWindows.Screen
     /// </summary>
     public partial class Pdf_ReadingScreen : UserControl
     {
+        #region Attributes
         private int bottom = 0;
 
         public FileStream file;
@@ -63,6 +65,7 @@ namespace EbookWindows.Screen
 
         private ObservableCollection<PdfBookmark> bookmarkList = null;
         private ObservableCollection<Bookmark> toc = null;
+        #endregion
 
         public Pdf_ReadingScreen()
         {
@@ -72,7 +75,7 @@ namespace EbookWindows.Screen
             zoomLabel.Content = $"{zoomValue * 100}%";
             bookmarkList = new ObservableCollection<PdfBookmark>();
             toc = new ObservableCollection<Bookmark>();
-        }
+        }  
 
         /// <summary>
         /// Load data with a file path
@@ -142,7 +145,7 @@ namespace EbookWindows.Screen
    
                 bookmarkListView.ItemsSource = pdfFileBookmark.Bookmarks;
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 MessageBox.Show("Invalid password. Please enter password again", "", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return false;
@@ -155,8 +158,8 @@ namespace EbookWindows.Screen
 
             for (int i = 0; i < pdfFileBookmark.Bookmarks.Count; i++)
             {
-               // string title = ;
-                if (pdfFileBookmark.Bookmarks[i].Destination != null && pdfFileBookmark.Bookmarks[i].Title.Contains("Page "))
+              
+                if (pdfFileBookmark.Bookmarks[i].Destination != null && pdfFileBookmark.Bookmarks[i].Title.IndexOf("Page ") == 0)
                 {
                     bookmarkList.Add(pdfFileBookmark.Bookmarks[i]);
 
@@ -164,7 +167,6 @@ namespace EbookWindows.Screen
                 else
                 {
                     toc.Add(document.Document.Bookmarks.Children[i]);
-                   
                 }
 
             }
@@ -192,8 +194,8 @@ namespace EbookWindows.Screen
                 int desiredHeight = (int)currentPage.Height * GlobalScale;
                 byte[] image = currentPage.RenderAsBytes(desiredWidth, desiredHeight, new RenderingSettings());
                 IList<Link> links = currentPage.Links;
-                SetImageSourceDelegate del = this.SetImageSource; //gán sự kiện vào hàm delegate
-                this.Dispatcher.Invoke(del, image, links, desiredWidth, desiredHeight); //thực hiện hàm SetImageSource
+                SetImageSourceDelegate del = this.SetImageSource; //add event into delegate
+                this.Dispatcher.Invoke(del, image, links, desiredWidth, desiredHeight); //execute SetImageSource
             }
             catch (Exception)
             {
@@ -313,7 +315,7 @@ namespace EbookWindows.Screen
         /// <param name="e"></param>
         private void OnZoomChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            this.UpdateImageZoom(); //Khởi động chạy 2 lần: Thay đổi ở Minium và Value
+            this.UpdateImageZoom(); //loading: Minium & Value
         }
 
         /// <summary>
@@ -452,7 +454,6 @@ namespace EbookWindows.Screen
             bookmarkList.Add(bookmark);
         }
 
-
         private void bookmarkListBtn_Click(object sender, RoutedEventArgs e)
         {
             bookmarkBorder.Visibility = Visibility.Visible;
@@ -492,15 +493,22 @@ namespace EbookWindows.Screen
 
         private void bookmarkListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+
             int index = bookmarkListView.SelectedIndex;
+
             if (index != -1)
             {
+
                 int pageIndex = GetPageIndexFormTitle(bookmarkList[index].Title);
+                if (pageIndex == -1)
+                {
+                    pageIndex = bookmarkList[index].Destination.PageIndex;
+                }
                 document.Document.Navigator.GoToPage(pageIndex);
-           
+
             }
         }
-
+    
         private int top = 0;
         private void PageScroller_Changed(object sender, ScrollChangedEventArgs e)
         {
@@ -545,16 +553,24 @@ namespace EbookWindows.Screen
             zoomLabel.Content = $"{zoomValue * 100}%";
             PageImage.Source = null;
             bottom = 0;
-            //hide
+            //hide TOC & bookmark
             bookmarkBorder.Visibility = Visibility.Collapsed;
             TOCBorder.Visibility = Visibility.Collapsed;
-            bookmarkList.Clear();
-            //clear
+            //clear TOC & bookmark
+            bookmarkList.Clear();           
             toc.Clear();
             file.Close();
             if (changeFile)
             {
-                pdfFileBookmark.Save();
+                try
+                {
+                    pdfFileBookmark.Save();
+                }
+                catch (Exception)
+                {
+                    MessageBox.Show("Cannot save changes because the file is open in another program", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
+
                 changeFile = false;
             }
             if(pdfFileBookmark != null)
@@ -570,7 +586,15 @@ namespace EbookWindows.Screen
             file.Close();
             if (changeFile)
             {
-                pdfFileBookmark.Save();
+                try
+                {
+                    pdfFileBookmark.Save();
+                }
+                catch (Exception)
+                {
+                    MessageBox.Show("Cannot save changes because the file is open in another program", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
+                
             }
             pdfFileBookmark.Close(true);
         }
@@ -601,20 +625,17 @@ namespace EbookWindows.Screen
                 this.destinationRectangle = newValue.GetDestinationRectangle((int)(this.document.Page.Width * this.GlobalScale), (int)(this.document.Page.Height * this.GlobalScale), null);
             }
         }
-
+        
+      
         private void ShowContentOfTable_Click(object sender, RoutedEventArgs e)
         {
-         //   TOCGrid.Visibility = Visibility.Visible;
-         TOCBorder.Visibility = Visibility.Visible;
+            TOCBorder.Visibility = Visibility.Visible;
         }
 
         private void closeTOCBtn_Click(object sender, RoutedEventArgs e)
         {
-            //TOCGrid.Visibility = Visibility.Collapsed;
             TOCBorder.Visibility = Visibility.Collapsed;
         }
-
-      
     }
    
 }
