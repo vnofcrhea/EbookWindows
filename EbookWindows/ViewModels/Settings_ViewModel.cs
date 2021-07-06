@@ -388,7 +388,15 @@ namespace EbookWindows.ViewModels
                         {
                             Directory.CreateDirectory(Path.GetDirectoryName(path));
                         }
-                        entry.ExtractToFile(path, true);
+                        try
+                        {
+                            entry.ExtractToFile(path, true);
+                        }
+                        catch
+                        {
+
+                        }
+
                     }
                     zipLoader.Dispose();
                 }
