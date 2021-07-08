@@ -470,8 +470,19 @@ namespace EbookWindows.Screen
             changeFile = true; //should fix
            var item = (sender as FrameworkElement).DataContext;
            int index = bookmarkListView.Items.IndexOf(item);
-           pdfFileBookmark.Bookmarks.Remove(bookmarkList[index].Title);
-           bookmarkList.RemoveAt(index);
+           string stringtitle = bookmarkList[index].Title;
+           int count = -1;
+           foreach(PdfBookmark itembookmark in pdfFileBookmark.Bookmarks)
+           {
+                count++;
+                if(itembookmark is PdfBookmark && (itembookmark as PdfBookmark).Title.Equals(stringtitle))
+                {
+                    pdfFileBookmark.Bookmarks.RemoveAt(count);
+                    bookmarkList.RemoveAt(index);
+                    return;
+                }    
+           }    
+           
         }
 
         private int GetPageIndexFormTitle(string title)

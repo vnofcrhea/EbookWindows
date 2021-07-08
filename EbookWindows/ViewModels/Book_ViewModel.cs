@@ -18,6 +18,7 @@ namespace EbookWindows.ViewModels
         private List<int> _Bookmark_Chapters_Index = new List<int>();
         private List<int> _Downloaded_Chapters_index = new List<int>();
         private bool _IsBookDownloaded = false;
+        private bool _IsBookContentDownloaded = false;
         public bool IsBookDownloaded
         {
             get { return _IsBookDownloaded; }
