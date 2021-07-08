@@ -18,7 +18,6 @@ namespace EbookWindows.ViewModels
         private List<int> _Bookmark_Chapters_Index = new List<int>();
         private List<int> _Downloaded_Chapters_index = new List<int>();
         private bool _IsBookDownloaded = false;
-        private bool _IsBookContentDownloaded =false;
         public bool IsBookDownloaded
         {
             get { return _IsBookDownloaded; }
@@ -61,6 +60,7 @@ namespace EbookWindows.ViewModels
         {
             App.Global.Book_Directory = item.book_dir;
             _Bookmark_Chapters_Index.Clear();
+            _Downloaded_Chapters_index.Clear();
             try
             {
                 using (StreamReader file = File.OpenText(item.book_dir + "\\detail.json"))
@@ -133,6 +133,7 @@ namespace EbookWindows.ViewModels
         public bool LoadData(string url) //Load data online here
         {
             _Bookmark_Chapters_Index.Clear();
+            _Downloaded_Chapters_index.Clear();
             try
             {
                 using (var web = new WebClient())

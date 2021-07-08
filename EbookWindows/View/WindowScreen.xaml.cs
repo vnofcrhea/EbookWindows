@@ -345,6 +345,7 @@ namespace EbookWindows.Screen
         private void Settings_Click(object sender, RoutedEventArgs e)
         {
             SettingsGrid.Visibility = Visibility.Visible;
+            App.Global.Settings_ViewModel.Notification = "";
         }
         public void SettingClose()
         {

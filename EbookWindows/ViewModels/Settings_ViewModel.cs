@@ -21,6 +21,7 @@ using EbookWindows.Screen;
 using System.IO.Compression;
 using Syncfusion.Compression.Zip;
 using System.Net;
+using System.Windows;
 
 namespace EbookWindows.ViewModels
 {
@@ -171,7 +172,14 @@ namespace EbookWindows.ViewModels
         public string AccountName
         {
             get { return _settings.AccountName; }
-            set { _settings.AccountName = value; }
+            set { _settings.AccountName = value;
+                var handler = this.PropertyChanged;
+                if (handler != null)
+                {
+                    handler(this,
+                          new PropertyChangedEventArgs("AccountName"));
+                }
+            }
         }
 
         private void ApplyBaseTheme()
@@ -257,13 +265,22 @@ namespace EbookWindows.ViewModels
                     ApplicationName = ApplicationName,
                 });
 
-                using (var web = new WebClient())
+                try
+
                 {
-                    var json = web.DownloadString(@"https://www.googleapis.com/oauth2/v2/userinfo?alt=json&access_token=" + credential.Token.AccessToken);
-                    var content = JsonConvert.DeserializeObject<GoogleUserProfile>(json);
-                    _settings.AccountName = content.name;
+                    using (var web = new WebClient())
+                    {
+                        var json = web.DownloadString(@"https://www.googleapis.com/oauth2/v2/userinfo?alt=json&access_token=" + credential.Token.AccessToken);
+                        var content = JsonConvert.DeserializeObject<GoogleUserProfile>(json);
+                        this.AccountName = content.name;
+                    }
+                    IsLogged = true;
                 }
-                IsLogged = true;
+                catch
+                {
+                    MessageBox.Show("An error occurred while talking user infomation, please try again.");
+                    IsLogged = false;
+                }
             }
 
         }
@@ -273,6 +290,7 @@ namespace EbookWindows.ViewModels
             try
             {
                 credential.RevokeTokenAsync(CancellationToken.None);
+                AccountName = "";
                 IsLogged = false;
             }
             catch
@@ -297,6 +315,7 @@ namespace EbookWindows.ViewModels
             }
             catch
             {
+                MessageBox.Show("An error occurred while uploading data to google drive.Please check your internet connection and try again.");
                 if (File.Exists(zipPath))
                     File.Delete(zipPath);
                 return;
@@ -345,6 +364,7 @@ namespace EbookWindows.ViewModels
                 stream1.Dispose();
                 File.Delete(zipPath);
                 Notification = "Upload Failed! Check your connection and try again.";
+                return;
             }
             Notification = "Upload Successful!";
         }
@@ -352,12 +372,18 @@ namespace EbookWindows.ViewModels
 
         public void DownLoadSyncData()
         {
-            IList<Google.Apis.Drive.v3.Data.File> listfile;
+            IList<Google.Apis.Drive.v3.Data.File> listfile = new List<Google.Apis.Drive.v3.Data.File>();
             var listRequest = driveService.Files.List();
             listRequest.Spaces = "appDataFolder";
             listRequest.Fields = "nextPageToken, files(id, name)";
-            listfile = listRequest.Execute().Files;
-
+            try
+            {
+                listfile = listRequest.Execute().Files.ToList();
+            }
+            catch
+            {
+                MessageBox.Show("Error downloading data from google drive. Please check your internet connection and try again.");
+            }
             if (listfile.Count == 0)
             {
                 return;
@@ -371,7 +397,14 @@ namespace EbookWindows.ViewModels
                 using (FileStream fs = new FileStream(listfile[0].Name, FileMode.Create))
                 {
                     downloadRequest.MediaDownloader.ProgressChanged += Download_ProgressChanged;
-                    downloadRequest.Download(fs);
+                    try
+                    {
+                        downloadRequest.Download(fs);
+                    }
+                    catch
+                    {
+                        MessageBox.Show("Error downloading data from google drive. Please check your internet connection and try again.");
+                    }
                 }
                 //After
                 if (!Directory.Exists(startPath))
@@ -394,7 +427,6 @@ namespace EbookWindows.ViewModels
                         }
                         catch
                         {
-
                         }
 
                     }
@@ -427,7 +459,7 @@ namespace EbookWindows.ViewModels
                     }
                 case DownloadStatus.Failed:
                     {
-                        Console.WriteLine("Download failed.");
+                        MessageBox.Show("Download failed. Try again");
                         break;
                     }
             }
@@ -441,13 +473,13 @@ namespace EbookWindows.ViewModels
                 mimeType = regKey.GetValue("Content Type").ToString();
             return mimeType;
         }
-        public IList<Google.Apis.Drive.v3.Data.File> FileInFolder(string FileName, string FolderId)
-        {
-            var listRequest = driveService.Files.List();
-            listRequest.Q = "name='" + FileName + "' and parents in '" + FolderId + "'";
-            listRequest.Fields = "files(id,parents)";
-            return listRequest.Execute().Files;
-        }
+        //public IList<Google.Apis.Drive.v3.Data.File> FileInFolder(string FileName, string FolderId)
+        //{
+        //    var listRequest = driveService.Files.List();
+        //    listRequest.Q = "name='" + FileName + "' and parents in '" + FolderId + "'";
+        //    listRequest.Fields = "files(id,parents)";
+        //    return listRequest.Execute().Files;
+        //}
 
 
     }
